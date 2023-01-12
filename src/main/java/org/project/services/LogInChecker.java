@@ -1,6 +1,6 @@
 package org.project.services;
 
-import org.project.DAO.UserDaoImpl;
+import org.project.dao.UserDaoImpl;
 import org.project.entity.User;
 
 public class LogInChecker {

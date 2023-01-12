@@ -51,4 +51,6 @@ public class BookDTO {
     public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
+    public BookDTO() {
+    }
 }

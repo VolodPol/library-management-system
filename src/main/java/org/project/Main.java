@@ -1,11 +1,16 @@
 package org.project;
 
 
-import org.project.DAO.UserDaoImpl;
+import org.project.dao.BookDao;
+import org.project.dao.UserDaoImpl;
+import org.project.entity.Role;
+import org.project.entity.Subscription;
+import org.project.entity.User;
 
 public class Main {
     public static void main(String[] args) {
-        UserDaoImpl impl = new UserDaoImpl();
+//        BookDao dao = new BookDao();
+//        System.out.println(dao.getAllBooks());
 //==============================================
 //        User user = new User();
 //
@@ -27,7 +32,22 @@ public class Main {
 
 
 //        System.out.println(impl.findUser("jeff"));
-        System.out.println(impl.getAll());
-//        System.out.println(LogInChecker.doesMatch("volodPol", "1234"));
+//        BookDao impl = new BookDao();
+//        System.out.println(impl.getAllBooks());
+
+       User user = new User(
+               "Rich",
+               "285lf824Lf",
+               "richii@gmail.com",
+               "Richard",
+               "Hammond",
+               "8437593213",
+               48,
+               (byte) 0,
+               (byte) 0,
+               Role.valueOf("UNREGISTERED"),
+               Subscription.valueOf("BASIC"));
+        UserDaoImpl userDao = new UserDaoImpl();
+        userDao.insertUser(user);
     }
 }

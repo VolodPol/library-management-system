@@ -1,4 +1,4 @@
-package org.project.Connection.oldType;
+package org.project.connection.oldType;
 
 import java.io.FileInputStream;
 import java.io.IOException;

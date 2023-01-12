@@ -26,10 +26,7 @@ public class FrontController extends HttpServlet {
         String page;
         ActionFactory client = new ActionFactory();
 
-//        SessionRequestContent content = new SessionRequestContent();
-//        content.extractValues(req);
 
-//        ActionCommand command = client.defineCommand(content);
         ActionCommand command = client.defineCommand(req);
         page = command.execute(req);
         if (page != null) {
@@ -39,5 +36,11 @@ public class FrontController extends HttpServlet {
             req.getSession().setAttribute("nullPage", "Null page message");
             resp.sendRedirect(req.getContextPath() + page);
         }
+//        System.out.println("here");
+//        System.out.println(req.getParameter("command"));
     }
+    //        SessionRequestContent content = new SessionRequestContent();
+//        content.extractValues(req);
+
+//        ActionCommand command = client.defineCommand(content);
 }

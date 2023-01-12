@@ -1,4 +1,4 @@
-package org.project.Connection.oldType;
+package org.project.connection.oldType;
 
 import java.sql.Connection;
 import java.sql.SQLException;

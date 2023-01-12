@@ -2,8 +2,7 @@ package org.project.commands;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.project.DAO.UserDaoImpl;
-import org.project.entity.Role;
+import org.project.dao.UserDaoImpl;
 import org.project.entity.User;
 import org.project.services.LogInChecker;
 
@@ -21,6 +20,7 @@ public class LoginCommand implements ActionCommand {
 
             HttpSession session = request.getSession();
             session.setAttribute("role", userRole);
+            session.setAttribute("name", user.getFirstName() + " " + user.getSurname());
             page = "index.jsp";
         } else {
             page = "login.jsp";

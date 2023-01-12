@@ -1,4 +1,4 @@
-package org.project.DAO;
+package org.project.dao;
 
 import org.project.entity.User;
 import java.util.List;

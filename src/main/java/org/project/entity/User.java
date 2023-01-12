@@ -21,10 +21,9 @@ public class User {
 
     }
 
-    public User(int id, String login, String password, String email, String firstName,
+    public User(String login, String password, String email, String firstName,
                 String surname, String phoneNumber, int age, byte finedStatus,
                 byte status, Role role, Subscription subscription) {
-        this.id = id;
         this.login = login;
         this.password = password;
         this.email = email;

@@ -1,13 +1,15 @@
-package org.project.DAO;
+package org.project.dao;
 
-import org.project.Connection.DataSource;
+import org.project.connection.DataSource;
+import org.project.entity.Role;
+import org.project.entity.Subscription;
 import org.project.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.project.DAO.Constants.*;
+import static org.project.dao.Constants.*;
 
 public class UserDaoImpl implements UserDao{
     @Override
@@ -29,6 +31,8 @@ public class UserDaoImpl implements UserDao{
                 user.setAge(rs.getInt(8));
                 user.setFinedStatus(rs.getByte(9));
                 user.setStatus(rs.getByte(10));
+                user.setRole(Role.valueOf(rs.getString(11).toUpperCase()));
+                user.setSubscription(Subscription.valueOf(rs.getString(12).toUpperCase()));
 
                 users.add(user);
             }
@@ -48,6 +52,7 @@ public class UserDaoImpl implements UserDao{
             ResultSet rs = preparedStatement.executeQuery();
 
             while (rs.next()) {
+                user.setId(rs.getInt("id"));
                 user.setLogin(rs.getString("login"));
                 user.setPassword(rs.getString("password"));
                 user.setEmail(rs.getString("email"));
@@ -57,6 +62,8 @@ public class UserDaoImpl implements UserDao{
                 user.setAge(rs.getInt("age"));
                 user.setFinedStatus(rs.getByte("fined_status"));
                 user.setStatus(rs.getByte("status"));
+                user.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
+                user.setSubscription(Subscription.valueOf(rs.getString("subscription").toUpperCase()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,6 +88,7 @@ public class UserDaoImpl implements UserDao{
             preparedStatement.setString(5, user.getSurname());
             preparedStatement.setString(6, user.getPhoneNumber());
             preparedStatement.setInt(7, user.getAge());
+
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
