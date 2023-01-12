@@ -1,0 +1,15 @@
+package org.project.entity;
+
+public enum OrderStatus {
+    UNCONFIRMED(0),
+    CONFIRMED(1);
+    private final int statusValue;
+
+    OrderStatus(int value) {
+        statusValue = value;
+    }
+
+    public int getStatusValue() {
+        return statusValue;
+    }
+}

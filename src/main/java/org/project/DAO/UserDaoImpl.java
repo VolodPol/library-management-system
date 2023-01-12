@@ -1,6 +1,5 @@
 package org.project.DAO;
 
-import org.project.Connection.ConnectionUtils;
 import org.project.Connection.DataSource;
 import org.project.entity.User;
 
@@ -14,7 +13,7 @@ public class UserDaoImpl implements UserDao{
     @Override
     public List<User> getAll() {
         List<User> users = new ArrayList<>();
-        try (Connection connection = ConnectionUtils.getConnection()) {
+        try (Connection connection = DataSource.getConnection()) {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(GET_ALL_USERS);
             while (rs.next()) {
@@ -28,20 +27,14 @@ public class UserDaoImpl implements UserDao{
                 user.setSurname(rs.getString(6));
                 user.setPhoneNumber(rs.getString(7));
                 user.setAge(rs.getInt(8));
-                user.setFinedStatus(rs.getBoolean(9));
-                user.setStatus(rs.getBoolean(10));
-
+                user.setFinedStatus(rs.getByte(9));
+                user.setStatus(rs.getByte(10));
 
                 users.add(user);
-                System.out.println(user);
             }
-
-
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
         return users;
     }
 
@@ -62,9 +55,8 @@ public class UserDaoImpl implements UserDao{
                 user.setSurname(rs.getString("surname"));
                 user.setPhoneNumber(rs.getString("phonenumber"));
                 user.setAge(rs.getInt("age"));
-                user.setFinedStatus(rs.getBoolean("fined_status"));
-                user.setStatus(rs.getBoolean("status"));
-
+                user.setFinedStatus(rs.getByte("fined_status"));
+                user.setStatus(rs.getByte("status"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -90,8 +82,6 @@ public class UserDaoImpl implements UserDao{
             preparedStatement.setString(6, user.getPhoneNumber());
             preparedStatement.setInt(7, user.getAge());
             preparedStatement.executeUpdate();
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

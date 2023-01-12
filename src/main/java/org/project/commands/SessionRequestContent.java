@@ -15,14 +15,10 @@ public class SessionRequestContent {
 
     public SessionRequestContent() {
     }
-    public SessionRequestContent(HashMap<String, Object> requestAttributes,
-                                 HashMap<String, String[]> requestParameters,
-                                 HashMap<String, Object> sessionAttributes) {
-        this.requestAttributes = requestAttributes;
-        this.requestParameters = requestParameters;
-        this.sessionAttributes = sessionAttributes;
-    }
 
+    /*
+    Retrieve attributes and params from request and put to fields
+     */
     public void extractValues(HttpServletRequest request){
         Enumeration<?> reqAttributeNames  = request.getAttributeNames();
         while (reqAttributeNames.hasMoreElements()) {
@@ -43,25 +39,39 @@ public class SessionRequestContent {
         }
 
     }
+    /*
+     *   Put attributes ands params from field to request
+     */
     public void putValues(HttpServletRequest request){
         iterateAndSet(request, requestAttributes.entrySet());
         iterateAndSet(request, sessionAttributes.entrySet());
     }
 
     //getters
-    public Object getRequestAttribute(String key){
-        return requestAttributes.get(key);
+
+    public HashMap<String, Object> getRequestAttributes() {
+        return requestAttributes;
     }
 
-    public Object getSessionAttributes(String key){
-        return sessionAttributes.get(key);
+    public HashMap<String, String[]> getRequestParameters() {
+        return requestParameters;
     }
 
-    public String[] getParameters(Object key) {
-        return requestParameters.get((String) key);
+    public HashMap<String, Object> getSessionAttributes() {
+        return sessionAttributes;
     }
+
     //
 
+    public void putRequestAttribute(String name, Object value) {
+        requestAttributes.put(name, value);
+    }
+    public void putSessionAttribute(String name, Object value) {
+        sessionAttributes.put(name, value);
+    }
+    public void putRequestParameters(String name, String ... values) {
+        requestParameters.put(name, values);
+    }
 
     private void iterateAndSet(HttpServletRequest request, Set<Map.Entry<String, Object>> attributes ) {
         for (Map.Entry<String, Object> entry : attributes) {

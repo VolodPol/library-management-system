@@ -12,8 +12,8 @@ public class User {
     private String surname;
     private String phoneNumber;
     private int age;
-    private boolean finedStatus;
-    private boolean status;
+    private byte finedStatus;
+    private byte status;
     private Role role;
     private Subscription subscription;
 
@@ -22,8 +22,8 @@ public class User {
     }
 
     public User(int id, String login, String password, String email, String firstName,
-                String surname, String phoneNumber, int age, boolean finedStatus,
-                boolean status, Role role, Subscription subscription) {
+                String surname, String phoneNumber, int age, byte finedStatus,
+                byte status, Role role, Subscription subscription) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -94,17 +94,17 @@ public class User {
         this.age = createTime;
     }
 
-    public boolean isFinedStatus() {
+    public byte isFinedStatus() {
         return finedStatus;
     }
-    public void setFinedStatus(boolean finedStatus) {
+    public void setFinedStatus(byte finedStatus) {
         this.finedStatus = finedStatus;
     }
 
-    public boolean isStatus() {
+    public byte isStatus() {
         return status;
     }
-    public void setStatus(boolean status) {
+    public void setStatus(byte status) {
         this.status = status;
     }
 
@@ -153,8 +153,8 @@ public class User {
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + age;
-        result = 31 * result + (finedStatus ? 1 : 0);
-        result = 31 * result + (status ? 1 : 0);
+        result = 31 * result + (int) finedStatus;
+        result = 31 * result + (int) status;
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (subscription != null ? subscription.hashCode() : 0);
         return result;

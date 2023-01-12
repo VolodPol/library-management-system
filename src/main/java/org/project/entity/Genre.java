@@ -1,5 +1,7 @@
 package org.project.entity;
 
+import java.util.Objects;
+
 public class Genre {
     private int id;
     private String name;
@@ -25,16 +27,17 @@ public class Genre {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Genre genre = (Genre) o;
-        return id == genre.id && name.equals(genre.name);
+
+        if (id != genre.id) return false;
+        return Objects.equals(name, genre.name);
     }
 
     @Override
-    public int hashCode(){
-        int result = 13;
-
-        result += 31 + result + id;
-        result += 31 + result + (this.name != null ? name.hashCode() : 0);
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 

@@ -1,15 +1,17 @@
 package org.project.entity;
 
 
+import java.sql.Date;
+import java.util.Objects;
+
 public class Book {
     private int id;
     private String title;
     private String author;
     private String isbn;
-    private String coverage;
     private int copiesNumber;
+    private Date dateOfPublication;
 
-    private Category category;
     private Publisher publisher;
 
 
@@ -45,13 +47,6 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public String getCoverage() {
-        return coverage;
-    }
-    public void setCoverage(String coverage) {
-        this.coverage = coverage;
-    }
-
     public int getCopiesNumber() {
         return copiesNumber;
     }
@@ -59,11 +54,11 @@ public class Book {
         this.copiesNumber = copiesNumber;
     }
 
-    public Category getCategory() {
-        return category;
+    public Date getDateOfPublication() {
+        return dateOfPublication;
     }
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setDateOfPublication(Date dateOfPublication) {
+        this.dateOfPublication = dateOfPublication;
     }
 
     public Publisher getPublisher() {
@@ -77,27 +72,28 @@ public class Book {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Book book = (Book) o;
-        return id == book.id && copiesNumber == book.copiesNumber
-                && title.equals(book.title)
-                && author.equals(book.author)
-                && isbn.equals(book.isbn) && coverage.equals(book.coverage)
-                && category.equals(book.category) && publisher.equals(book.publisher);
+
+        if (id != book.id) return false;
+        if (copiesNumber != book.copiesNumber) return false;
+        if (!Objects.equals(title, book.title)) return false;
+        if (!Objects.equals(author, book.author)) return false;
+        if (!Objects.equals(isbn, book.isbn)) return false;
+        if (!Objects.equals(dateOfPublication, book.dateOfPublication))
+            return false;
+        return Objects.equals(publisher, book.publisher);
     }
 
     @Override
     public int hashCode() {
-        int result = 13;
-
-        result += 31 + result + id;
-        result += 31 + result + (title != null ? title.hashCode() : 0);
-        result += 31 + result + (author != null ? author.hashCode() : 0);
-        result += 31 + result + (isbn != null ? isbn.hashCode() : 0);
-        result += 31 + result + (coverage != null ? coverage.hashCode() : 0);
-        result += 31 + result + copiesNumber;
-        result += 31 + result + (category != null ? category.hashCode() : 0);
-        result += 31 + result + (publisher != null ? publisher.hashCode() : 0);
-
+        int result = id;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
+        result = 31 * result + copiesNumber;
+        result = 31 * result + (dateOfPublication != null ? dateOfPublication.hashCode() : 0);
+        result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
         return result;
     }
 
@@ -108,9 +104,8 @@ public class Book {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", isbn='" + isbn + '\'' +
-                ", coverage='" + coverage + '\'' +
                 ", copiesNumber=" + copiesNumber +
-                ", category=" + category +
+                ", dateOfPublication=" + dateOfPublication +
                 ", publisher=" + publisher +
                 '}';
     }

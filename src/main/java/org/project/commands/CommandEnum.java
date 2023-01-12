@@ -6,6 +6,11 @@ public enum CommandEnum {
         {
             this.command = new LoginCommand();
         }
+    },
+    LOGOUT {
+        {
+            this.command = new LogoutCommand();
+        }
     };
 
     ActionCommand command;

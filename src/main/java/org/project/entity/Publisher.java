@@ -1,4 +1,5 @@
 package org.project.entity;
+import java.util.Objects;
 
 public class Publisher {
     private int id;
@@ -25,16 +26,17 @@ public class Publisher {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Publisher publisher = (Publisher) o;
-        return id == publisher.id && name.equals(publisher.name);
+
+        if (id != publisher.id) return false;
+        return Objects.equals(name, publisher.name);
     }
 
     @Override
-    public int hashCode(){
-        int result = 13;
-
-        result += 31 + result + id;
-        result += 31 + result + (this.name != null ? name.hashCode() : 0);
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 

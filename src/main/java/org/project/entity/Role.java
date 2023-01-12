@@ -1,17 +1,17 @@
 package org.project.entity;
 
 public enum Role {
-    UNREGISTERED(0),
-    USER(1),
-    LIBRARIAN(2),
-    ADMIN(3);
+    UNREGISTERED("unregistered"),
+    USER("user"),
+    LIBRARIAN("librarian"),
+    ADMIN("admin");
 
-    private final int roleValue;
-    Role(int value) {
+    private final String roleValue;
+    Role(String value) {
         roleValue = value;
     }
 
-    public int getRoleValue() {
+    public String getRoleValue() {
         return roleValue;
     }
 }

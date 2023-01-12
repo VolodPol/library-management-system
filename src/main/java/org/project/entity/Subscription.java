@@ -1,17 +1,16 @@
 package org.project.entity;
 
 public enum Subscription {
-    BASIC(0),
-    READER(1);
+    BASIC("basic"),
+    READER("reader");
 
-
-    private final int value;
-
-    Subscription(int value) {
+    private final String value;
+    Subscription(String value) {
         this.value = value;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 }
+

@@ -7,8 +7,8 @@ public class Checkout {
     private int id;
     private Timestamp startTime;
     private Timestamp endTime;
-    private boolean isReturned;
-    private Status status;
+    private byte isReturned;
+    private OrderStatus orderStatus;
     private User user;
     private Book book;
 
@@ -35,18 +35,18 @@ public class Checkout {
         this.endTime = endTime;
     }
 
-    public boolean isReturned() {
+    public byte isReturned() {
         return isReturned;
     }
-    public void setReturned(boolean returned) {
+    public void setReturned(byte returned) {
         isReturned = returned;
     }
 
-    public Status getStatus() {
-        return status;
+    public OrderStatus getStatus() {
+        return orderStatus;
     }
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(OrderStatus status) {
+        this.orderStatus = status;
     }
 
     public User getUser() {
@@ -74,7 +74,7 @@ public class Checkout {
         if (isReturned != checkout.isReturned) return false;
         if (!Objects.equals(startTime, checkout.startTime)) return false;
         if (!Objects.equals(endTime, checkout.endTime)) return false;
-        if (status != checkout.status) return false;
+        if (orderStatus != checkout.orderStatus) return false;
         if (!Objects.equals(user, checkout.user)) return false;
         return Objects.equals(book, checkout.book);
     }
@@ -84,8 +84,8 @@ public class Checkout {
         int result = id;
         result = 31 * result + (startTime != null ? startTime.hashCode() : 0);
         result = 31 * result + (endTime != null ? endTime.hashCode() : 0);
-        result = 31 * result + (isReturned ? 1 : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (int) isReturned;
+        result = 31 * result + (orderStatus != null ? orderStatus.hashCode() : 0);
         result = 31 * result + (user != null ? user.hashCode() : 0);
         result = 31 * result + (book != null ? book.hashCode() : 0);
         return result;
