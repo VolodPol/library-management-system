@@ -1,11 +1,6 @@
 package org.project;
 
-
-import org.project.dao.BookDao;
-import org.project.dao.UserDaoImpl;
-import org.project.entity.Role;
-import org.project.entity.Subscription;
-import org.project.entity.User;
+import java.sql.Timestamp;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,19 +30,30 @@ public class Main {
 //        BookDao impl = new BookDao();
 //        System.out.println(impl.getAllBooks());
 
-       User user = new User(
-               "Rich",
-               "285lf824Lf",
-               "richii@gmail.com",
-               "Richard",
-               "Hammond",
-               "8437593213",
-               48,
-               (byte) 0,
-               (byte) 0,
-               Role.valueOf("UNREGISTERED"),
-               Subscription.valueOf("BASIC"));
-        UserDaoImpl userDao = new UserDaoImpl();
-        userDao.insertUser(user);
+//       User user = new User(
+//               "Rich",
+//               "285lf824Lf",
+//               "richii@gmail.com",
+//               "Richard",
+//               "Hammond",
+//               "8437593213",
+//               48,
+//               (byte) 0,
+//               (byte) 0,
+//               Role.valueOf("UNREGISTERED"),
+//               Subscription.valueOf("BASIC"));
+//        UserDaoImpl userDao = new UserDaoImpl();
+//        userDao.insertUser(user);
+
+//        System.out.println(new OrderDao().createOrder(
+//                new UserDaoImpl().findUser("Phil"),
+//                new BookDao().findBook("5739038320601"),
+//                Timestamp.valueOf("2023-04-12 19:00:00"),
+//                Timestamp.valueOf("2023-05-12 19:00:00")
+//        ));
+        String fromRequest = "2023-01-19T16:28";
+        fromRequest = fromRequest.replace('T', ' ').concat(":00");
+        System.out.println(fromRequest);
+        System.out.println(Timestamp.valueOf(fromRequest));
     }
 }

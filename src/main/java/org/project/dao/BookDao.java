@@ -37,4 +37,30 @@ public class BookDao {
         }
         return books;
     }
+
+    public Book findBook(String isbn) {
+        Book book = new Book();
+        try (Connection con = DataSource.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ISBN);
+            ps.setString(1, isbn);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                book.setId(rs.getInt("b.id"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthor(rs.getString("author"));
+                book.setIsbn(rs.getString("isbn"));
+                book.setCopiesNumber(rs.getInt("copies_number"));
+                book.setDateOfPublication(rs.getDate("date_of_publication"));
+                book.setPublisher(new Publisher(
+                        rs.getInt("p.id"),
+                        rs.getString("name")
+                ));
+            }
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return book;
+    }
 }

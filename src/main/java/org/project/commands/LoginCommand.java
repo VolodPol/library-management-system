@@ -19,8 +19,11 @@ public class LoginCommand implements ActionCommand {
             String userRole = user.getRole().getRoleValue();
 
             HttpSession session = request.getSession();
+
             session.setAttribute("role", userRole);
             session.setAttribute("name", user.getFirstName() + " " + user.getSurname());
+            session.setAttribute("login", user.getLogin());
+            session.setAttribute("subscription", user.getSubscription().getValue());
             page = "index.jsp";
         } else {
             page = "login.jsp";
