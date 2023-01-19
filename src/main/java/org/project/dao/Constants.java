@@ -12,5 +12,7 @@ public interface Constants {
 
 
     //Order DAO
+    String GET_ALL_CHECKOUTS = "SELECT c.id, start_time, end_time, is_returned, order_status, u.id, u.login, b.id, b.isbn FROM checkout c JOIN user u JOIN book b ON c.user_id = u.id AND c.book_id = b.id";
     String CREATE_CHECKOUT = "INSERT INTO checkout (start_time, end_time, is_returned, order_status, user_id, book_id) VALUES (?, ?, 1, 0, ?, ?)";
+    String UPDATE_CHECKOUT_BY_ID = "UPDATE checkout SET is_returned = 0, order_status = 1 WHERE id = ?";
 }

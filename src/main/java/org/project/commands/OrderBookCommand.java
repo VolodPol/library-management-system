@@ -2,7 +2,7 @@ package org.project.commands;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.project.dao.BookDao;
-import org.project.dao.OrderDao;
+import org.project.dao.CheckoutDao;
 import org.project.dao.UserDaoImpl;
 import org.project.entity.Book;
 import org.project.entity.User;
@@ -32,8 +32,8 @@ public class OrderBookCommand implements ActionCommand {
         String endParam = request.getParameter("endTime");
         Timestamp endTime = Timestamp.valueOf(endParam.replace('T', ' ').concat(":00"));
 
-        OrderDao orderWriter = new OrderDao();
-        orderWriter.createOrder(
+        CheckoutDao orderWriter = new CheckoutDao();
+        orderWriter.createCheckout(
                 user,
                 book,
                 startTime,

@@ -10,10 +10,14 @@
 <%--    <a href="" class="profile">Про сайт</a>--%>
 <%--    <a href="" class="profile">Ще щось</a>--%>
 <%--</nav>--%>
+<c:set var="userRole" value="${sessionScope.role}" scope="page"/>
 <nav>
     <ul id="navUl">
         <li><a href="login.jsp">Sign In</a></li>
         <li><a class="active" href="front?command=books">Catalog</a></li>
+        <c:if test="${userRole == 'librarian'}">
+            <li><a href="front?command=show_orders">Readers' orders</a></li>
+        </c:if>
         <li><a href="">Contact</a></li>
         <li style="float:right" ><a href="">About</a></li>
     </ul>
@@ -23,7 +27,7 @@
     <div class="box">
 
         <table class="content-table">
-            <c:set var="userRole" value="${sessionScope.role}" scope="page"/>
+
             <thead>
                 <tr>
                     <th>Title</th>
@@ -96,7 +100,7 @@
     .content-table {
         border-collapse: collapse;
         margin: 25px 0;
-        font-size: 1.5em;/* was 0.9 em */
+        font-size: 1.35em;/* was 0.9 em */
         min-width: 400px;
         border-radius: 5px 5px 0 0;
         overflow: hidden;
@@ -172,7 +176,7 @@
         border-style: outset;
         border-color: #0066A2;
         font: bold 18px arial,sans-serif;
-        text-shadow: none;
+        text-shadow: none;;
 
         cursor: pointer;
         box-shadow: 0 2px #999;

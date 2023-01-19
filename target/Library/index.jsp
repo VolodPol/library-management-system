@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <body>
@@ -6,8 +6,8 @@
     <ul id="navUl">
         <li><a class="active" href="register.jsp">Sign In</a></li>
         <li><a href="front?command=books">Catalog</a></li>
-        <li><a href="#contact">Contact</a></li>
-        <li style="float:right" ><a href="#about">About</a></li>
+        <li><a href="">Contact</a></li>
+        <li style="float:right" ><a href="">About</a></li>
     </ul>
 </nav>
     <h2>Hello, ${sessionScope.role} ${sessionScope.name}</h2>

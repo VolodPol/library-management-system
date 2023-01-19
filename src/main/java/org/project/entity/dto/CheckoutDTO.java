@@ -3,6 +3,7 @@ package org.project.entity.dto;
 import java.sql.Timestamp;
 
 public class CheckoutDTO {
+    private int id;
     private Timestamp startTime;
     private Timestamp endTime;
     private String username;
@@ -34,5 +35,12 @@ public class CheckoutDTO {
     }
     public void setBookTitle(String bookTitle) {
         this.bookTitle = bookTitle;
+    }
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
 }

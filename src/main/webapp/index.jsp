@@ -6,6 +6,9 @@
     <ul id="navUl">
         <li><a class="active" href="register.jsp">Sign In</a></li>
         <li><a href="front?command=books">Catalog</a></li>
+        <c:if test="${requestScope.role == 'librarian'}">
+            <li><a href="front?command=show_orders">Readers' orders</a></li>
+        </c:if>
         <li><a href="">Contact</a></li>
         <li style="float:right" ><a href="">About</a></li>
     </ul>

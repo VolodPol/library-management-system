@@ -1,5 +1,7 @@
 package org.project;
 
+import org.project.dao.CheckoutDao;
+
 import java.sql.Timestamp;
 
 public class Main {
@@ -51,9 +53,17 @@ public class Main {
 //                Timestamp.valueOf("2023-04-12 19:00:00"),
 //                Timestamp.valueOf("2023-05-12 19:00:00")
 //        ));
-        String fromRequest = "2023-01-19T16:28";
-        fromRequest = fromRequest.replace('T', ' ').concat(":00");
-        System.out.println(fromRequest);
-        System.out.println(Timestamp.valueOf(fromRequest));
+
+
+
+
+//        String fromRequest = "2023-01-19T16:28";
+//        fromRequest = fromRequest.replace('T', ' ').concat(":00");
+//        System.out.println(fromRequest);
+//        System.out.println(Timestamp.valueOf(fromRequest));
+
+//        new CheckoutDao().getAllCheckouts().forEach(System.out::println);
+
+        new CheckoutDao().confirmCheckout(1);
     }
 }
