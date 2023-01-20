@@ -18,17 +18,3 @@ public class ActionFactory {
         return currentCommand;
     }
 }
-//    public ActionCommand defineCommand (SessionRequestContent content) {
-//        ActionCommand currentCommand = new EmptyCommand();
-//        String action = content.getRequestParameters().get("command")[0];
-//        if (action == null || action.isEmpty()) {
-//            return currentCommand;
-//        }
-//        try {
-//            CommandEnum currentEnum = CommandEnum.valueOf(action.toUpperCase());
-//            currentCommand = currentEnum.getCommand();
-//        } catch (IllegalArgumentException e) {
-//            content.putRequestParameters("wrongAction", action + "errors/wrongAction.jsp");
-//        }
-//        return currentCommand;
-//    }

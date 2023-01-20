@@ -41,7 +41,7 @@ public class DataSource {
 
     private DataSource() {}
 
-    public static Connection getConnection() throws SQLException {
+    public static synchronized Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
 }

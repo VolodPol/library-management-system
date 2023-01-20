@@ -14,11 +14,12 @@ import java.util.Set;
     3. insert attributes in request
  */
 public class SessionRequestContent {
-    private HashMap<String, Object> requestAttributes;
-    private HashMap<String, String[]> requestParameters;
-    private HashMap<String, Object> sessionAttributes;
+    private final HashMap<String, Object> requestAttributes;
+    private final HashMap<String, String[]> requestParameters;
+    private final HashMap<String, Object> sessionAttributes;
 
     {
+        requestAttributes = new HashMap<>();
         requestParameters = new HashMap<>();
         sessionAttributes = new HashMap<>();
     }
@@ -33,25 +34,26 @@ public class SessionRequestContent {
         while (reqAttributeNames.hasMoreElements()) {
             String name = (String) reqAttributeNames.nextElement();
             Object value = request.getAttribute(name);
-
             requestAttributes.put(name, value);
         }
-        requestParameters = (HashMap<String, String[]>) request.getParameterMap();
-
+        Enumeration<String> paramNames = request.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String name = paramNames.nextElement();
+            String[] values = request.getParameterValues(name);
+            requestParameters.put(name, values);
+        }
         HttpSession session = request.getSession();
         Enumeration<?> sessionAttributeNames = session.getAttributeNames();
         while (sessionAttributeNames.hasMoreElements()) {
             String name = (String) sessionAttributeNames.nextElement();
             Object value = session.getAttribute(name);
-
             sessionAttributes.put(name, value);
         }
-
     }
     //Put attributes and params from fields to request
     public void insertAttributes(HttpServletRequest request){
-        iterateAndSet(request, requestAttributes.entrySet());
-        iterateAndSet(request, sessionAttributes.entrySet());
+        requestAttributes.forEach(request::setAttribute);
+        sessionAttributes.forEach((key, value) -> request.getSession().setAttribute(key, value));
     }
 
     //getters
@@ -82,11 +84,10 @@ public class SessionRequestContent {
         requestParameters.put(name, values);
     }
 
-    private void iterateAndSet(HttpServletRequest request, Set<Map.Entry<String, Object>> attributes ) {
-        for (Map.Entry<String, Object> entry : attributes) {
-            String name = entry.getKey();
-            Object value = entry.getValue();
-            request.setAttribute(name, value);
-        }
+    public void removeRequestAttribute(String s) {
+        requestAttributes.remove(s);
+    }
+    public void removeSessionAttribute(String s) {
+        sessionAttributes.remove(s);
     }
 }

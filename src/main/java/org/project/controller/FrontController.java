@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.commands.ActionCommand;
 import org.project.commands.ActionFactory;
+import org.project.commands.SessionRequestContent;
 
 import java.io.IOException;
 
@@ -23,24 +24,20 @@ public class FrontController extends HttpServlet {
     }
 
     private void process (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String page;
         ActionFactory client = new ActionFactory();
 
-
         ActionCommand command = client.defineCommand(req);
-        page = command.execute(req);
+        SessionRequestContent content = new SessionRequestContent(req);
+        String page = command.execute(content);
+        content.insertAttributes(req);
+
         if (page != null) {
+            if (page.equals("login.jsp")) req.getSession().invalidate();//вихід користувача з системи
             req.getRequestDispatcher(page).forward(req, resp);
         } else {
             page = "index.jsp";
             req.getSession().setAttribute("nullPage", "Null page message");
             resp.sendRedirect(req.getContextPath() + page);
         }
-//        System.out.println("here");
-//        System.out.println(req.getParameter("command"));
     }
-    //        SessionRequestContent content = new SessionRequestContent();
-//        content.extractValues(req);
-
-//        ActionCommand command = client.defineCommand(content);
 }
