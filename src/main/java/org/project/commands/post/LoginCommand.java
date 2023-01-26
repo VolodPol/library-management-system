@@ -1,20 +1,22 @@
 package org.project.commands.post;
 
 import org.project.commands.ActionCommand;
+import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 import org.project.dao.UserDaoImpl;
 import org.project.entity.User;
 import org.project.services.LogInChecker;
+import org.project.services.PasswordEncryptor;
 
 public class LoginCommand implements ActionCommand {
     @Override
-    public String execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) {
         String page;
 
         String login = content.getParameter("login");
         String password = content.getParameter("password");
 
-        if (LogInChecker.doesMatch(login, password)) {
+        if (LogInChecker.doesMatch(login, PasswordEncryptor.encrypt(password))) {
             User user = new UserDaoImpl().findUser(login);
             String userRole = user.getRole().getRoleValue();
 
@@ -27,6 +29,6 @@ public class LoginCommand implements ActionCommand {
         } else {
             page = "login.jsp";
         }
-        return page;
+        return new CommandResult(page, true);
     }
 }

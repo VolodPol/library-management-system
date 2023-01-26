@@ -2,11 +2,9 @@ package org.project.commands;
 
 
 import org.project.commands.get.ShowBooksCommand;
+import org.project.commands.get.ShowMyBooksCommand;
 import org.project.commands.get.ShowOrdersCommand;
-import org.project.commands.post.ConfirmOrderCommand;
-import org.project.commands.post.LoginCommand;
-import org.project.commands.post.LogoutCommand;
-import org.project.commands.post.OrderBookCommand;
+import org.project.commands.post.*;
 
 public enum CommandEnum {
     LOGIN {
@@ -17,6 +15,11 @@ public enum CommandEnum {
     LOGOUT {
         {
             this.command = new LogoutCommand();
+        }
+    },
+    SIGN_UP {
+        {
+            this.command = new SignUpCommand();
         }
     },
     BOOKS {
@@ -37,6 +40,11 @@ public enum CommandEnum {
     CONFIRM {
         {
             this.command = new ConfirmOrderCommand();
+        }
+    },
+    MY_BOOKS {
+        {
+            this.command = new ShowMyBooksCommand();
         }
     };
 

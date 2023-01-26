@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class PasswordEncryptor {
-    public static String encrypts(String exposed) {
+    public static String encrypt(String exposed) {
         String encrypted = null;
         try {
             MessageDigest m = MessageDigest.getInstance("MD5");
@@ -23,10 +23,6 @@ public class PasswordEncryptor {
         catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-
-        /* Display the unencrypted and encrypted passwords. */
-        System.out.println("Plain-text password: " + exposed);
-        System.out.println("Encrypted password using MD5: " + encrypted);
         return encrypted;
     }
 }

@@ -21,6 +21,14 @@ public class LogInChecker {
         }
     }
 
+    public static boolean doesUserExist(String login, String email) {
+        User user = dao.findUser(login);
+        if (user.getLogin() == null) {
+            return false;
+        }
+        return (user.getLogin().equals(login) || user.getEmail().equals(email));
+    }
+
     public static User getUser() {
         return retrievedUser;
     }

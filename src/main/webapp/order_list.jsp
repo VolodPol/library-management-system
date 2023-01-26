@@ -3,14 +3,16 @@
 <html>
 <head>
     <title>Title</title>
+    <link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
 <c:set var="userRole" value="${sessionScope.role}" scope="page"/>
-    <nav>
-        <ul id="navUl">
+    <nav id="navUl">
+        <ul>
             <li><a href="front?command=books">Catalog</a></li>
             <li><a class="active" href="front?command=show_orders">Readers' orders</a></li>
             <li><a href="">Contact</a></li>
+            <li style="float:right"><a href="front?command=logout">Log Out</a></li>
             <li style="float:right" ><a href="">About</a></li>
         </ul>
     </nav>
@@ -27,35 +29,28 @@
                     <th>Book's title</th>
                     <c:if test="${userRole == 'librarian'}" var="testResult">
                         <th>Action</th>
+                        <c:set var="orders" value="${requestScope.orderList}" scope="page"/>
                     </c:if>
                 </tr>
                 </thead>
-                <c:forEach var="order" items="${requestScope.orderList}" varStatus="status">
+                <c:forEach var="order" items="${orders}" varStatus="status">
                     <tr>
-                        <td>
-                            <c:out value="${order.startTime}"/>
-                        </td>
-                        <td>
-                            <c:out value="${order.endTime}"/>
-                        </td>
-                        <td>
-                            <c:out value="${order.username}"/>
-                        </td>
-                        <td>
-                            <c:out value="${order.bookTitle}"/>
-                        </td>
-
-                        <c:if test="${testResult}">
+                        <td><c:out value="${order.startTime}"/></td>
+                        <td><c:out value="${order.endTime}"/></td>
+                        <td><c:out value="${order.username}"/></td>
+                        <td><c:out value="${order.bookTitle}"/></td>
+                        <c:if test="${testResult and order.orderStatus == 'UNCONFIRMED'}">
                             <td>
-                                <c:set var="orderId" value="${order.id}" scope="session"/>
+                                <c:set var="currentId" value="${status.current.id}" scope="page"/>
                                 <form name="confirmOrderForm" action="front" method="post">
                                     <input type="hidden" name="command" value="confirm"/>
-                                    <input type="submit" value="Confirm" id="submit-button"/>
+                                    <input type="hidden" name="bookId" value="${order.bookId}"/>
+                                    <button type="submit" id="submit-button" name="confirmOrder" value="${currentId}">
+                                        Confirm
+                                    </button>
                                 </form>
-
                             </td>
                         </c:if>
-
                     </tr>
                 </c:forEach>
             </table>
@@ -92,7 +87,7 @@
     }
 
     .content-table thead tr {
-        background-color: #0ea0c2;
+        background-color: #1e673a;
         color: #ffffff;
         text-align: left;
         font-weight: bold;
@@ -112,46 +107,13 @@
     }
 
     .content-table tbody tr:last-of-type {
-        border-bottom: 2px solid #0ea0c2;
+        border-bottom: 2px solid #1e673a;
     }
 
     .content-table tbody tr.active-row {
         font-weight: bold;
-        color: #0ea0c2;
+        color: #1e673a;
     }
-    /*    -------------------------------------------------*/
-    /*    to nav bar*/
-
-    /*ul  */
-    #navUl {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
-
-    li {
-        float: left;
-    }
-
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-
-    li a:hover {
-        background-color: #111;
-    }
-
-    .active {
-        background-color: #1e6839;
-    }
-
     /*    submit button*/
     #submit-button {
         padding: 5px;

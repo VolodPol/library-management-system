@@ -1,5 +1,6 @@
 package org.project.dao;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import org.project.connection.DataSource;
 import org.project.entity.Book;
 import org.project.entity.Publisher;
@@ -43,24 +44,62 @@ public class BookDao {
         try (Connection con = DataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ISBN);
             ps.setString(1, isbn);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                book.setId(rs.getInt("b.id"));
-                book.setTitle(rs.getString("title"));
-                book.setAuthor(rs.getString("author"));
-                book.setIsbn(rs.getString("isbn"));
-                book.setCopiesNumber(rs.getInt("copies_number"));
-                book.setDateOfPublication(rs.getDate("date_of_publication"));
-                book.setPublisher(new Publisher(
-                        rs.getInt("p.id"),
-                        rs.getString("name")
-                ));
-            }
+            extractBook(book, ps);
 
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
         return book;
     }
+    
+    public Book findBook(int id) {
+        Book book = new Book();
+        try (Connection con = DataSource.getConnection()) {
+            PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ID);
+            ps.setInt(1, id);
+            extractBook(book, ps);
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+        return book;
+    }
+
+
+
+    public void decreaseCopiesNum (int bookId) {
+        try (Connection con = DataSource.getConnection()) {
+            con.setAutoCommit(false);
+            Savepoint save = con.setSavepoint("SavePoint");
+
+            try (PreparedStatement ps = con.prepareStatement(DECREASE_BY_ID)) {
+                ps.setInt(1, bookId);
+                ps.executeUpdate();
+                con.commit();
+
+            } catch (SQLException exception) {
+                con.rollback(save);
+                exception.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    private void extractBook(Book book, PreparedStatement ps) throws SQLException {
+        ResultSet resultSet = ps.executeQuery();
+
+        if (resultSet.next()) {
+            book.setId(resultSet.getInt("b.id"));
+            book.setTitle(resultSet.getString("title"));
+            book.setAuthor(resultSet.getString("author"));
+            book.setIsbn(resultSet.getString("isbn"));
+            book.setCopiesNumber(resultSet.getInt("copies_number"));
+            book.setDateOfPublication(resultSet.getDate("date_of_publication"));
+            book.setPublisher(new Publisher(
+                    resultSet.getInt("p.id"),
+                    resultSet.getString("name")
+            ));
+        }
+    }
+
 }

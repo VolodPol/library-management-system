@@ -1,30 +1,40 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <title>Login</title>
-    <meta charset="UTF-8">
+<%--    <meta charset="UTF-8">--%>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/nav.css"><%-- navigation bar stylesheet --%>
 </head>
 <body>
+<nav id="navUl">
+    <ul>
+        <li><a class="active" href="login.jsp">Sign In</a></li>
+        <li><a href="front?command=books">Catalog</a></li>
+        <li><a href="">Contact</a></li>
+        <li style="float:right" ><a href="">About</a></li>
+    </ul>
+</nav>
+
 <div class="container">
     <div class="box">
         <h1>Sign Up</h1>
         <form name="registerForm" action="front" method="POST">
-            <input name="command" type="hidden" value="register"/>
+            <input name="command" type="hidden" value="sign_up"/>
 
             <label>Username</label>
             <div>
                 <i class="fa-solid fa-user"></i>
                 <label>
-                    <input name="register" type="text" placeholder="Enter Username">
+                    <input name="login" type="text" placeholder="Enter Username">
                 </label>
             </div>
 
             <label>Email</label>
             <div>
-                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-mail-bulk"></i>
                 <label>
                     <input name="email" type="email" placeholder="Enter Email">
                 </label>
@@ -40,15 +50,7 @@
 
             <label>First Name</label>
             <div>
-                <i class="fa-solid fa-lock"></i>
-                <label>
-                    <input name="firstname" type="text" placeholder="Enter Your First Name">
-                </label>
-            </div>
-
-            <label>First Name</label>
-            <div>
-                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-user-tag"></i>
                 <label>
                     <input name="firstname" type="text" placeholder="Enter Your First Name">
                 </label>
@@ -56,7 +58,7 @@
 
             <label>Surname</label>
             <div>
-                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-user-tag"></i>
                 <label>
                     <input name="surname" type="text" placeholder="Enter Your Surname">
                 </label>
@@ -64,7 +66,7 @@
 
             <label>Phone number</label>
             <div>
-                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-phone"></i>
                 <label>
                     <input name="phone" type="tel" placeholder="Input Your Phone">
                 </label>
@@ -72,7 +74,7 @@
 
             <label>Age</label>
             <div>
-                <i class="fa-solid fa-lock"></i>
+                <i class="fa-solid fa-clock"></i>
                 <label>
                     <input name="age" type="text" placeholder="Enter Your Age">
                 </label>
@@ -86,6 +88,4 @@
 </div>
 </body>
 </html>
-
-
 

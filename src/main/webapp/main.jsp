@@ -3,27 +3,30 @@
 <html>
 <head>
     <title>Login</title>
-    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
-<%--<nav class="nav-bar-cell1-rev">--%>
-<%--    <a href="" class="profile">Про сайт</a>--%>
-<%--    <a href="" class="profile">Ще щось</a>--%>
-<%--</nav>--%>
 <c:set var="userRole" value="${sessionScope.role}" scope="page"/>
-<nav>
-    <ul id="navUl">
+
+<nav id="navUl">
+    <ul>
         <li><a href="login.jsp">Sign In</a></li>
         <li><a class="active" href="front?command=books">Catalog</a></li>
-        <c:if test="${userRole == 'librarian'}">
-            <li><a href="front?command=show_orders">Readers' orders</a></li>
-        </c:if>
+        <c:choose>
+            <c:when test="${sessionScope.role == 'user'}">
+                <li><a href="front?command=my_books">Ordered books</a> </li>
+            </c:when>
+            <c:when test="${sessionScope.role == 'librarian'}">
+                <li><a href="front?command=show_orders">Readers' orders</a></li>
+            </c:when>
+        </c:choose>
         <li><a href="">Contact</a></li>
+        <li style="float:right"><a href="front?command=logout">Log Out</a></li>
         <li style="float:right" ><a href="">About</a></li>
     </ul>
 </nav>
 <div class="container">
-    <h1>Book Catalog</h1>
+    <h1>My books</h1>
     <div class="box">
 
         <table class="content-table">
@@ -42,36 +45,29 @@
             </thead>
             <c:forEach var="book" items="${requestScope.bookList}" varStatus="status">
                 <tr>
+                    <td><c:out value="${book.title}"/></td>
+                    <td><c:out value="${book.author}"/></td>
+                    <td><c:out value="${book.isbn}"/></td>
                     <td>
-                        <c:out value="${book.title}"/>
+                        <c:choose>
+                            <c:when test="${book.copiesNumber == 0}">
+                                <p>Out of stock</p>
+                            </c:when>
+                            <c:otherwise>
+                                <c:out value="${book.copiesNumber}"/>
+                            </c:otherwise>
+                        </c:choose>
                     </td>
-                    <td>
-                        <c:out value="${book.author}"/>
-                    </td>
-                    <td>
-                        <c:out value="${book.isbn}"/>
-                    </td>
-                    <td>
-                        <c:out value="${book.copiesNumber}"/>
-                    </td>
-                    <td>
-                        <c:out value="${book.dateOfPublication}"/>
-                    </td>
-
+                    <td><c:out value="${book.dateOfPublication}"/></td>
                     <c:if test="${testResult}">
                         <td>
-<%--                            <form name="orderForm" action="new_order.jsp" method="get">--%>
-<%--                                <input type="hidden" name="isbn" value="${book.isbn}"/>--%>
-<%--                                <input type="submit" value="Order" id="submit-button"/>--%>
-<%--                            </form>--%>
-                            <c:set var="isbn" value="${book.isbn}" scope="session"/> <%-- was request scope --%>
                             <form name="orderForm" action="new_order.jsp" method="get">
-                                <input type="submit" value="Order" id="submit-button"/>
+                                <button type="submit" id="submit-button" name="isbn" value="${book.isbn}">
+                                    Order
+                                </button>
                             </form>
-
                         </td>
                     </c:if>
-
                 </tr>
             </c:forEach>
         </table>
@@ -108,7 +104,7 @@
     }
 
     .content-table thead tr {
-        background-color: #0ea0c2;
+        background-color: #1e673a;
         color: #ffffff;
         text-align: left;
         font-weight: bold;
@@ -128,46 +124,14 @@
     }
 
     .content-table tbody tr:last-of-type {
-        border-bottom: 2px solid #0ea0c2;
+        border-bottom: 2px solid #1e673a;
     }
 
     .content-table tbody tr.active-row {
         font-weight: bold;
-        color: #0ea0c2;
+        color: #1e673a;
     }
 /*    -------------------------------------------------*/
-/*    to nav bar*/
-
-    /*ul  */
-     #navUl {
-         list-style-type: none;
-         margin: 0;
-         padding: 0;
-         overflow: hidden;
-         background-color: #333;
-     }
-
-    li {
-        float: left;
-    }
-
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-
-    li a:hover {
-        background-color: #111;
-    }
-
-    .active {
-        background-color: #1e6839;
-    }
-
 /*    submit button*/
     #submit-button {
         padding: 5px;

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.commands.ActionCommand;
 import org.project.commands.ActionFactory;
+import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 
 import java.io.IOException;
@@ -28,12 +29,18 @@ public class FrontController extends HttpServlet {
 
         ActionCommand command = client.defineCommand(req);
         SessionRequestContent content = new SessionRequestContent(req);
-        String page = command.execute(content);
+        CommandResult result = command.execute(content);
         content.insertAttributes(req);
 
+        String page = result.getDestinationPage();
         if (page != null) {
             if (page.equals("login.jsp")) req.getSession().invalidate();//вихід користувача з системи
-            req.getRequestDispatcher(page).forward(req, resp);
+
+            if (result.isSendRedirect()) {
+                resp.sendRedirect(page);
+            } else {
+                req.getRequestDispatcher(page).forward(req, resp);
+            }
         } else {
             page = "index.jsp";
             req.getSession().setAttribute("nullPage", "Null page message");

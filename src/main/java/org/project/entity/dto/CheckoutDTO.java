@@ -1,5 +1,7 @@
 package org.project.entity.dto;
 
+import org.project.entity.OrderStatus;
+
 import java.sql.Timestamp;
 
 public class CheckoutDTO {
@@ -8,7 +10,8 @@ public class CheckoutDTO {
     private Timestamp endTime;
     private String username;
     private String bookTitle;
-
+    private OrderStatus orderStatus;
+    private int bookId;
     public Timestamp getStartTime() {
         return startTime;
     }
@@ -42,5 +45,17 @@ public class CheckoutDTO {
     }
     public void setId(int id) {
         this.id = id;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+    public void setOrderStatus(OrderStatus orderStatus) {this.orderStatus = orderStatus;}
+
+    public int getBookId() {
+        return bookId;
+    }
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 }

@@ -2,11 +2,12 @@ package org.project.commands.post;
 
 
 import org.project.commands.ActionCommand;
+import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 
 public class LogoutCommand implements ActionCommand {
     @Override
-    public String execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) {
         String page = "login.jsp";
 
         content.removeSessionAttribute("role");
@@ -15,6 +16,6 @@ public class LogoutCommand implements ActionCommand {
 
 //        session.invalidate();
 
-        return page;
+        return new CommandResult(page, true);
     }
 }

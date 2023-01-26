@@ -1,4 +1,4 @@
-package org.project.entity.mapper;
+package org.project.services;
 
 import org.project.entity.Book;
 import org.project.entity.Checkout;
@@ -21,10 +21,13 @@ public class Mapper {
 
     public static CheckoutDTO checkoutToDTO(Checkout checkout) {
         CheckoutDTO dto = new CheckoutDTO();
+        dto.setId(checkout.getId());
         dto.setStartTime(checkout.getStartTime());
         dto.setEndTime(checkout.getEndTime());
         dto.setUsername(checkout.getUser().getLogin());
         dto.setBookTitle(checkout.getBook().getTitle());
+        dto.setOrderStatus(checkout.getStatus());
+        dto.setBookId(checkout.getBook().getId());
         return dto;
     }
 }

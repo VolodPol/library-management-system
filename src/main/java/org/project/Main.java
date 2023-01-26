@@ -1,6 +1,11 @@
 package org.project;
 
+import org.project.dao.BookDao;
 import org.project.dao.CheckoutDao;
+import org.project.dao.UserDaoImpl;
+import org.project.entity.OrderStatus;
+import org.project.entity.dto.CheckoutDTO;
+import org.project.services.PasswordEncryptor;
 
 import java.sql.Timestamp;
 
@@ -64,6 +69,7 @@ public class Main {
 
 //        new CheckoutDao().getAllCheckouts().forEach(System.out::println);
 
-        new CheckoutDao().confirmCheckout(1);
+        BookDao dao = new BookDao();
+        System.out.println(dao.findBook(1));
     }
 }

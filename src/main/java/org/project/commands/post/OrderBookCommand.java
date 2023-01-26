@@ -1,6 +1,7 @@
 package org.project.commands.post;
 
 import org.project.commands.ActionCommand;
+import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 import org.project.dao.BookDao;
 import org.project.dao.CheckoutDao;
@@ -12,14 +13,14 @@ import java.sql.Timestamp;
 
 public class OrderBookCommand implements ActionCommand {
     @Override
-    public String execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) {
         /*
         1. Отримати книгу за isbn
         2. Отримати користувача за логіном з сесії та знайти з бд
         3. Створити та записати об'єкт замовлення
          */
 
-        String isbn = (String) content.getSessionAttribute("isbn");
+        String isbn = content.getParameter("isbn");
         BookDao bookFinder = new BookDao();
         Book book = bookFinder.findBook(isbn);
 
@@ -40,6 +41,6 @@ public class OrderBookCommand implements ActionCommand {
                 startTime,
                 endTime
         );
-        return "front?command=books";
+        return new CommandResult("front?command=books", true);
     }
 }

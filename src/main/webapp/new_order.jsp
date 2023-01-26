@@ -2,21 +2,24 @@
 <html>
 <head>
     <title>New order</title>
+    <link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
 
-<nav>
-    <ul id="navUl">
-        <li><a class="active" href="register.jsp">Sign In</a></li>
+<nav id="navUl">
+    <ul>
+        <li><a class="active" href="login.jsp">Sign In</a></li>
         <li><a href="front?command=books">Catalog</a></li>
+        <li><a href="front?command=my_books">Ordered books</a> </li>
         <li><a href="">Contact</a></li>
+        <li style="float:right"><a href="front?command=logout">Log Out</a></li>
         <li style="float:right" ><a href="">About</a></li>
     </ul>
 </nav>
 
 <h1 style="text-align: center">Create order</h1>
 <div id="form-container">
-    <form name="newOrderForm" action="front" method="post"><%-- was: action="front?isbn=${requestScope.isbn}" --%>
+    <form name="newOrderForm" action="front?isbn=${param.isbn}" method="post"><%-- was: action="front?isbn=${requestScope.isbn}" --%>
 
         <input type="hidden" name="command" value="order">
 
@@ -88,37 +91,4 @@
     box-shadow: 0 5px #666;
     transform: translateY(4px);
 }
-
-
-<%-- Navigation bar --%>
-    #navUl {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
-
-    li {
-        float: left;
-    }
-
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-
-    li a:hover {
-        background-color: #111;
-    }
-
-    .active {
-        background-color: #1e6839;
-    }
-
-
 </style>

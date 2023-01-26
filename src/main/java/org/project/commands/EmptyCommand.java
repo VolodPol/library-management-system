@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class EmptyCommand implements ActionCommand {
     @Override
-    public String execute(SessionRequestContent content) {
-        return "login.jsp";
+    public CommandResult execute(SessionRequestContent content) {
+        return new CommandResult("login.jsp");
     }
 }
