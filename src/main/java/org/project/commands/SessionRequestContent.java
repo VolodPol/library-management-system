@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /*
     1. extract values from Request
@@ -64,6 +63,9 @@ public class SessionRequestContent {
         return sessionAttributes.get(s);
     }
     public String getParameter(String s) {
+        if (requestParameters.get(s) == null) {
+            return null;
+        }
         return requestParameters.get(s)[0];
     }
     public Map<String, String[]> getParameterMap(){

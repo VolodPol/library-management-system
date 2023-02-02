@@ -4,6 +4,7 @@
 <head>
     <title>Ordered books</title>
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/buttons/submit-button.css">
 </head>
 <body>
 <nav id="navUl">
@@ -16,32 +17,60 @@
         <li style="float:right" ><a href="">About</a></li>
     </ul>
 </nav>
-<div class="container">
-    <h1>Ordered books</h1>
-    <div class="box">
+<c:set var="messageList" value="${requestScope.messageList}" scope="page"/>
+<c:choose>
+    <c:when test="${empty requestScope.userBookList}">
+        <div class="container">
+            <h1>Unfortunately, you haven't ordered any book yet.</h1>
+        </div>
+        <a href="front?command=books">Go to catalog</a>
+    </c:when>
+    <c:otherwise>
+        <div class="container">
+            <h1>Ordered books</h1>
+            <div class="box">
+                <table class="content-table">
+                    <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Order date</th>
+                        <th>Return before</th>
+                        <th>Subscription</th>
+                        <c:if test="${not empty messageList}">
+                            <th>Status</th>
+                        </c:if>
+                        <th>Return book</th>
+                    </tr>
+                    </thead>
 
-        <table class="content-table">
-            <thead>
-            <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Order date</th>
-                <th>Return before</th>
-                <th>Subscription</th>
-            </tr>
-            </thead>
-            <c:forEach var="userBook" items="${requestScope.userBookList}" varStatus="status">
-                <tr>
-                    <td><c:out value="${userBook.title}"/></td>
-                    <td><c:out value="${userBook.author}"/></td>
-                    <td><c:out value="${userBook.orderDate}"/></td>
-                    <td><c:out value="${userBook.orderDate}"/></td>
-                    <td><c:out value="${userBook.subscription}"/></td>
-                </tr>
-            </c:forEach>
-        </table>
-    </div>
-</div>
+                    <c:forEach var="userBook" items="${requestScope.userBookList}" varStatus="status">
+                        <tr>
+                            <td><c:out value="${userBook.title}"/></td>
+                            <td><c:out value="${userBook.author}"/></td>
+                            <td><c:out value="${userBook.orderDate}"/></td>
+                            <td><c:out value="${userBook.returnDate}"/></td>
+                            <td><c:out value="${userBook.subscription}"/></td>
+                            <c:set var="message" value="${messageList[status.index]}" scope="page"/>
+                            <td>
+                                <c:out value="${message}"/>
+                            </td>
+
+                            <td>
+                                <form action="front?start=${userBook.orderDate}&end=${userBook.returnDate}" name="returnForm" method="post">
+                                    <input type="hidden" name="command" value="return">
+                                    <button class="submit-button" type="submit" name="bookId" value="${userBook.bookId}">
+                                        Return
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
+        </div>
+    </c:otherwise>
+</c:choose>
 </body>
 </html>
 
@@ -101,25 +130,4 @@
         color: #1e673a;
     }
     /*    -------------------------------------------------*/
-    /*    submit button*/
-    #submit-button {
-        padding: 5px;
-        background: #0066A2;
-        color: white;
-        border-style: outset;
-        border-color: #0066A2;
-        font: bold 18px arial,sans-serif;
-        text-shadow: none;;
-
-        cursor: pointer;
-        box-shadow: 0 2px #999;
-    }
-
-    #submit-button:hover {background-color: #3e8e41}
-
-    #submit-button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
-    }
 </style>

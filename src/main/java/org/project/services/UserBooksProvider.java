@@ -19,6 +19,7 @@ public class UserBooksProvider {
             Book currentBook = order.getBook();
             OrderedBookDTO dto = new OrderedBookDTO();
 
+            dto.setBookId(currentBook.getId());
             dto.setTitle(currentBook.getTitle());
             dto.setAuthor(currentBook.getAuthor());
             dto.setOrderDate(order.getStartTime());

@@ -17,6 +17,11 @@
             <c:when test="${sessionScope.role == 'librarian'}">
                 <li><a href="front?command=show_orders">Readers' orders</a></li>
             </c:when>
+            <c:when test="${sessionScope.role == 'admin'}">
+                <li><a href="new_book.jsp">Create book</a></li>
+                <li><a href="new_librarian.jsp">Create Librarian</a></li>
+                <li><a href="front?command=show_librarians">Librarians</a></li>
+            </c:when>
         </c:choose>
         <li><a href="">Contact</a></li>
         <li style="float:right"><a href="front?command=logout">Log Out</a></li>

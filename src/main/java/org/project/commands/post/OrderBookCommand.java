@@ -14,12 +14,6 @@ import java.sql.Timestamp;
 public class OrderBookCommand implements ActionCommand {
     @Override
     public CommandResult execute(SessionRequestContent content) {
-        /*
-        1. Отримати книгу за isbn
-        2. Отримати користувача за логіном з сесії та знайти з бд
-        3. Створити та записати об'єкт замовлення
-         */
-
         String isbn = content.getParameter("isbn");
         BookDao bookFinder = new BookDao();
         Book book = bookFinder.findBook(isbn);

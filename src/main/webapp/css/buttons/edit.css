@@ -1,0 +1,19 @@
+.edit-button {
+    padding: 10px;
+    background: #1fc59b;
+    color: white;
+    border-style: outset;
+    border-color: #1fc59b;
+    font: bold 18px arial,sans-serif;
+    text-shadow: none;
+    cursor: pointer;
+    box-shadow: 0 2px #999;
+}
+
+.edit-button:hover {background-color: #3e8e41}
+
+.edit-button:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}

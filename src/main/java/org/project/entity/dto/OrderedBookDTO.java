@@ -3,11 +3,19 @@ package org.project.entity.dto;
 import java.sql.Timestamp;
 
 public class OrderedBookDTO {
+    private int bookId;
     private String title;
     private String author;
     private Timestamp orderDate;
     private Timestamp returnDate;
     private String subscription;
+
+    public int getBookId() {
+        return bookId;
+    }
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
 
     public String getTitle() {
         return title;
@@ -42,16 +50,5 @@ public class OrderedBookDTO {
     }
     public void setSubscription(String subscription) {
         this.subscription = subscription;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderedBookDTO{" +
-                "title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", orderDate=" + orderDate +
-                ", returnDate=" + returnDate +
-                ", subscription='" + subscription + '\'' +
-                '}';
     }
 }

@@ -3,13 +3,11 @@ package org.project.connection;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
-import java.util.stream.Stream;
 
 public class DataSource {
 
@@ -17,8 +15,8 @@ public class DataSource {
     private static final HikariDataSource ds;
 
     static {
-        try (FileInputStream inStream = new FileInputStream("C:\\Users\\volod\\IdeaProjects\\Library\\src\\main\\resources\\db.properties")) {//C:\Users\volod\IdeaProjects\Library\src\main\resources\
-//        try (InputStream inStream = DataSource.class.getResourceAsStream("C:\\Users\\volod\\IdeaProjects\\Library\\src\\main\\resources\\db.properties")) {
+//        try (FileInputStream inStream = new FileInputStream("/db.properties")) {//C:\Users\volod\IdeaProjects\Library\src\main\resources\db.properties
+        try (InputStream inStream = DataSource.class.getResourceAsStream("/db.properties")) {
             Properties properties = new Properties();
             properties.load(inStream);
 

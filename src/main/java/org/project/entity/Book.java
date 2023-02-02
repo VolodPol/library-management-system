@@ -30,6 +30,17 @@ public class Book {
         this.publisher = publisher;
     }
 
+    public Book(String title, String author,
+                String isbn, int copiesNumber,
+                Date dateOfPublication, Publisher publisher) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.copiesNumber = copiesNumber;
+        this.dateOfPublication = dateOfPublication;
+        this.publisher = publisher;
+    }
+
     public int getId() {
         return id;
     }

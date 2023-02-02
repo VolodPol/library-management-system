@@ -89,8 +89,25 @@ public class CheckoutDao {
         return true;
     }
 
-    public void deleteCheckout(int id) {
+    public void deleteCheckout(int bookId, Timestamp startTime, Timestamp endTime) {
+        try (Connection connection = DataSource.getConnection()) {
+            connection.setAutoCommit(false);
+            Savepoint sp = connection.setSavepoint("Savepoint");
 
+            try (PreparedStatement statement = connection.prepareStatement(DELETE_CHECKOUT)) {
+                statement.setInt(1, bookId);
+                statement.setTimestamp(2, startTime);
+                statement.setTimestamp(3, endTime);
+                statement.executeUpdate();
+                connection.commit();
+
+            } catch (SQLException exception) {
+                connection.rollback(sp);
+                exception.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     private void getOrderBy(List<Checkout> checkouts, ResultSet rs) throws SQLException {
         while (rs.next()) {

@@ -4,6 +4,10 @@
 <head>
     <title>Login</title>
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/pagination.css">
+    <link rel="stylesheet" href="css/buttons/edit.css">
+    <link rel="stylesheet" href="css/buttons/delete.css">
+    <link rel="stylesheet" href="css/buttons/submit-button.css">
 </head>
 <body>
 <c:set var="userRole" value="${sessionScope.role}" scope="page"/>
@@ -19,6 +23,11 @@
             <c:when test="${sessionScope.role == 'librarian'}">
                 <li><a href="front?command=show_orders">Readers' orders</a></li>
             </c:when>
+            <c:when test="${sessionScope.role == 'admin'}">
+                <li><a href="new_book.jsp">Create book</a></li>
+                <li><a href="new_librarian.jsp">Create Librarian</a></li>
+                <li><a href="front?command=show_librarians">Librarians</a></li>
+            </c:when>
         </c:choose>
         <li><a href="">Contact</a></li>
         <li style="float:right"><a href="front?command=logout">Log Out</a></li>
@@ -26,11 +35,39 @@
     </ul>
 </nav>
 <div class="container">
+
+    <div class="center">
+        <div id="search-box">
+            <h3>Looking for a book?</h3>
+            <form name="searchForm" action="front" method="get">
+
+                <div class="inside-search">
+                    <label for="criteria">Search by: </label>
+                    <select name="filter" id="criteria">
+                        <option value="title">Title</option>
+                        <option value="author">Author</option>
+                    </select>
+                </div>
+                <div class="inside-search">
+                    <input type="hidden" name="command" value="find_book">
+
+                    <label>
+                        <input type="text" name="text-input" placeholder="Search">
+                    </label>
+                </div>
+
+                <div class="inside-search">
+                    <input class="submit-button" type="submit" value="Find">
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
     <h1>My books</h1>
     <div class="box">
-
         <table class="content-table">
-
             <thead>
                 <tr>
                     <th>Title</th>
@@ -39,6 +76,9 @@
                     <th>Number of Copies</th>
                     <th>Date of Publication</th>
                     <c:if test="${userRole == 'user'}" var="testResult">
+                        <th>Action</th>
+                    </c:if>
+                    <c:if test="${userRole == 'admin'}">
                         <th>Action</th>
                     </c:if>
                 </tr>
@@ -62,8 +102,22 @@
                     <c:if test="${testResult}">
                         <td>
                             <form name="orderForm" action="new_order.jsp" method="get">
-                                <button type="submit" id="submit-button" name="isbn" value="${book.isbn}">
+                                <button type="submit" class="submit-button" name="isbn" value="${book.isbn}">
                                     Order
+                                </button>
+                            </form>
+                        </td>
+                    </c:if>
+                    <c:if test="${sessionScope.role == 'admin'}">
+                        <td>
+                            <form name="deleteForm" action="front?command=delete_book" method="post">
+                                <button type="submit" class="delete-button" name="isbn" value="${book.isbn}">
+                                    Delete
+                                </button>
+                            </form>
+                            <form name="editForm" action="edit_book.jsp" method="post">
+                                <button type="submit" class="edit-button" name="formerIsbn" value="${book.isbn}">
+                                    Edit
                                 </button>
                             </form>
                         </td>
@@ -72,6 +126,34 @@
             </c:forEach>
         </table>
     </div>
+
+    <div class="center">
+        <div class="pagination">
+            <%--Display previous page--%>
+            <c:if test="${requestScope.currentPage > 1}">
+                <a href="front?command=books&page=${requestScope.currentPage - 1}">Previous</a>
+            </c:if>
+
+            <%--        Pages--%>
+            <c:forEach var="i" begin="1" end="${requestScope.numOfPages}">
+                <c:choose>
+                    <c:when test="${i == requestScope.currentPage}">
+                        <a class="active">${i}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="front?command=books&page=${i}">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <%--        Display next page--%>
+            <c:if test="${requestScope.currentPage < requestScope.numOfPages}">
+                <a href="front?command=books&page=${requestScope.currentPage + 1}">Next</a>
+            </c:if>
+        </div>
+    </div>
+
+
+
 </div>
 </body>
 </html>
@@ -131,26 +213,18 @@
         font-weight: bold;
         color: #1e673a;
     }
-/*    -------------------------------------------------*/
-/*    submit button*/
-    #submit-button {
-        padding: 5px;
-        background: #0066A2;
-        color: white;
-        border-style: outset;
-        border-color: #0066A2;
-        font: bold 18px arial,sans-serif;
-        text-shadow: none;;
 
-        cursor: pointer;
-        box-shadow: 0 2px #999;
+/*    -----------------------------------------*/
+/*search styles*/
+    #search-box {
+        font-size: 1.35em;
     }
 
-    #submit-button:hover {background-color: #3e8e41}
-
-    #submit-button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
+    #search-box form {
+        display: block;
+    }
+    .inside-search {
+        padding: 10px;
+        margin-block: 10px;
     }
 </style>

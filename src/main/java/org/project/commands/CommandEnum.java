@@ -1,9 +1,7 @@
 package org.project.commands;
 
 
-import org.project.commands.get.ShowBooksCommand;
-import org.project.commands.get.ShowMyBooksCommand;
-import org.project.commands.get.ShowOrdersCommand;
+import org.project.commands.get.*;
 import org.project.commands.post.*;
 
 public enum CommandEnum {
@@ -37,6 +35,11 @@ public enum CommandEnum {
             this.command = new ShowOrdersCommand();
         }
     },
+    FIND_BOOK {
+        {
+            this.command = new FindBookCommand();
+        }
+    },
     CONFIRM {
         {
             this.command = new ConfirmOrderCommand();
@@ -45,6 +48,46 @@ public enum CommandEnum {
     MY_BOOKS {
         {
             this.command = new ShowMyBooksCommand();
+        }
+    },
+    RETURN {
+        {
+            this.command = new ReturnBookCommand();
+        }
+    },
+    CREATE_BOOK {
+        {
+            this.command = new CreateBookCommand();
+        }
+    },
+    DELETE_BOOK {
+        {
+            this.command = new DeleteBookCommand();
+        }
+    },
+    CREATE_PUBLISHER {
+        {
+            this.command = new CreatePublisherCommand();
+        }
+    },
+    EDIT_BOOK {
+        {
+            this.command = new EditBookCommand();
+        }
+    },
+    CREATE_LIBRARIAN {
+        {
+            this.command = new CreateLibrarianCommand();
+        }
+    },
+    SHOW_LIBRARIANS {
+        {
+            this.command = new ShowLibrariansCommand();
+        }
+    },
+    DELETE_LIBRARIAN {
+        {
+            this.command = new DeleteLibrarianCommand();
         }
     };
 

@@ -13,6 +13,10 @@ public class Publisher {
         this.name = name;
     }
 
+    public Publisher(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

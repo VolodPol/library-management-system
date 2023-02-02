@@ -4,6 +4,7 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/buttons/submit-button.css">
 </head>
 <body>
 <c:set var="userRole" value="${sessionScope.role}" scope="page"/>
@@ -45,7 +46,7 @@
                                 <form name="confirmOrderForm" action="front" method="post">
                                     <input type="hidden" name="command" value="confirm"/>
                                     <input type="hidden" name="bookId" value="${order.bookId}"/>
-                                    <button type="submit" id="submit-button" name="confirmOrder" value="${currentId}">
+                                    <button type="submit" class="submit-button" name="confirmOrder" value="${currentId}">
                                         Confirm
                                     </button>
                                 </form>
@@ -113,26 +114,5 @@
     .content-table tbody tr.active-row {
         font-weight: bold;
         color: #1e673a;
-    }
-    /*    submit button*/
-    #submit-button {
-        padding: 5px;
-        background: #0066A2;
-        color: white;
-        border-style: outset;
-        border-color: #0066A2;
-        font: bold 18px arial,sans-serif;
-        text-shadow: none;;
-
-        cursor: pointer;
-        box-shadow: 0 2px #999;
-    }
-
-    #submit-button:hover {background-color: #3e8e41}
-
-    #submit-button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
     }
 </style>

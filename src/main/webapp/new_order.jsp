@@ -3,12 +3,13 @@
 <head>
     <title>New order</title>
     <link rel="stylesheet" href="css/nav.css">
+    <link rel="stylesheet" href="css/buttons/submit-button.css">
 </head>
 <body>
 
 <nav id="navUl">
     <ul>
-        <li><a class="active" href="login.jsp">Sign In</a></li>
+        <li><a href="login.jsp">Sign In</a></li>
         <li><a href="front?command=books">Catalog</a></li>
         <li><a href="front?command=my_books">Ordered books</a> </li>
         <li><a href="">Contact</a></li>
@@ -48,7 +49,7 @@
         </div>
 
         <div class="input-div"  style="padding: 20px">
-            <input class="form-submit-button" type="submit" value="Place an order">
+            <input class="submit-button" type="submit" value="Place an order">
         </div>
     </form>
 </div>
@@ -71,24 +72,4 @@
     .radio-label {
         font-size: x-large;
     }
-
-    .form-submit-button {
-        padding: 10px;
-        background: #0066A2;
-        color: white;
-        border-style: outset;
-        border-color: #0066A2;
-        font: bold 18px arial,sans-serif;
-        text-shadow: none;
-        cursor: pointer;
-        box-shadow: 0 2px #999;
-    }
-
-.form-submit-button:hover {background-color: #3e8e41}
-
-.form-submit-button:active {
-    background-color: #3e8e41;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
-}
 </style>
