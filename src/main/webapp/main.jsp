@@ -22,16 +22,17 @@
             </c:when>
             <c:when test="${sessionScope.role == 'librarian'}">
                 <li><a href="front?command=show_orders">Readers' orders</a></li>
+                <li><a class="active" href="front?command=show_users">Users</a></li>
             </c:when>
             <c:when test="${sessionScope.role == 'admin'}">
                 <li><a href="new_book.jsp">Create book</a></li>
                 <li><a href="new_librarian.jsp">Create Librarian</a></li>
                 <li><a href="front?command=show_librarians">Librarians</a></li>
+                <li><a href="front?command=show_users">Users</a></li>
             </c:when>
         </c:choose>
-        <li><a href="">Contact</a></li>
         <li style="float:right"><a href="front?command=logout">Log Out</a></li>
-        <li style="float:right" ><a href="">About</a></li>
+        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
     </ul>
 </nav>
 <div class="container">
@@ -64,8 +65,32 @@
     </div>
 
 
+    <div class="center">
+        <h1>My books</h1>
+        <form action="front" method="get" style="font-size: 1.35em">
+            <input type="hidden" name="command" value="books"/>
+            <div>
+                <label for="order-by"></label>
+                <select name="orderBy" id="order-by">
+                    <option value="title">Title</option>
+                    <option value="author">Author</option>
+                    <option value="publication">Publication</option>
+                    <option value="date">Date</option>
+                </select>
+            </div>
+            <div>
+                <label for="order-type"></label>
+                <select name="orderType" id="order-type">
+                    <option value="asc">Ascending</option>
+                    <option value="desc">Descending</option>
+                </select>
+            </div>
+            <div>
+                <input class="submit-button" type="submit" value="Confirm"/>
+            </div>
+        </form>
+    </div>
 
-    <h1>My books</h1>
     <div class="box">
         <table class="content-table">
             <thead>
@@ -170,11 +195,6 @@
         text-align: center;
     }
 
-    * {
-        /* Change your font family */
-        font-family: sans-serif;
-    }
-
     .content-table {
         border-collapse: collapse;
         margin: 25px 0;
@@ -226,5 +246,9 @@
     .inside-search {
         padding: 10px;
         margin-block: 10px;
+    }
+
+    * {
+        font-family: 'Raleway', sans-serif;
     }
 </style>

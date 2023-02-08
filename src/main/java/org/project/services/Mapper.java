@@ -6,11 +6,13 @@ import org.project.entity.User;
 import org.project.entity.dto.BookDTO;
 import org.project.entity.dto.CheckoutDTO;
 import org.project.entity.dto.LibrarianDTO;
+import org.project.entity.dto.UserDTO;
 
 
 public class Mapper {
     public static BookDTO bookToDTO(Book book){
         BookDTO bookDTO = new BookDTO();
+
         bookDTO.setTitle(book.getTitle());
         bookDTO.setAuthor(book.getAuthor());
         bookDTO.setIsbn(book.getIsbn());
@@ -18,18 +20,22 @@ public class Mapper {
         bookDTO.setCopiesNumber(book.getCopiesNumber());
         bookDTO.setDateOfPublication(book.getDateOfPublication());
         bookDTO.setPublisher(book.getPublisher().getName());
+
         return bookDTO;
     }
 
     public static CheckoutDTO checkoutToDTO(Checkout checkout) {
         CheckoutDTO checkoutDTO = new CheckoutDTO();
+
         checkoutDTO.setId(checkout.getId());
         checkoutDTO.setStartTime(checkout.getStartTime());
         checkoutDTO.setEndTime(checkout.getEndTime());
         checkoutDTO.setUsername(checkout.getUser().getLogin());
         checkoutDTO.setBookTitle(checkout.getBook().getTitle());
-        checkoutDTO.setOrderStatus(checkout.getStatus());
+        checkoutDTO.setOrderStatus(checkout.getOrderStatus());
+        checkoutDTO.setType(checkout.getType().getValue());
         checkoutDTO.setBookId(checkout.getBook().getId());
+
         return checkoutDTO;
     }
 
@@ -44,5 +50,23 @@ public class Mapper {
         librarian.setAge(user.getAge());
 
         return librarian;
+    }
+
+    public static UserDTO userToUserDTO(User user) {
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setId(user.getId());
+        userDTO.setLogin(user.getLogin());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setFullName(user.getFirstName() + " " + user.getSurname());
+        userDTO.setPhone(user.getPhoneNumber());
+        userDTO.setFinedStatus(
+                user.getFinedStatus() == 1? "fined":"okay"
+        );
+        userDTO.setStatus(user.isStatus() == 0 ? "active" : "blocked");
+        userDTO.setRole(user.getRole().getRoleValue());
+        userDTO.setSubscription(user.getSubscription().getValue());
+
+        return userDTO;
     }
 }

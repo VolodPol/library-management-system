@@ -12,9 +12,8 @@
         <ul>
             <li><a href="front?command=books">Catalog</a></li>
             <li><a class="active" href="front?command=show_orders">Readers' orders</a></li>
-            <li><a href="">Contact</a></li>
             <li style="float:right"><a href="front?command=logout">Log Out</a></li>
-            <li style="float:right" ><a href="">About</a></li>
+            <li style="float:right" ><a href="front?command=profile">Profile</a></li>
         </ul>
     </nav>
     <div class="container">
@@ -114,5 +113,9 @@
     .content-table tbody tr.active-row {
         font-weight: bold;
         color: #1e673a;
+    }
+
+    * {
+        font-family: 'Raleway', sans-serif;
     }
 </style>

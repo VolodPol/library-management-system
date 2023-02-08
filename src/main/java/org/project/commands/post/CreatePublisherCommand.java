@@ -5,10 +5,11 @@ import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 import org.project.dao.PublisherDao;
 import org.project.entity.Publisher;
+import org.project.exceptions.DaoException;
 
 public class CreatePublisherCommand implements ActionCommand {
     @Override
-    public CommandResult execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) throws DaoException {
         String publisherName = content.getParameter("publication");
 
         PublisherDao publisherDao = new PublisherDao();
@@ -17,11 +18,7 @@ public class CreatePublisherCommand implements ActionCommand {
             return new CommandResult("new_publisher.jsp", false );
         }
 
-        publisherDao.insertPublisher(
-                new Publisher(
-                        publisherName
-                )
-        );
+        publisherDao.insertPublisher(new Publisher(publisherName));
         return new CommandResult("new_book.jsp", true);
     }
 }

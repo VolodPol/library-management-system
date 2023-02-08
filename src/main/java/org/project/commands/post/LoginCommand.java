@@ -3,28 +3,33 @@ package org.project.commands.post;
 import org.project.commands.ActionCommand;
 import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
-import org.project.dao.UserDaoImpl;
+import org.project.dao.UserDao;
 import org.project.entity.User;
+import org.project.exceptions.DaoException;
 import org.project.services.LogInChecker;
 import org.project.services.PasswordEncryptor;
 
 public class LoginCommand implements ActionCommand {
     @Override
-    public CommandResult execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) throws DaoException {
         String page;
 
         String login = content.getParameter("login");
         String password = content.getParameter("password");
 
         if (LogInChecker.doesMatch(login, PasswordEncryptor.encrypt(password))) {
-            User user = new UserDaoImpl().findUser(login);
-            String userRole = user.getRole().getRoleValue();
+            User user = new UserDao().findUser(login);
 
+            if (user.isStatus() == 1) {
+                content.setRequestAttribute("errorMessage",
+                        "Your account is blocked. For further info contact the administration");
+                return new CommandResult("login.jsp", false);
+            }
+            String userRole = user.getRole().getRoleValue();
             content.setSessionAttribute("role", userRole);
             content.setSessionAttribute("name", user.getFirstName() + " " + user.getSurname());
             content.setSessionAttribute("login", user.getLogin());
-            content.setSessionAttribute("subscription", user.getSubscription().getValue());
-
+            content.setSessionAttribute("subscription", user.getSubscription().getValue());//logic
             page = "index.jsp";
         } else {
             page = "login.jsp";

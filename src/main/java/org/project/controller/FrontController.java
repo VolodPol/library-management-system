@@ -9,6 +9,7 @@ import org.project.commands.ActionCommand;
 import org.project.commands.ActionFactory;
 import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
+import org.project.exceptions.DaoException;
 
 import java.io.IOException;
 
@@ -29,7 +30,12 @@ public class FrontController extends HttpServlet {
 
         ActionCommand command = client.defineCommand(req);
         SessionRequestContent content = new SessionRequestContent(req);
-        CommandResult result = command.execute(content);
+        CommandResult result = new CommandResult();//
+        try {
+            result = command.execute(content);
+        } catch (DaoException e) {
+            e.printStackTrace();
+        }
         content.insertAttributes(req);
 
         String page = result.getDestinationPage();

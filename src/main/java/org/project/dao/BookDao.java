@@ -3,6 +3,11 @@ package org.project.dao;
 import org.project.connection.DataSource;
 import org.project.entity.Book;
 import org.project.entity.Publisher;
+import org.project.entity.sorting.OrderType;
+import org.project.entity.sorting.Sorting;
+import org.project.exceptions.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,39 +16,20 @@ import java.util.List;
 import static org.project.dao.Constants.*;
 
 public class BookDao {
-    public List<Book> getAllBooks() {
-        List<Book> books = new ArrayList<>();
-        try (Connection connection = DataSource.getConnection()) {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery(GET_ALL_BOOKS);
-            while (rs.next()) {
-                Book currentBook;
-                int id = rs.getInt(1);
-                String title = rs.getString(2);
-                String author = rs.getString(3);
-                String isbn = rs.getString(4);
-                int copiesNumber = rs.getInt(5);
-                Date dateOfPublication = rs.getDate(6);
+    private final static Logger log = LoggerFactory.getLogger(BookDao.class);
 
-                Publisher currentPublisher = new Publisher();
-                currentPublisher.setId(rs.getInt(7));
-                currentPublisher.setName(rs.getString(8));
-
-                currentBook = new Book(id, title, author, isbn, copiesNumber, dateOfPublication, currentPublisher);
-                books.add(currentBook);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return books;
-    }
     private int numOfRecs;
-    public List<Book> getAllBooks(int offSet, int total) {
+    public List<Book> getAll(int offSet, int total, Sorting sorting, OrderType type) throws DaoException {
         List<Book> books = new ArrayList<>();
         try (Connection connection = DataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(GET_ALL_BOOKS_LIMIT);
-            ps.setInt(1, offSet);
-            ps.setInt(2, total);
+            StringBuilder query = new StringBuilder(GET_ALL_BOOKS);
+            if (!type.equals(OrderType.DEFAULT))
+                query.append(String.format(" ORDER BY %s ", type.getValue()));
+            if (sorting.equals(Sorting.DESC))
+                query.append(sorting.getValue());
+            query.append(String.format(" LIMIT %d, %d", offSet, total));
+
+            PreparedStatement ps = connection.prepareStatement(query.toString());
             ResultSet rs = ps.executeQuery();
 
             Book currentBook;
@@ -64,19 +50,21 @@ public class BookDao {
             }
             rs.close();
             ResultSet rs1 = ps.executeQuery("SELECT FOUND_ROWS()");
-            if (rs1.next()) this.numOfRecs = rs1.getInt(1);
+            if (rs1.next()){
+                this.numOfRecs = rs1.getInt(1);
+            }
             rs1.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + e.getMessage());
+            throw new DaoException(e.getMessage(), e.getCause());
         }
         return books;
     }
-
     public int getNumOfRecs() {
         return this.numOfRecs;
     }
 
-    public Book findBook(String isbn) {
+    public Book findBook(String isbn) throws DaoException {
         Book book = new Book();
         try (Connection con = DataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ISBN);
@@ -84,12 +72,13 @@ public class BookDao {
             extractBook(book, ps);
 
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + exception.getMessage());
+            throw new DaoException(exception.getMessage(), exception.getCause());
         }
         return book;
     }
     
-    public Book findBook(int id) {
+    public Book findBook(int id) throws DaoException {
         Book book = new Book();
         try (Connection con = DataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ID);
@@ -97,12 +86,13 @@ public class BookDao {
             extractBook(book, ps);
 
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + exception.getMessage());
+            throw new DaoException(exception.getMessage(), exception.getCause());
         }
         return book;
     }
 
-    public List<Book> searchForBook(String category, String searchedAs){
+    public List<Book> searchForBook(String category, String searchedAs) throws DaoException {
         List<Book> foundBooks = new ArrayList<>();
         try (Connection connection = DataSource.getConnection()) {
             PreparedStatement statement;
@@ -132,14 +122,15 @@ public class BookDao {
                 foundBooks.add(book);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + e.getMessage());
+            throw new DaoException(e.getMessage(), e.getCause());
         }
         return foundBooks;
     }
 
 
 
-    public void decreaseCopiesNum (int bookId) {
+    public void decreaseCopiesNum (int bookId) throws DaoException {
         try (Connection con = DataSource.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("SavePoint");
@@ -154,11 +145,12 @@ public class BookDao {
                 exception.printStackTrace();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + e.getMessage());
+            throw new DaoException(e.getMessage(), e.getCause());
         }
     }
 
-    public void updateBook (Book newBook, String isbn) {
+    public void updateBook (Book newBook, String isbn) throws DaoException {
         try (Connection connection = DataSource.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint savepoint = connection.setSavepoint("Save");
@@ -174,11 +166,12 @@ public class BookDao {
                 exception.printStackTrace();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + e.getMessage());
+            throw new DaoException(e.getMessage(), e.getCause());
         }
     }
 
-    public boolean insertBook(Book book) {
+    public boolean insertBook(Book book) throws DaoException {
         try (Connection con = DataSource.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("SavePoint");
@@ -195,12 +188,13 @@ public class BookDao {
                 return false;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + e.getMessage());
+            throw new DaoException(e.getMessage(), e.getCause());
         }
         return true;
     }
 
-    public boolean deleteBook(String isbn) {
+    public boolean deleteBook(String isbn) throws DaoException {
         try(Connection con = DataSource.getConnection()) {
             con.setAutoCommit(false);
             Savepoint savepoint = con.setSavepoint("Save");
@@ -216,12 +210,13 @@ public class BookDao {
                 return false;
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + exception.getMessage());
+            throw new DaoException(exception.getMessage(), exception.getCause());
         }
         return true;
     }
 
-    public boolean isIsbnPresent(String isbn) {
+    public boolean isIsbnPresent(String isbn) throws DaoException {
         try (Connection con = DataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(ISBN_PRESENT);
             ps.setString(1, isbn);
@@ -231,7 +226,8 @@ public class BookDao {
                 return false;
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            log.error("dao exception occurred in book dao class: " + exception.getMessage());
+            throw new DaoException(exception.getMessage(), exception.getCause());
         }
         return true;
     }

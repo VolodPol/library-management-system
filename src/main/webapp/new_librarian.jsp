@@ -14,8 +14,8 @@
         <li><a href="front?command=books">Catalog</a></li>
         <li><a class="active" href="new_librarian.jsp">Create Librarian</a></li>
         <li><a href="front?command=show_librarians">Librarians</a></li>
-        <li><a href="">Contact</a></li>
-        <li style="float:right" ><a href="">About</a></li>
+        <li><a href="front?command=show_users">Users</a></li>
+        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
     </ul>
 </nav>
 

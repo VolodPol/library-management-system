@@ -5,14 +5,23 @@ import java.util.Objects;
 
 public class Checkout {
     private int id;
-    private Timestamp startTime;
-    private Timestamp endTime;
+    private Timestamp startTime;//
+    private Timestamp endTime;//
     private byte isReturned;
     private OrderStatus orderStatus;
-    private User user;
-    private Book book;
+    private Type type;//
+    private User user;//
+    private Book book;//
 
     public Checkout(){}
+
+    public Checkout(Timestamp startTime, Timestamp endTime, Type type, User user, Book book) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.type = type;
+        this.user = user;
+        this.book = book;
+    }
 
     public int getId() {
         return id;
@@ -35,18 +44,25 @@ public class Checkout {
         this.endTime = endTime;
     }
 
-    public byte isReturned() {
+    public byte getIsReturned() {
         return isReturned;
     }
-    public void setReturned(byte returned) {
-        isReturned = returned;
+    public void setIsReturned(byte isReturned) {
+        this.isReturned = isReturned;
     }
 
-    public OrderStatus getStatus() {
+    public OrderStatus getOrderStatus() {
         return orderStatus;
     }
-    public void setStatus(OrderStatus status) {
-        this.orderStatus = status;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public Type getType() {
+        return type;
+    }
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public User getUser() {

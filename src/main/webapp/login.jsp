@@ -13,8 +13,7 @@
     <ul>
         <li><a class="active" href="login.jsp">Sign In</a></li>
         <li><a href="front?command=books">Catalog</a></li>
-        <li><a href="">Contact</a></li>
-        <li style="float:right" ><a href="">About</a></li>
+        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
     </ul>
 </nav>
 
@@ -40,6 +39,15 @@
                 </label>
             </div>
 
+            <%--@elvariable id="errorMessage" type="java.lang.String"--%>
+            <c:if test="${not empty errorMessage}">
+                <div style="margin-bottom: 10px">
+                    <p>${errorMessage}</p>
+                </div>
+                <div>
+                    <a class="fa-link" style="" href="#">Contact</a>
+                </div>
+            </c:if>
 
             <input type="submit" value="Sing In">
         </form>

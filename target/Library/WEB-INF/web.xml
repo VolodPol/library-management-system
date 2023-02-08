@@ -12,4 +12,12 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+
+<!--  <jsp-config>-->
+<!--    <taglib>-->
+<!--      <taglib-uri>custom_tag</taglib-uri>-->
+<!--      <taglib-location>/WEB-INF/tag_tld/custom_tag.tld</taglib-location>-->
+<!--    </taglib>-->
+<!--  </jsp-config>
+version of web.xml is not compatible-->
 </web-app>

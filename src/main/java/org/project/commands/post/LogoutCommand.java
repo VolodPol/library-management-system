@@ -14,8 +14,6 @@ public class LogoutCommand implements ActionCommand {
         content.removeSessionAttribute("name");
         content.removeSessionAttribute("subscription");
 
-//        session.invalidate();
-
         return new CommandResult(page, true);
     }
 }

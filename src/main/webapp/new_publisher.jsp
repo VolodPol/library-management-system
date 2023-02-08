@@ -15,9 +15,9 @@
         <li><a href="new_book.jsp">Create book</a></li>
         <li><a href="new_librarian.jsp">Create Librarian</a></li>
         <li><a href="front?command=show_librarians">Librarians</a></li>
-        <li><a href="">Contact</a></li>
+        <li><a href="front?command=show_users">Users</a></li>
         <li style="float:right"><a href="front?command=logout">Log Out</a></li>
-        <li style="float:right" ><a href="">About</a></li>
+        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
     </ul>
 </nav>
 
@@ -60,5 +60,9 @@
 
     .input {
         font-size: x-large;
+    }
+
+    * {
+        font-family: 'Raleway', sans-serif;
     }
 </style>

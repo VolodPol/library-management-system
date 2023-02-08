@@ -1,4 +1,4 @@
-package org.project.services;
+package org.project.utils;
 
 import java.sql.Timestamp;
 

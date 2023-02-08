@@ -4,14 +4,15 @@ import org.project.commands.ActionCommand;
 import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 import org.project.entity.dto.OrderedBookDTO;
-import org.project.services.FineChecker;
+import org.project.exceptions.DaoException;
+import org.project.utils.FineChecker;
 import org.project.services.UserBooksProvider;
 
 import java.util.List;
 
 public class ShowMyBooksCommand implements ActionCommand {
     @Override
-    public CommandResult execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) throws DaoException {
         String userSub = (String) content.getSessionAttribute("role");
         String login = (String) content.getSessionAttribute("login");
 

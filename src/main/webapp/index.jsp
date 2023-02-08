@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tag_tld/custom_tag.tld"%>
 <html>
 <head>
     <title>ELibrary</title>
@@ -16,28 +17,32 @@
             </c:when>
             <c:when test="${sessionScope.role == 'librarian'}">
                 <li><a href="front?command=show_orders">Readers' orders</a></li>
+                <li><a href="front?command=show_users">Users</a></li>
             </c:when>
             <c:when test="${sessionScope.role == 'admin'}">
                 <li><a href="new_book.jsp">Create book</a></li>
                 <li><a href="new_librarian.jsp">Create Librarian</a></li>
                 <li><a href="front?command=show_librarians">Librarians</a></li>
+                <li><a href="front?command=show_users">Users</a></li>
             </c:when>
         </c:choose>
-        <li><a href="">Contact</a></li>
         <li style="float:right"><a href="front?command=logout">Log Out</a></li>
-        <li style="float:right" ><a href="">About</a></li>
+        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
     </ul>
 </nav>
 <div class="main-div">
     <div class="welcome-box">
-        <c:choose>
-            <c:when test="${empty sessionScope.role}">
-                <h2>Welcome to ELibrary!</h2>
-            </c:when>
-            <c:otherwise>
-                <h2>Welcome back, ${sessionScope.role} ${sessionScope.name}!</h2>
-            </c:otherwise>
-        </c:choose>
+<%--        <c:choose>--%>
+<%--            <c:when test="${empty sessionScope.role}">--%>
+<%--                <h2>Welcome to ELibrary!</h2>--%>
+<%--            </c:when>--%>
+<%--            <c:otherwise>--%>
+<%--                <h2>Welcome back, ${sessionScope.role} ${sessionScope.name}!</h2>--%>
+<%--            </c:otherwise>--%>
+<%--        </c:choose>--%>
+
+        <ctg:hi role="${sessionScope.role}" login="${sessionScope.name}"/>
+
     </div>
 </div>
 
@@ -67,6 +72,8 @@
         width: 80%;
         padding: 20px;
         text-align: center;
-
+    }
+    * {
+        font-family: 'Raleway', sans-serif;
     }
 </style>

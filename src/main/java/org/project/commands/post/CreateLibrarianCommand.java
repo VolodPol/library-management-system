@@ -4,11 +4,12 @@ import org.project.commands.ActionCommand;
 import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 import org.project.entity.Role;
+import org.project.exceptions.DaoException;
 import org.project.services.UserProvider;
 
 public class CreateLibrarianCommand implements ActionCommand {
     @Override
-    public CommandResult execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) throws DaoException {
         boolean action = UserProvider.createUser(content, Role.LIBRARIAN);
         if (action) {
             return new CommandResult("front?command=show_librarians", true);

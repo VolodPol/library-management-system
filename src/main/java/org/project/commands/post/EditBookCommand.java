@@ -4,21 +4,25 @@ import org.project.commands.ActionCommand;
 import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
 import org.project.dao.BookDao;
-import org.project.dao.PublisherDao;
 import org.project.entity.Book;
-import org.project.entity.Publisher;
+import org.project.exceptions.DaoException;
 
 import java.sql.Date;
 
+import static org.project.services.UserBooksProvider.setPublisher;
+import static org.project.utils.UtilProvider.isNotEmpty;
+
 public class EditBookCommand implements ActionCommand {
     @Override
-    public CommandResult execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) throws DaoException {
         BookDao bookDao = new BookDao();
         String formerIsbn = content.getParameter("formerIsbn");
         Book bookToEdit = bookDao.findBook(formerIsbn);
 
+
         String isbn = content.getParameter("isbn");
-        if (isNotEmpty(isbn) && (formerIsbn.equals(isbn) || !bookDao.isIsbnPresent(isbn))) {// Метод bookDao, що перевіряє чи існує isbn
+        boolean isPresent = bookDao.isIsbnPresent(isbn);
+        if (isNotEmpty(isbn) && (formerIsbn.equals(isbn) || !isPresent)) {// Метод bookDao, що перевіряє чи існує isbn
             bookToEdit.setIsbn(isbn);
         }
         String title = content.getParameter("title");
@@ -43,18 +47,5 @@ public class EditBookCommand implements ActionCommand {
         }
         bookDao.updateBook(bookToEdit, formerIsbn);
         return new CommandResult("front?command=books", true);
-    }
-
-    private boolean isNotEmpty(String object) {
-        return object != null && !object.isEmpty();
-    }
-
-    private void setPublisher (String name, Book book) {
-        PublisherDao publisherDao = new PublisherDao();
-        if (!publisherDao.isPresent(name)) {   //якщо паблішера не існує
-            publisherDao.insertPublisher(new Publisher(name)); //створюємо в бд нового
-            Publisher publisher = publisherDao.findPublisher(name);    //видобуваємо його
-            book.setPublisher(publisher); //присвоюємо книзі цього паблішера
-        }
     }
 }

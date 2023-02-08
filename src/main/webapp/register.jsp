@@ -12,8 +12,7 @@
     <ul>
         <li><a class="active" href="login.jsp">Sign In</a></li>
         <li><a href="front?command=books">Catalog</a></li>
-        <li><a href="">Contact</a></li>
-        <li style="float:right" ><a href="">About</a></li>
+        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
     </ul>
 </nav>
 

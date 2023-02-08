@@ -2,15 +2,20 @@ package org.project.dao;
 
 import org.project.connection.DataSource;
 import org.project.entity.Publisher;
+import org.project.exceptions.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.*;
 
 public class PublisherDao {
+    private final static Logger log = LoggerFactory.getLogger(PublisherDao.class);
+
     private final static String QUERY = "SELECT * FROM publisher WHERE name = ?";
     private final static String INSERT = "INSERT INTO publisher (name) VALUE (?)";
 
 
-    public boolean isPresent(String name) {
+    public boolean isPresent(String name) throws DaoException {
         try (Connection con = DataSource.getConnection()) {
             PreparedStatement statement = con.prepareStatement(QUERY);
             statement.setString(1, name);
@@ -20,12 +25,13 @@ public class PublisherDao {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("DaoException occurred in " + PublisherDao.class);
+            throw new DaoException(e.getMessage(), e.getCause());
         }
         return false;
     }
 
-    public Publisher findPublisher(String name) {
+    public Publisher findPublisher(String name) throws DaoException {
         Publisher publisher = new Publisher();
         try (Connection con = DataSource.getConnection()) {
             PreparedStatement ps = con.prepareStatement(QUERY);
@@ -38,12 +44,13 @@ public class PublisherDao {
             }
 
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            log.error("DaoException occurred in " + PublisherDao.class);
+            throw new DaoException(exception.getMessage(), exception.getCause());
         }
         return publisher;
     }
 
-    public void insertPublisher(Publisher publisher) {
+    public void insertPublisher(Publisher publisher) throws DaoException {
         try (Connection con = DataSource.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("Save");
@@ -58,9 +65,8 @@ public class PublisherDao {
                 e.printStackTrace();
             }
         } catch (SQLException exception) {
-            exception.printStackTrace();
+            log.error("DaoException occurred in " + PublisherDao.class);
+            throw new DaoException(exception.getMessage(), exception.getCause());
         }
     }
-
-
 }

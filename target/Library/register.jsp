@@ -2,19 +2,17 @@
 <html>
 <head>
     <title>Login</title>
-<%--    <meta charset="UTF-8">--%>
     <meta name="viewport" content="width=device-width">
     <link rel="stylesheet" href="css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/nav.css"><%-- navigation bar stylesheet --%>
+    <link rel="stylesheet" href="css/nav.css">
 </head>
 <body>
 <nav id="navUl">
     <ul>
         <li><a class="active" href="login.jsp">Sign In</a></li>
         <li><a href="front?command=books">Catalog</a></li>
-        <li><a href="">Contact</a></li>
-        <li style="float:right" ><a href="">About</a></li>
+        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
     </ul>
 </nav>
 

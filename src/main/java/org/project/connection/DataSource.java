@@ -15,7 +15,6 @@ public class DataSource {
     private static final HikariDataSource ds;
 
     static {
-//        try (FileInputStream inStream = new FileInputStream("/db.properties")) {//C:\Users\volod\IdeaProjects\Library\src\main\resources\db.properties
         try (InputStream inStream = DataSource.class.getResourceAsStream("/db.properties")) {
             Properties properties = new Properties();
             properties.load(inStream);

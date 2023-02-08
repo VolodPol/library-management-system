@@ -93,7 +93,7 @@ public class User {
         this.age = createTime;
     }
 
-    public byte isFinedStatus() {
+    public byte getFinedStatus() {
         return finedStatus;
     }
     public void setFinedStatus(byte finedStatus) {

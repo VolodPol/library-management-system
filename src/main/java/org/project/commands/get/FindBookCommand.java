@@ -6,21 +6,22 @@ import org.project.commands.SessionRequestContent;
 import org.project.dao.BookDao;
 import org.project.entity.Book;
 import org.project.entity.dto.BookDTO;
+import org.project.exceptions.DaoException;
 import org.project.services.Mapper;
 
 import java.util.List;
 
 public class FindBookCommand implements ActionCommand {
     @Override
-    public CommandResult execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) throws DaoException {
         String criteria = content.getParameter("filter");
         String textInput = content.getParameter("text-input");
 
         BookDao finder = new BookDao();
-        List<Book> books = finder.searchForBook(criteria, textInput);
-        List<BookDTO> dtoList;
+        List<Book> books;
+        books = finder.searchForBook(criteria, textInput);
 
-        dtoList = books.stream()
+        List<BookDTO> dtoList = books.stream()
                 .map(Mapper::bookToDTO)
                 .toList();
 

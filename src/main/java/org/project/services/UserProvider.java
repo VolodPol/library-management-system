@@ -1,16 +1,18 @@
 package org.project.services;
 
 import org.project.commands.SessionRequestContent;
-import org.project.dao.UserDaoImpl;
+import org.project.dao.UserDao;
 import org.project.entity.Role;
 import org.project.entity.Subscription;
 import org.project.entity.User;
-import org.project.entity.dto.LibrarianDTO;
+import org.project.entity.dto.IUserDTO;
+import org.project.exceptions.DaoException;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 public class UserProvider {
-    public static boolean createUser(SessionRequestContent content, Role role) {
+    public static boolean createUser(SessionRequestContent content, Role role) throws DaoException {
         String username = content.getParameter("login");
         String email = content.getParameter("email");
         String password = content.getParameter("password");
@@ -35,7 +37,7 @@ public class UserProvider {
                 role,
                 Subscription.BASIC
         );
-        UserDaoImpl userCreator = new UserDaoImpl();
+        UserDao userCreator = new UserDao();
         if (role.equals(Role.USER)) {
             userCreator.insertUser(currentUser);
         } else if (role.equals(Role.LIBRARIAN)) {
@@ -43,11 +45,22 @@ public class UserProvider {
         }
         return true;
     }
+    public static List<IUserDTO> filterUsers(List<User> users, Role role) {
+        List<IUserDTO> resultList;
+        Stream<User> userStream = users
+                .stream()
+                .filter(user -> user.getRole().equals(role));
 
-    public static List<LibrarianDTO> filterLibrarians(List<User> users) {
-        return users.stream()
-                .filter(user -> user.getRole().equals(Role.LIBRARIAN))
-                .map(Mapper::userToLibrarianDTO)
-                .toList();
+        if (role.equals(Role.USER)) {
+            resultList = userStream
+                    .map(user -> (IUserDTO) Mapper.userToUserDTO(user))
+                    .toList();
+        } else {
+            resultList = userStream
+                    .map(user -> (IUserDTO) Mapper.userToLibrarianDTO(user))
+                    .toList();
+        }
+        return resultList;
     }
+
 }

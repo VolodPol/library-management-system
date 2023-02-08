@@ -3,16 +3,18 @@ package org.project.commands.get;
 import org.project.commands.ActionCommand;
 import org.project.commands.CommandResult;
 import org.project.commands.SessionRequestContent;
-import org.project.dao.UserDaoImpl;
+import org.project.dao.UserDao;
+import org.project.entity.Role;
 import org.project.entity.User;
-import org.project.entity.dto.LibrarianDTO;
+import org.project.entity.dto.IUserDTO;
+import org.project.exceptions.DaoException;
 import org.project.services.UserProvider;
 
 import java.util.List;
 
 public class ShowLibrariansCommand implements ActionCommand {
     @Override
-    public CommandResult execute(SessionRequestContent content) {
+    public CommandResult execute(SessionRequestContent content) throws DaoException {
         int page = 1;
         final int recsPerPage = 5;
 
@@ -20,13 +22,15 @@ public class ShowLibrariansCommand implements ActionCommand {
         if (pageParameter != null)
             page = Integer.parseInt(pageParameter);
 
-        List<LibrarianDTO> librarians;
-        UserDaoImpl userDao = new UserDaoImpl();
+        List<IUserDTO> librarians;
+        UserDao userDao = new UserDao();
 
-        List<User> users = userDao.getAll((page - 1) * recsPerPage, recsPerPage);
+        List<User> users;
+        users = userDao.getAll((page - 1) * recsPerPage, recsPerPage);
+
         int numOfRecs = userDao.getNumOfRecs();
         int numOfPages = (int) Math.ceil((double) numOfRecs / recsPerPage);
-        librarians = UserProvider.filterLibrarians(users);
+        librarians = UserProvider.filterUsers(users, Role.LIBRARIAN);
 
         content.setRequestAttribute("librariansList", librarians);
         content.setRequestAttribute("currentPage", page);

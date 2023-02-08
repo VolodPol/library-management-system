@@ -1,6 +1,6 @@
 package org.project.entity.dto;
 
-public class LibrarianDTO {
+public class LibrarianDTO implements IUserDTO{
     private int id;
     private String login;
     private String fullName;
