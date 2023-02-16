@@ -8,6 +8,7 @@ public class OrderedBookDTO {
     private String author;
     private Timestamp orderDate;
     private Timestamp returnDate;
+    private String finedStatus;
     private String subscription;
 
     public int getBookId() {
@@ -43,6 +44,13 @@ public class OrderedBookDTO {
     }
     public void setReturnDate(Timestamp returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public String getFinedStatus() {
+        return finedStatus;
+    }
+    public void setFinedStatus(String finedStatus) {
+        this.finedStatus = finedStatus;
     }
 
     public String getSubscription() {

@@ -12,6 +12,7 @@ public class CheckoutDTO {
     private String bookTitle;
     private OrderStatus orderStatus;
     private String type;
+    private String finedStatus;
     private int bookId;
     public Timestamp getStartTime() {
         return startTime;
@@ -58,6 +59,13 @@ public class CheckoutDTO {
     }
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getFinedStatus() {
+        return finedStatus;
+    }
+    public void setFinedStatus(String finedStatus) {
+        this.finedStatus = finedStatus;
     }
 
     public int getBookId() {

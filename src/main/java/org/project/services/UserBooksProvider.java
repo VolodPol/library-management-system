@@ -7,6 +7,7 @@ import org.project.entity.Checkout;
 import org.project.entity.Publisher;
 import org.project.entity.dto.OrderedBookDTO;
 import org.project.exceptions.DaoException;
+import org.project.utils.UtilProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class UserBooksProvider {
             dto.setAuthor(currentBook.getAuthor());
             dto.setOrderDate(order.getStartTime());
             dto.setReturnDate(order.getEndTime());
+            dto.setFinedStatus(UtilProvider.isFined(order.getFinedStatus()));
             dto.setSubscription(subscription);
 
             userBooks.add(dto);

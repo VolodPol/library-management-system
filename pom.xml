@@ -10,6 +10,10 @@
   <name>Library Maven Webapp</name>
   <url>https://maven.apache.org</url>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -24,6 +28,8 @@
           <artifactId>mysql-connector-java</artifactId>
           <version>8.0.31</version>
       </dependency>
+
+<!--     CHANGE TO THIS! -> com.mysql:mysql-connector-j:jar:8.0.31  -->
 
 <!--      https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
 <!--      <dependency>-->

@@ -2,15 +2,71 @@ package org.project.filters;
 
 public enum PageNavigation {
     UNREGISTERED(
-            new String[]{"login.jsp", "register.jsp", "index.jsp", "main.jsp"}
+            new String[]{
+                    "/index.jsp",
+                    "login",
+                    "/login.jsp",
+                    "logout",
+                    "/register.jsp",
+                    "books"
+            }
     ),
     USER(
-            new String[]{"login.jsp", "register.jsp", "index.jsp", "main.jsp", "new_order.jsp", "profile.jsp", "user_books.jsp"}
+            new String[]{
+                    "/index.jsp",
+                    "login",
+                    "/login.jsp",
+                    "logout",
+                    "/register.jsp",
+                    "books",
+                    "/new_order.jsp",
+                    "order",
+                    "return",
+                    "profile",
+                    "my_books",
+                    "find_book"
+            }
     ),
     ADMIN(
-            new String[]{"login.jsp", "register.jsp", "index.jsp", "main.jsp", "edit_book.jsp", "librarians.jsp", "new_book.jsp", "new_librarian.jsp", "new_publisher.jsp", "profile.jsp", "users.jsp"}
+            new String[]{
+                    "/index.jsp",
+                    "login",
+                    "/login.jsp",
+                    "logout",
+                    "/register.jsp",
+                    "books",
+                    "/edit_book.jsp",
+                    "edit_book",
+                    "show_librarians",
+                    "/new_book.jsp",
+                    "create_book",
+                    "delete_book",
+                    "delete_librarian",
+                    "/new_librarian.jsp",
+                    "create_librarian",
+                    "/new_publisher.jsp",
+                    "create_publisher",
+                    "profile",
+                    "show_users",
+                    "find_book",
+                    "block_user"
+            }
     ),
-    LIBRARIAN(new String[]{"login.jsp", "register.jsp", "index.jsp", "main.jsp", "order_list.jsp"});
+    LIBRARIAN(
+            new String[]{
+                "/index.jsp",
+                "login",
+                "/login.jsp",
+                "logout",
+                "/register.jsp",
+                "books",
+                "show_orders",
+                "find_book",
+                "profile",
+                "confirm",
+                "show_users"
+            }
+    );
 
     private final String[] routes;
     PageNavigation (String[] value) {

@@ -100,11 +100,6 @@ public enum CommandEnum {
             this.command = new BlockUserCommand();
         }
     },
-    UNBLOCK_USER {
-        {
-            this.command = new UnblockUserCommand();
-        }
-    },
     PROFILE {
         {
             this.command = new UserProfileCommand();

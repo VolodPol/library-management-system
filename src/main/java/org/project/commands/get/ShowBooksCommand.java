@@ -1,8 +1,9 @@
 package org.project.commands.get;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.project.commands.ActionCommand;
 import org.project.commands.CommandResult;
-import org.project.commands.SessionRequestContent;
+import org.project.commands.RequestContent;
 import org.project.dao.BookDao;
 import org.project.entity.Book;
 import org.project.entity.dto.BookDTO;
@@ -11,6 +12,9 @@ import org.project.entity.sorting.Sorting;
 import org.project.exceptions.DaoException;
 import org.project.services.Mapper;
 
+import static org.project.services.resources.FilePath.*;
+import static org.project.utils.PagePathConfigurator.getPath;
+
 import java.util.List;
 
 public class ShowBooksCommand implements ActionCommand {
@@ -18,7 +22,7 @@ public class ShowBooksCommand implements ActionCommand {
     private OrderType type = OrderType.DEFAULT;
 
     @Override
-    public CommandResult execute(SessionRequestContent content) throws DaoException {
+    public CommandResult execute(RequestContent content, HttpServletResponse response) throws DaoException {
         int page = 1;
         final int recsPerPage = 5;
 
@@ -50,6 +54,6 @@ public class ShowBooksCommand implements ActionCommand {
         content.setRequestAttribute("currentPage", page);
         content.setRequestAttribute("numOfPages", numOfPages);
 
-        return new CommandResult("main.jsp", false);
+        return new CommandResult(getPath(MAIN), false);
     }
 }

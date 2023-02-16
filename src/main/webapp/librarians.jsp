@@ -1,52 +1,56 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tag_tld/custom_tag.tld"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="Localization" var="bundle"/>
+
+<fmt:message bundle="${bundle}" key="page.librarians.title" var="title"/>
+<fmt:message bundle="${bundle}" key="page.librarians.h1_librarians" var="h1_librarians"/>
+<fmt:message bundle="${bundle}" key="page.librarians.book_table.login" var="login"/>
+<fmt:message bundle="${bundle}" key="page.librarians.book_table.full_name" var="fullname"/>
+<fmt:message bundle="${bundle}" key="page.librarians.book_table.email" var="email"/>
+<fmt:message bundle="${bundle}" key="page.librarians.book_table.phone" var="phone"/>
+<fmt:message bundle="${bundle}" key="page.librarians.book_table.age" var="age"/>
+<fmt:message bundle="${bundle}" key="page.librarians.book_table.action" var="action"/>
 <html>
 <head>
-    <title>Librarians</title>
-    <link rel="stylesheet" href="css/nav.css">
-    <link rel="stylesheet" href="css/pagination.css">
-    <link rel="stylesheet" href="css/buttons/edit.css">
-    <link rel="stylesheet" href="css/buttons/delete.css">
-    <link rel="stylesheet" href="css/buttons/submit-button.css">
+    <title>${title}</title>
+<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
+<%--    <link rel="stylesheet" href="css/content/pagination.css">--%>
+<%--    <link rel="stylesheet" href="css/buttons/edit.css">--%>
+<%--    <link rel="stylesheet" href="css/buttons/delete.css">--%>
+<%--    <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
-<c:set var="userRole" value="${sessionScope.role}" scope="page"/>
 
-
-
-<nav id="navUl">
-    <ul>
-        <li><a href="login.jsp">Sign In</a></li>
-        <li><a href="front?command=books">Catalog</a></li>
-        <c:choose>
-            <c:when test="${sessionScope.role == 'user'}">
-                <li><a href="front?command=my_books">Ordered books</a> </li>
-            </c:when>
-            <c:when test="${sessionScope.role == 'admin'}">
-                <li><a href="new_book.jsp">Create book</a></li>
-                <li><a href="new_librarian.jsp">Create Librarian</a></li>
-                <li><a class="active" href="front?command=show_librarians">Librarians</a></li>
-                <li><a href="front?command=show_users">Users</a></li>
-            </c:when>
-        </c:choose>
-        <li style="float:right"><a href="front?command=logout">Log Out</a></li>
-        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
-    </ul>
-</nav>
+<fmt:bundle basename="Localization" prefix="page.navigation.">
+    <nav class="navUl">
+        <ul>
+            <li><a href="front?command=books"><fmt:message key="catalog"/></a></li>
+            <li><a href="new_book.jsp"><fmt:message key="create_book"/></a></li>
+            <li><a href="new_librarian.jsp"><fmt:message key="create_librarian"/></a></li>
+            <li><a class="active" href="front?command=show_librarians"><fmt:message key="librarians"/></a></li>
+            <li><a href="front?command=show_users"><fmt:message key="users"/></a></li>
+            <li style="float:right"><a href="front?command=logout"><fmt:message key="logout"/></a></li>
+            <li style="float:right" ><a href="front?command=profile"><fmt:message key="profile"/></a></li>
+            <ctg:lang locale="${sessionScope.locale}"/>
+        </ul>
+    </nav>
+</fmt:bundle>
 <div class="container">
-    <h1>Librarians</h1>
+    <h1>${h1_librarians}</h1>
     <div class="box">
         <table class="content-table">
             <thead>
             <tr>
-                <th>Login</th>
-                <th>Full name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Age</th>
-                <c:if test="${userRole == 'admin'}">
-                    <th>Action</th>
-                </c:if>
+                <th>${login}</th>
+                <th>${fullname}</th>
+                <th>${email}</th>
+                <th>${phone}</th>
+                <th>${age}</th>
+                <th>${action}</th>
             </tr>
             </thead>
             <c:forEach var="librarian" items="${requestScope.librariansList}" varStatus="status">
@@ -61,7 +65,7 @@
                             <form name="deleteForm" action="front?command=delete_librarian" method="post">
                                 <button type="submit" class="delete-button" name="id" value="${librarian.id}"
                                 onclick="<c:set var="page" value="${param.page}" scope="session"/>">
-                                    Delete
+                                    <fmt:message bundle="${bundle}" key="page.button.delete"/>
                                 </button>
                             </form>
                         </td>
@@ -74,7 +78,7 @@
         <div class="pagination">
             <%--Display previous page--%>
             <c:if test="${requestScope.currentPage > 1}">
-                <a href="front?command=show_librarians&page=${requestScope.currentPage - 1}">Previous</a>
+                <a href="front?command=show_librarians&page=${requestScope.currentPage - 1}"><fmt:message bundle="${bundle}" key="page.pagination.prev"/></a>
             </c:if>
 
             <%--        Pages--%>
@@ -90,15 +94,15 @@
             </c:forEach>
             <%--        Display next page--%>
             <c:if test="${requestScope.currentPage < requestScope.numOfPages}">
-                <a href="front?command=show_librarians&page=${requestScope.currentPage + 1}">Next</a>
+                <a href="front?command=show_librarians&page=${requestScope.currentPage + 1}"><fmt:message bundle="${bundle}" key="page.pagination.next"/></a>
             </c:if>
         </div>
     </div>
 
 </div>
+<jsp:include page="elements/footer.jspf"/>
 </body>
 </html>
-
 <style>
     <%--Book table styles--%>
     .box {
@@ -158,4 +162,124 @@
     * {
         font-family: 'Raleway', sans-serif;
     }
+
+    /*nav */
+    .navUl ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+
+    li a:hover {
+        background-color: #111;
+    }
+
+    .active {
+        background-color: #1e6839;
+    }
+    /*    edit*/
+    .edit-button {
+        padding: 10px;
+        background: #1fc59b;
+        color: white;
+        border-style: outset;
+        border-color: #1fc59b;
+        font: bold 18px arial,sans-serif;
+        text-shadow: none;
+        cursor: pointer;
+        box-shadow: 0 2px #999;
+    }
+
+    .edit-button:hover {background-color: #3e8e41}
+
+    .edit-button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+    /*    delete */
+    .delete-button {
+        padding: 10px;
+        background: #a20000;
+        color: white;
+        border-style: outset;
+        border-color: #a20000;
+        font: bold 18px arial,sans-serif;
+        text-shadow: none;
+        cursor: pointer;
+        box-shadow: 0 2px #999;
+    }
+
+    .delete-button:hover {background-color: #3e8e41}
+
+    .delete-button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
+    /*    submit */
+    .submit-button {
+        padding: 10px;
+        background: #0066A2;
+        color: white;
+        border-style: outset;
+        border-color: #0066A2;
+        font: bold 18px arial,sans-serif;
+        text-shadow: none;
+        cursor: pointer;
+        box-shadow: 0 2px #999;
+    }
+
+    .submit-button:hover {background-color: #3e8e41}
+
+    .submit-button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+    /*    pagination */
+    .center {
+        text-align: center;
+    }
+
+    .pagination {
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+        border-radius:3px;
+    }
+
+    .pagination a.active {
+        background-color: #1e673a;
+        color: white;
+        border: 1px solid #1e673a;
+        border-radius:3px;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
 </style>

@@ -2,11 +2,13 @@ package org.project.services;
 
 import org.project.entity.Book;
 import org.project.entity.Checkout;
+import org.project.entity.Role;
 import org.project.entity.User;
 import org.project.entity.dto.BookDTO;
 import org.project.entity.dto.CheckoutDTO;
 import org.project.entity.dto.LibrarianDTO;
 import org.project.entity.dto.UserDTO;
+import org.project.utils.UtilProvider;
 
 
 public class Mapper {
@@ -34,6 +36,7 @@ public class Mapper {
         checkoutDTO.setBookTitle(checkout.getBook().getTitle());
         checkoutDTO.setOrderStatus(checkout.getOrderStatus());
         checkoutDTO.setType(checkout.getType().getValue());
+        checkoutDTO.setFinedStatus(UtilProvider.isFined(checkout.getFinedStatus()));
         checkoutDTO.setBookId(checkout.getBook().getId());
 
         return checkoutDTO;
@@ -60,8 +63,8 @@ public class Mapper {
         userDTO.setEmail(user.getEmail());
         userDTO.setFullName(user.getFirstName() + " " + user.getSurname());
         userDTO.setPhone(user.getPhoneNumber());
-        userDTO.setFinedStatus(
-                user.getFinedStatus() == 1? "fined":"okay"
+        userDTO.setFineAmount(
+                String.valueOf(user.getFineAmount())
         );
         userDTO.setStatus(user.isStatus() == 0 ? "active" : "blocked");
         userDTO.setRole(user.getRole().getRoleValue());

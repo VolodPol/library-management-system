@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
-    /*--primary-color: #90e0ef;*/
-    /*--secondary-color: #00b4d8;*/
-    /*--tertiary-color: #0077b6;*/
-    /*--gray-color: #b0b0b0;*/
-
     --primary-color: #90efa0;
     --secondary-color: #00d804;
     --tertiary-color: #228815;
@@ -31,7 +26,7 @@
 .box {
     background-color: white;
     border-radius: 10px;
-    padding: 25px;
+    padding: 45px;
     width: 375px;
     max-width: 95%;
     box-shadow: 5px 5px 10px 1px rgb(0, 0, 0, 10%);
@@ -84,7 +79,7 @@
     font-size: 12px;
     outline: none;
     border: none;
-    padding: 10px 100px 10px 10px;
+    padding: 10px;
     min-width: 0;
     flex: 1;
 }

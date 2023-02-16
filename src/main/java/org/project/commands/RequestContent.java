@@ -1,5 +1,6 @@
 package org.project.commands;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -12,19 +13,19 @@ import java.util.Map;
     2. set attr/params if necessary
     3. insert attributes in request
  */
-public class SessionRequestContent {
+public class RequestContent {
     private final HashMap<String, Object> requestAttributes;
     private final HashMap<String, String[]> requestParameters;
     private final HashMap<String, Object> sessionAttributes;
+    private Cookie[] cookies;
 
     {
         requestAttributes = new HashMap<>();
         requestParameters = new HashMap<>();
         sessionAttributes = new HashMap<>();
     }
-    public SessionRequestContent() {
-    }
-    public SessionRequestContent(HttpServletRequest request) {
+    public RequestContent() {}
+    public RequestContent(HttpServletRequest request) {
         extractValues(request);
     }
     //Retrieve attributes and params from request and put to fields
@@ -48,6 +49,8 @@ public class SessionRequestContent {
             Object value = session.getAttribute(name);
             sessionAttributes.put(name, value);
         }
+        //new
+        cookies = request.getCookies();
     }
     //Put attributes and params from fields to request
     public void insertAttributes(HttpServletRequest request){
@@ -74,6 +77,10 @@ public class SessionRequestContent {
     public String[] getParameterValues(String s){
         return requestParameters.get(s);
     }
+    //new
+    public Cookie[] getCookies() {
+        return cookies;
+    }
     //
 
     public void setRequestAttribute(String name, Object value) {
@@ -84,6 +91,10 @@ public class SessionRequestContent {
     }
     public void setRequestParameters(String name, String ... values) {
         requestParameters.put(name, values);
+    }
+    //new
+    public void setCookies(Cookie... cookies) {
+        this.cookies = cookies;
     }
 
     public void removeRequestAttribute(String s) {

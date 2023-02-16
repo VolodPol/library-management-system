@@ -6,7 +6,7 @@ public class UserDTO implements IUserDTO{
     private String email;
     private String fullName;
     private String phone;
-    private String finedStatus;
+    private String fineAmount;
     private String status;
     private String role;
     private String subscription;
@@ -51,12 +51,12 @@ public class UserDTO implements IUserDTO{
         this.phone = phone;
     }
 
-    public String getFinedStatus() {
-        return finedStatus;
+    public String getFineAmount() {
+        return fineAmount;
     }
 
-    public void setFinedStatus(String finedStatus) {
-        this.finedStatus = finedStatus;
+    public void setFineAmount(String fineAmount) {
+        this.fineAmount = fineAmount;
     }
 
     public String getStatus() {

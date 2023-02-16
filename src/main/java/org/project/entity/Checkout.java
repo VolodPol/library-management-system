@@ -5,13 +5,14 @@ import java.util.Objects;
 
 public class Checkout {
     private int id;
-    private Timestamp startTime;//
-    private Timestamp endTime;//
+    private Timestamp startTime;
+    private Timestamp endTime;
     private byte isReturned;
     private OrderStatus orderStatus;
-    private Type type;//
-    private User user;//
-    private Book book;//
+    private Type type;
+    private byte finedStatus;
+    private User user;
+    private Book book;
 
     public Checkout(){}
 
@@ -63,6 +64,13 @@ public class Checkout {
     }
     public void setType(Type type) {
         this.type = type;
+    }
+
+    public byte getFinedStatus() {
+        return finedStatus;
+    }
+    public void setFinedStatus(byte finedStatus) {
+        this.finedStatus = finedStatus;
     }
 
     public User getUser() {

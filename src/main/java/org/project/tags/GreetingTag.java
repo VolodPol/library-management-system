@@ -1,10 +1,14 @@
-package org.project.controller.tag;
+package org.project.tags;
 
 import jakarta.servlet.jsp.tagext.TagSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.io.IOException;
 
 public class GreetingTag extends TagSupport {
+    private static final Logger log = LoggerFactory.getLogger(GreetingTag.class);
     private String role;
     private String login;
 
@@ -25,6 +29,7 @@ public class GreetingTag extends TagSupport {
         try {
             pageContext.getOut().write("<h2>" + message + "</h2>");
         } catch (IOException e) {
+            log.debug("Error in GreetingTag");
             throw new RuntimeException(e);
         }
         return SKIP_BODY;

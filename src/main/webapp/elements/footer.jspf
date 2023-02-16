@@ -1,0 +1,18 @@
+<div class="footer">
+    <p>©2023 ELibrary | All Rights Reserved</p>
+    <hr>
+</div>
+
+<style>
+    .footer {
+        position: relative;
+        margin-top: 20px;
+        padding: 5px 0;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #333334;
+        color: white;
+        text-align: center;
+    }
+</style>

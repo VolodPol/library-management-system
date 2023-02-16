@@ -1,5 +1,6 @@
 package org.project.dao;
 
+import org.project.connection.ConnectionManager;
 import org.project.connection.DataSource;
 import org.project.entity.Book;
 import org.project.entity.Publisher;
@@ -21,7 +22,7 @@ public class BookDao {
     private int numOfRecs;
     public List<Book> getAll(int offSet, int total, Sorting sorting, OrderType type) throws DaoException {
         List<Book> books = new ArrayList<>();
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = ConnectionManager.getConnection()) {
             StringBuilder query = new StringBuilder(GET_ALL_BOOKS);
             if (!type.equals(OrderType.DEFAULT))
                 query.append(String.format(" ORDER BY %s ", type.getValue()));
@@ -66,7 +67,7 @@ public class BookDao {
 
     public Book findBook(String isbn) throws DaoException {
         Book book = new Book();
-        try (Connection con = DataSource.getConnection()) {
+        try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ISBN);
             ps.setString(1, isbn);
             extractBook(book, ps);
@@ -80,7 +81,7 @@ public class BookDao {
     
     public Book findBook(int id) throws DaoException {
         Book book = new Book();
-        try (Connection con = DataSource.getConnection()) {
+        try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ID);
             ps.setInt(1, id);
             extractBook(book, ps);
@@ -94,7 +95,7 @@ public class BookDao {
 
     public List<Book> searchForBook(String category, String searchedAs) throws DaoException {
         List<Book> foundBooks = new ArrayList<>();
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = ConnectionManager.getConnection()) {
             PreparedStatement statement;
             if (category.equals("title"))
                 statement = connection.prepareStatement(SEARCH_FOR_BOOK_BY_TITLE);
@@ -130,13 +131,20 @@ public class BookDao {
 
 
 
-    public void decreaseCopiesNum (int bookId) throws DaoException {
-        try (Connection con = DataSource.getConnection()) {
+    public void changeCopiesNum(int bookId, boolean toIncrease) throws DaoException {
+        //"UPDATE book SET copies_number = copies_number - 1 WHERE id = ? and copies_number > 0"
+        StringBuilder query = new StringBuilder();
+        query
+                .append("UPDATE book SET copies_number = copies_number ")
+                .append(toIncrease ? "+ 1 " : "- 1 ")
+                .append("WHERE id = ").append(bookId)
+                .append(" AND copies_number > 0");
+
+        try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("SavePoint");
 
-            try (PreparedStatement ps = con.prepareStatement(DECREASE_BY_ID)) {
-                ps.setInt(1, bookId);
+            try (PreparedStatement ps = con.prepareStatement(query.toString())) {
                 ps.executeUpdate();
                 con.commit();
 
@@ -151,7 +159,7 @@ public class BookDao {
     }
 
     public void updateBook (Book newBook, String isbn) throws DaoException {
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint savepoint = connection.setSavepoint("Save");
 
@@ -162,7 +170,7 @@ public class BookDao {
                 ps.executeUpdate();
                 connection.commit();
             } catch (SQLException exception) {
-                connection.rollback(savepoint);
+                ConnectionManager.rollback(connection, savepoint);
                 exception.printStackTrace();
             }
         } catch (SQLException e) {
@@ -172,7 +180,7 @@ public class BookDao {
     }
 
     public boolean insertBook(Book book) throws DaoException {
-        try (Connection con = DataSource.getConnection()) {
+        try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("SavePoint");
 
@@ -183,7 +191,7 @@ public class BookDao {
                 con.commit();
 
             } catch (SQLException exception) {
-                con.rollback(sp);
+                ConnectionManager.rollback(con, sp);
                 exception.printStackTrace();
                 return false;
             }
@@ -195,7 +203,7 @@ public class BookDao {
     }
 
     public boolean deleteBook(String isbn) throws DaoException {
-        try(Connection con = DataSource.getConnection()) {
+        try(Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint savepoint = con.setSavepoint("Save");
 
@@ -205,7 +213,7 @@ public class BookDao {
 
                 con.commit();
             } catch (SQLException e) {
-                con.rollback(savepoint);
+                ConnectionManager.rollback(con, savepoint);
                 e.printStackTrace();
                 return false;
             }
@@ -217,19 +225,19 @@ public class BookDao {
     }
 
     public boolean isIsbnPresent(String isbn) throws DaoException {
-        try (Connection con = DataSource.getConnection()) {
+        try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(ISBN_PRESENT);
             ps.setString(1, isbn);
             ResultSet rs = ps.executeQuery();
 
-            if (!rs.next()){
-                return false;
+            if (rs.next()){
+                return true;
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
-        return true;
+        return false;
     }
 
     private void extractBook(Book book, PreparedStatement ps) throws SQLException {

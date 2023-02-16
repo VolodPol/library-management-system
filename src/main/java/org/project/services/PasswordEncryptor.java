@@ -12,7 +12,6 @@ public class PasswordEncryptor {
 
             byte[] bytes = m.digest();
 
-//              The bytes array has bytes in decimal form. Converting it into hexadecimal format
             StringBuilder s = new StringBuilder();
             for (byte aByte : bytes) {
                 s.append(Integer.toString((aByte & 0xff) + 0x100, 16).substring(1));

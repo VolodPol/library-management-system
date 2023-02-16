@@ -12,7 +12,7 @@ public class User {
     private String surname;
     private String phoneNumber;
     private int age;
-    private byte finedStatus;
+    private int fineAmount;
     private byte status;
     private Role role;
     private Subscription subscription;
@@ -22,7 +22,7 @@ public class User {
     }
 
     public User(String login, String password, String email, String firstName,
-                String surname, String phoneNumber, int age, byte finedStatus,
+                String surname, String phoneNumber, int age, int fineAmount,
                 byte status, Role role, Subscription subscription) {
         this.login = login;
         this.password = password;
@@ -31,7 +31,7 @@ public class User {
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.age = age;
-        this.finedStatus = finedStatus;
+        this.fineAmount = fineAmount;
         this.status = status;
         this.role = role;
         this.subscription = subscription;
@@ -93,11 +93,11 @@ public class User {
         this.age = createTime;
     }
 
-    public byte getFinedStatus() {
-        return finedStatus;
+    public int getFineAmount() {
+        return fineAmount;
     }
-    public void setFinedStatus(byte finedStatus) {
-        this.finedStatus = finedStatus;
+    public void setFineAmount(int fineAmount) {
+        this.fineAmount = fineAmount;
     }
 
     public byte isStatus() {
@@ -130,7 +130,7 @@ public class User {
 
         if (id != user.id) return false;
         if (age != user.age) return false;
-        if (finedStatus != user.finedStatus) return false;
+        if (fineAmount != user.fineAmount) return false;
         if (status != user.status) return false;
         if (!Objects.equals(login, user.login)) return false;
         if (!Objects.equals(password, user.password)) return false;
@@ -152,7 +152,7 @@ public class User {
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
         result = 31 * result + age;
-        result = 31 * result + (int) finedStatus;
+        result = 31 * result + fineAmount;
         result = 31 * result + (int) status;
         result = 31 * result + (role != null ? role.hashCode() : 0);
         result = 31 * result + (subscription != null ? subscription.hashCode() : 0);
@@ -170,7 +170,7 @@ public class User {
                 ", surname='" + surname + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", age=" + age +
-                ", finedStatus=" + finedStatus +
+                ", fineAmount=" + fineAmount +
                 ", status=" + status +
                 ", role=" + role +
                 ", subscription=" + subscription +

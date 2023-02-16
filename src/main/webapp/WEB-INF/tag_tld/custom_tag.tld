@@ -14,7 +14,7 @@
 
     <tag>
         <name>hi</name>
-        <tagclass>org.project.controller.tag.GreetingTag</tagclass>
+        <tagclass>org.project.tags.GreetingTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>role</name>
@@ -24,6 +24,16 @@
 
         <attribute>
             <name>login</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>lang</name>
+        <tagclass>org.project.tags.LangDropdownTag</tagclass>
+        <bodycontent>empty</bodycontent>
+        <attribute>
+            <name>locale</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

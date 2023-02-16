@@ -1,5 +1,6 @@
 package org.project.dao;
 
+import org.project.connection.ConnectionManager;
 import org.project.connection.DataSource;
 import org.project.entity.Role;
 import org.project.entity.Subscription;
@@ -18,31 +19,19 @@ public class UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDao.class);
     private int numOfRecs;
 
-    public List<User> getAll(int offSet, int total) throws DaoException {
+    public List<User> getAll(int offSet, int total, Role role) throws DaoException {
         List<User> users = new ArrayList<>();
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = ConnectionManager.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(GET_ALL_USERS_LIMIT);
-            ps.setInt(1, offSet);
-            ps.setInt(2, total);
+            ps.setString(1, role.getRoleValue());
+            ps.setInt(2, offSet);
+            ps.setInt(3, total);
             ResultSet rs = ps.executeQuery();
 
             User user;
             while (rs.next()) {
                 user = new User();
-
-                user.setId(rs.getInt(1));
-                user.setLogin(rs.getString(2));
-                user.setPassword(rs.getString(3));
-                user.setEmail(rs.getString(4));
-                user.setFirstName(rs.getString(5));
-                user.setSurname(rs.getString(6));
-                user.setPhoneNumber(rs.getString(7));
-                user.setAge(rs.getInt(8));
-                user.setFinedStatus(rs.getByte(9));
-                user.setStatus(rs.getByte(10));
-                user.setRole(Role.valueOf(rs.getString(11).toUpperCase()));
-                user.setSubscription(Subscription.valueOf(rs.getString(12).toUpperCase()));
-
+                extractUser(rs, user);
                 users.add(user);
             }
             rs.close();
@@ -62,24 +51,13 @@ public class UserDao {
 
     public User findUser(String login) throws DaoException {
         User user = new User();
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_LOGIN)) {
             preparedStatement.setString(1, login);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                user.setId(rs.getInt("id"));
-                user.setLogin(rs.getString("login"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setFirstName(rs.getString("first_name"));
-                user.setSurname(rs.getString("surname"));
-                user.setPhoneNumber(rs.getString("phonenumber"));
-                user.setAge(rs.getInt("age"));
-                user.setFinedStatus(rs.getByte("fined_status"));
-                user.setStatus(rs.getByte("status"));
-                user.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
-                user.setSubscription(Subscription.valueOf(rs.getString("subscription").toUpperCase()));
+                extractUser(rs, user);
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
@@ -88,12 +66,28 @@ public class UserDao {
         return user;
     }
 
-    public boolean updateUser(int id) {
-        return false;
+    public void setFineAmount(int id, int fine) throws DaoException {
+        try (Connection connection = ConnectionManager.getConnection()) {
+            connection.setAutoCommit(false);
+            Savepoint save = connection.setSavepoint("Save");
+
+            try (PreparedStatement statement = connection.prepareStatement(FINE_AMOUNT)) {
+                statement.setInt(1, fine);
+                statement.setInt(2, id);
+                statement.executeUpdate();
+                connection.commit();
+
+            } catch (SQLException e) {
+                ConnectionManager.rollback(connection, save);
+            }
+        } catch (SQLException exception) {
+            log.error("dao exception occurred in book dao class: " + exception.getMessage());
+            throw new DaoException(exception.getMessage(), exception.getCause());
+        }
     }
 
     public void blockUser(int id, boolean block) throws DaoException {
-        try (Connection con = DataSource.getConnection()) {
+        try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("Save");
 
@@ -104,8 +98,7 @@ public class UserDao {
                 con.commit();
 
             } catch (SQLException exception) {
-                con.rollback(save);
-                exception.printStackTrace();
+                ConnectionManager.rollback(con, save);
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
@@ -114,7 +107,7 @@ public class UserDao {
     }
 
     public void insertUser(User user) throws DaoException {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER)
         ) {
             fillStatement(preparedStatement, user);
@@ -128,7 +121,7 @@ public class UserDao {
     }
 
     public boolean deleteUser(int id) throws DaoException {
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint sp = connection.setSavepoint("Savepoint");
 
@@ -138,7 +131,7 @@ public class UserDao {
                 connection.commit();
 
             } catch (SQLException exception) {
-                connection.rollback(sp);
+                ConnectionManager.rollback(connection, sp);
                 exception.printStackTrace();
                 return false;
             }
@@ -150,7 +143,7 @@ public class UserDao {
     }
 
     public void insertLibrarian(User user) throws DaoException {
-        try (Connection connection = DataSource.getConnection();
+        try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER)
         ) {
             fillStatement(preparedStatement, user);
@@ -172,5 +165,19 @@ public class UserDao {
         preparedStatement.setString(5, user.getSurname());
         preparedStatement.setString(6, user.getPhoneNumber());
         preparedStatement.setInt(7, user.getAge());
+    }
+    private void extractUser(ResultSet rs, User user) throws SQLException {
+        user.setId(rs.getInt(1));
+        user.setLogin(rs.getString(2));
+        user.setPassword(rs.getString(3));
+        user.setEmail(rs.getString(4));
+        user.setFirstName(rs.getString(5));
+        user.setSurname(rs.getString(6));
+        user.setPhoneNumber(rs.getString(7));
+        user.setAge(rs.getInt(8));
+        user.setFineAmount(rs.getInt(9));
+        user.setStatus(rs.getByte(10));
+        user.setRole(Role.valueOf(rs.getString(11).toUpperCase()));
+        user.setSubscription(Subscription.valueOf(rs.getString(12).toUpperCase()));
     }
 }

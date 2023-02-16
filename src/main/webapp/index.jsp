@@ -1,54 +1,57 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tag_tld/custom_tag.tld"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="Localization" var="bundle"/>
+
+<c:if test="${empty sessionScope.role}" var="isEmptyRole" scope="page"/>
 <html>
 <head>
-    <title>ELibrary</title>
-    <link rel="stylesheet" href="css/nav.css">
+    <title><fmt:message bundle="${bundle}" key="page.index.title"/></title>
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/content/nav_bar.css">--%>
 </head>
 <body>
-<nav id="navUl">
-    <ul>
-        <li><a class="active" href="login.jsp">Sign In</a></li>
-        <li><a href="front?command=books">Catalog</a></li>
-        <c:choose>
-            <c:when test="${sessionScope.role == 'user'}">
-                <li><a href="front?command=my_books">Ordered books</a> </li>
-            </c:when>
-            <c:when test="${sessionScope.role == 'librarian'}">
-                <li><a href="front?command=show_orders">Readers' orders</a></li>
-                <li><a href="front?command=show_users">Users</a></li>
-            </c:when>
-            <c:when test="${sessionScope.role == 'admin'}">
-                <li><a href="new_book.jsp">Create book</a></li>
-                <li><a href="new_librarian.jsp">Create Librarian</a></li>
-                <li><a href="front?command=show_librarians">Librarians</a></li>
-                <li><a href="front?command=show_users">Users</a></li>
-            </c:when>
-        </c:choose>
-        <li style="float:right"><a href="front?command=logout">Log Out</a></li>
-        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
-    </ul>
-</nav>
+<fmt:bundle basename="Localization" prefix="page.navigation.">
+    <nav class="navUl">
+        <ul>
+            <c:if test="${isEmptyRole}">
+                <li><a class="active" href="login.jsp"><fmt:message key="sign_in"/></a></li>
+            </c:if>
+            <li><a href="front?command=books"><fmt:message key="catalog"/></a></li>
+            <c:choose>
+                <c:when test="${sessionScope.role == 'user'}">
+                    <li><a href="front?command=my_books"><fmt:message key="ordered_books"/></a> </li>
+                </c:when>
+                <c:when test="${sessionScope.role == 'librarian'}">
+                    <li><a href="front?command=show_orders"><fmt:message key="reader_orders"/></a></li>
+                    <li><a href="front?command=show_users"><fmt:message key="users"/></a></li>
+                </c:when>
+                <c:when test="${sessionScope.role == 'admin'}">
+                    <li><a href="new_book.jsp"><fmt:message key="create_book"/></a></li>
+                    <li><a href="new_librarian.jsp"><fmt:message key="create_librarian"/></a></li>
+                    <li><a href="front?command=show_librarians"><fmt:message key="librarians"/></a></li>
+                    <li><a href="front?command=show_users"><fmt:message key="users"/></a></li>
+                </c:when>
+            </c:choose>
+            <c:if test="${not isEmptyRole}">
+                <li style="float:right"><a href="front?command=logout"><fmt:message key="logout"/></a></li>
+                <li style="float:right" ><a href="front?command=profile"><fmt:message key="profile"/></a></li>
+            </c:if>
+            <ctg:lang locale="${sessionScope.locale}"/>
+        </ul>
+    </nav>
+</fmt:bundle>
+
 <div class="main-div">
     <div class="welcome-box">
-<%--        <c:choose>--%>
-<%--            <c:when test="${empty sessionScope.role}">--%>
-<%--                <h2>Welcome to ELibrary!</h2>--%>
-<%--            </c:when>--%>
-<%--            <c:otherwise>--%>
-<%--                <h2>Welcome back, ${sessionScope.role} ${sessionScope.name}!</h2>--%>
-<%--            </c:otherwise>--%>
-<%--        </c:choose>--%>
-
         <ctg:hi role="${sessionScope.role}" login="${sessionScope.name}"/>
-
     </div>
 </div>
-
+<jsp:include page="elements/footer.jspf"/>
 </body>
 </html>
-
 <style>
     .main-div {
         background-image: url(https://img.freepik.com/premium-photo/book-stack-library-room-blurred-bookshelf-background_42691-514.jpg?w=2000);
@@ -75,5 +78,35 @@
     }
     * {
         font-family: 'Raleway', sans-serif;
+    }
+
+/*    nav bar*/
+    .navUl ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+
+    li a:hover {
+        background-color: #111;
+    }
+
+    .active {
+        background-color: #1e6839;
     }
 </style>

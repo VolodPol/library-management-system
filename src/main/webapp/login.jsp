@@ -1,29 +1,47 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="ctg" uri="/WEB-INF/tag_tld/custom_tag.tld"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<fmt:setLocale value="${sessionScope.locale}" scope="session"/>
+<fmt:setBundle basename="Localization" var="bundle"/>
+
+<fmt:message bundle="${bundle}" key="page.login.title" var="title"/>
+<fmt:message bundle="${bundle}" key="page.login.h1_sign_in" var="login"/>
+<fmt:message bundle="${bundle}" key="page.login.input_label.username" var="username"/>
+<fmt:message bundle="${bundle}" key="page.login.input_label.password" var="password"/>
 <html>
 <head>
-    <title>Login</title>
+    <title>${title}</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" href="css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/nav.css">
+<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
+<%--    <link type="text/css" rel="stylesheet" href="css/all.min.css">--%>
+<%--    <link type="text/css" rel="stylesheet" href="css/style.css">--%>
+<%--    <link rel="stylesheet" href="css/all.min.css">--%>
+<%--    <link rel="stylesheet" href="css/style.css">--%>
 </head>
 <body>
-<nav id="navUl">
-    <ul>
-        <li><a class="active" href="login.jsp">Sign In</a></li>
-        <li><a href="front?command=books">Catalog</a></li>
-        <li style="float:right" ><a href="front?command=profile">Profile</a></li>
-    </ul>
-</nav>
+<fmt:bundle basename="Localization" prefix="page.navigation.">
+    <nav class="navUl">
+        <ul>
+            <li><a href="front?command=books">
+                <fmt:message key="catalog"/>
+            </a></li>
+                <li style="float:right" ><a href="front?command=profile">
+                    <fmt:message key="profile"/>
+                </a></li>
+            <ctg:lang locale="${sessionScope.locale}"/>
+        </ul>
+    </nav>
+</fmt:bundle>
 
 <div class="container">
     <div class="box">
-        <h1>Sign In</h1>
+        <h1>${login}</h1>
         <form name="loginForm" action="front" method="POST">
             <input name="command" type="hidden" value="login"/>
 
-            <label>Username</label>
+            <label>${username}</label>
             <div>
                 <i class="fa-solid fa-user"></i>
                 <label>
@@ -31,7 +49,7 @@
                 </label>
             </div>
 
-            <label>Password</label>
+            <label>${password}</label>
             <div>
                 <i class="fa-solid fa-lock"></i>
                 <label>
@@ -39,20 +57,51 @@
                 </label>
             </div>
 
-            <%--@elvariable id="errorMessage" type="java.lang.String"--%>
-            <c:if test="${not empty errorMessage}">
-                <div style="margin-bottom: 10px">
-                    <p>${errorMessage}</p>
-                </div>
-                <div>
-                    <a class="fa-link" style="" href="#">Contact</a>
+            <c:set var="error" value="${requestScope.error}" scope="page"/>
+            <c:if test="${not empty error}">
+                <div style="margin-top: 10px">
+                    <p><fmt:message bundle="${bundle}" key="${error}"/></p>
                 </div>
             </c:if>
 
-            <input type="submit" value="Sing In">
+            <input type="submit" value="${login}">
         </form>
-        <a href="register.jsp" class="sign-up">Sign Up</a>
+        <a href="register.jsp" class="sign-up"><fmt:message bundle="${bundle}" key="page.register.h1_sign_up"/></a>
     </div>
 </div>
+<jsp:include page="elements/footer.jspf"/>
 </body>
 </html>
+<style>
+<%--    nav --%>
+    .navUl ul{
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    li {
+        float: left;
+    }
+
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+
+    li a:hover {
+        background-color: #111;
+    }
+
+    .active {
+        background-color: #1e6839;
+    }
+
+/*    page */
+</style>

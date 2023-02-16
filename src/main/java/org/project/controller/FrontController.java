@@ -8,13 +8,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.project.commands.ActionCommand;
 import org.project.commands.ActionFactory;
 import org.project.commands.CommandResult;
-import org.project.commands.SessionRequestContent;
+import org.project.commands.RequestContent;
 import org.project.exceptions.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
 @WebServlet("/front")
 public class FrontController extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(FrontController.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         process(req, resp);
@@ -29,28 +32,22 @@ public class FrontController extends HttpServlet {
         ActionFactory client = new ActionFactory();
 
         ActionCommand command = client.defineCommand(req);
-        SessionRequestContent content = new SessionRequestContent(req);
-        CommandResult result = new CommandResult();//
+        RequestContent content = new RequestContent(req);
+        CommandResult result;
         try {
-            result = command.execute(content);
+            result = command.execute(content, resp);
         } catch (DaoException e) {
-            e.printStackTrace();
+            log.error("Dao exception caught in controller");
+            return;
         }
         content.insertAttributes(req);
-
         String page = result.getDestinationPage();
-        if (page != null) {
-            if (page.equals("login.jsp")) req.getSession().invalidate();//вихід користувача з системи
 
-            if (result.isSendRedirect()) {
-                resp.sendRedirect(page);
-            } else {
-                req.getRequestDispatcher(page).forward(req, resp);
-            }
-        } else {
-            page = "index.jsp";
-            req.getSession().setAttribute("nullPage", "Null page message");
-            resp.sendRedirect(req.getContextPath() + page);
-        }
+        if (page.equals("login.jsp")) req.getSession().invalidate();
+
+        if (result.isSendRedirect())
+            resp.sendRedirect(page);
+        else
+            req.getRequestDispatcher(page).forward(req, resp);
     }
 }
