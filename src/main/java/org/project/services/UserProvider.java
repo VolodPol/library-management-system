@@ -7,40 +7,39 @@ import org.project.entity.Subscription;
 import org.project.entity.User;
 import org.project.exceptions.DaoException;
 import org.project.services.resources.MessageName;
-
-import static org.project.services.validation.UserValidator.*;
-
+import org.project.services.validation.Validator;
+import org.project.services.validation.dataset.DataSetProvider;
+import org.project.services.validation.impl.UserValidator;
+import org.project.services.validation.dataset.impl.UserDataSet;
 
 public class UserProvider {
     public static boolean createUser(RequestContent content, Role role) throws DaoException {
-        String username = content.getParameter("login");
-        String email = content.getParameter("email");
-        String password = content.getParameter("password");
-        String firstName = content.getParameter("firstname");
-        String surname = content.getParameter("surname");
-        String phone = content.getParameter("phone");
-        String age = content.getParameter("age");
+        UserDataSet data = DataSetProvider.getUserDataSet(content);
 
-        if (!(validateLogin(username) && validateEmail(email) && validatePassword(password) && validateName(firstName)
-                && validateName(surname) && validatePhone(phone) && validateAge(age))) {
-            content.setRequestAttribute("error",
-                    MessageName.INCORRECT_FORM);
+        Validator validator = new UserValidator(data);
+        boolean validResult = validator.validate();
+        if (!validResult) {
+            content.setRequestAttribute("error", validator.getErrorMessage());
             return false;
         }
 
-        if (LogInChecker.doesUserExist(username, email)) {
+        if (LogInChecker.doesUserExist(data.getUsername(), data.getEmail())) {
             content.setRequestAttribute("error", MessageName.LOGIN_EMAIL);
             return false;
         }
-        User currentUser = new User(username, PasswordEncryptor.encrypt(password), email, firstName, surname,
-                phone, Integer.parseInt(age), (byte) 0, (byte) 0, role, Subscription.BASIC
+        User currentUser = new User(data.getUsername(), PasswordEncryptor.encrypt(data.getPassword()), data.getEmail(), data.getFirstName(), data.getSurname(),
+                data.getPhone(), Integer.parseInt(data.getAge()), (byte) 0, (byte) 0, role, Subscription.BASIC
         );
+        insertByRole(currentUser, role);
+        return true;
+    }
+
+    private static void insertByRole(User currentUser, Role role) throws DaoException {
         UserDao userCreator = new UserDao();
         if (role.equals(Role.USER)) {
             userCreator.insertUser(currentUser);
         } else if (role.equals(Role.LIBRARIAN)) {
             userCreator.insertLibrarian(currentUser);
         }
-        return true;
     }
 }

@@ -30,14 +30,14 @@ public class BookDTO {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-
+    @SuppressWarnings("unused")
     public int getCopiesNumber() {
         return copiesNumber;
     }
     public void setCopiesNumber(int copiesNumber) {
         this.copiesNumber = copiesNumber;
     }
-
+    @SuppressWarnings("unused")
     public Date getDateOfPublication() {
         return dateOfPublication;
     }

@@ -1,7 +1,6 @@
 package org.project.dao;
 
 import org.project.connection.ConnectionManager;
-import org.project.connection.DataSource;
 import org.project.entity.*;
 import org.project.exceptions.DaoException;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ import static org.project.dao.Constants.*;
 
 public class CheckoutDao {
     private static final Logger log = LoggerFactory.getLogger(CheckoutDao.class);
-    public List<Checkout> getAllCheckouts() throws DaoException {
+    public List<Checkout> findAll() throws DaoException {
         List<Checkout> checkouts = new ArrayList<>();
         try (Connection con = ConnectionManager.getConnection()) {
             Statement st = con.createStatement();
@@ -28,7 +27,7 @@ public class CheckoutDao {
         return checkouts;
     }
 
-    public List<Checkout> getCheckoutsByLogin(String login) throws DaoException{
+    public List<Checkout> findCheckoutsByLogin(String login) throws DaoException{
         List<Checkout> checkouts = new ArrayList<>();
         try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(GET_CHECKOUTS_BY_LOGIN);
@@ -44,7 +43,7 @@ public class CheckoutDao {
 
 
 
-    public void createCheckout(Checkout checkout) throws DaoException {
+    public void insert(Checkout checkout) throws DaoException {
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("SavePoint");
@@ -69,7 +68,7 @@ public class CheckoutDao {
         }
     }
 
-    public boolean confirmCheckout(int id) throws DaoException {
+    public void confirm(int id) throws DaoException {
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("Savepoint");
@@ -82,13 +81,11 @@ public class CheckoutDao {
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, save);
                 log.error("Couldn't rollback connection to savepoint");
-                return false;
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
-        return true;
     }
 
     public void setFineStatus(int id, byte status) throws DaoException {
@@ -112,7 +109,7 @@ public class CheckoutDao {
         }
     }
 
-    public void deleteCheckout(int bookId, Timestamp startTime, Timestamp endTime) throws DaoException {
+    public void delete(int bookId, Timestamp startTime, Timestamp endTime) throws DaoException {
         try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint sp = connection.setSavepoint("Savepoint");
@@ -146,10 +143,10 @@ public class CheckoutDao {
             currentCheck.setFinedStatus(rs.getByte("fined_status"));// ATTENTION!
             try {
                 currentCheck.setUser(
-                        new UserDao().findUser(rs.getString("login"))
+                        new UserDao().findByLogin(rs.getString("login"))
                 );
                 currentCheck.setBook(
-                        new BookDao().findBook(rs.getString("isbn"))
+                        new BookDao().findByIsbn(rs.getString("isbn"))
                 );
             } catch (DaoException exception) {
                 log.error("dao exception occurred in book dao class: " + exception.getMessage());

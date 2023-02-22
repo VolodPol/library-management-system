@@ -34,7 +34,7 @@ public class UserDTO implements IUserDTO{
     public void setEmail(String email) {
         this.email = email;
     }
-
+    @SuppressWarnings("unused")
     public String getFullName() {
         return fullName;
     }
@@ -50,7 +50,7 @@ public class UserDTO implements IUserDTO{
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
+    @SuppressWarnings("unused")
     public String getFineAmount() {
         return fineAmount;
     }

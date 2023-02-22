@@ -14,13 +14,14 @@ public class CheckoutDTO {
     private String type;
     private String finedStatus;
     private int bookId;
+    @SuppressWarnings("unused")
     public Timestamp getStartTime() {
         return startTime;
     }
     public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
     }
-
+    @SuppressWarnings("unused")
     public Timestamp getEndTime() {
         return endTime;
     }
@@ -34,7 +35,7 @@ public class CheckoutDTO {
     public void setUsername(String username) {
         this.username = username;
     }
-
+    @SuppressWarnings("unused")
     public String getBookTitle() {
         return bookTitle;
     }
@@ -48,7 +49,7 @@ public class CheckoutDTO {
     public void setId(int id) {
         this.id = id;
     }
-
+    @SuppressWarnings("unused")
     public OrderStatus getOrderStatus() {
         return orderStatus;
     }
@@ -60,14 +61,14 @@ public class CheckoutDTO {
     public void setType(String type) {
         this.type = type;
     }
-
+    @SuppressWarnings("unused")
     public String getFinedStatus() {
         return finedStatus;
     }
     public void setFinedStatus(String finedStatus) {
         this.finedStatus = finedStatus;
     }
-
+    @SuppressWarnings("unused")
     public int getBookId() {
         return bookId;
     }

@@ -93,6 +93,13 @@
                 </label>
             </div>
 
+            <c:set var="error" value="${requestScope.error}" scope="page"/>
+            <c:if test="${not empty error}">
+                <div style="margin-top: 10px">
+                    <p><fmt:message bundle="${bundle}" key="${error}"/></p>
+                </div>
+            </c:if>
+
             <input class="submit-button" type="submit" value="<fmt:message bundle="${bundle}" key="page.button.add_librarian"/>">
         </form>
     </div>

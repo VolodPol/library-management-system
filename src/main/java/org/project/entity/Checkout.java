@@ -44,7 +44,7 @@ public class Checkout {
     public void setEndTime(Timestamp endTime) {
         this.endTime = endTime;
     }
-
+    @SuppressWarnings("unused")
     public byte getIsReturned() {
         return isReturned;
     }

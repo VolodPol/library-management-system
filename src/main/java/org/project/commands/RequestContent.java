@@ -49,7 +49,6 @@ public class RequestContent {
             Object value = session.getAttribute(name);
             sessionAttributes.put(name, value);
         }
-        //new
         cookies = request.getCookies();
     }
     //Put attributes and params from fields to request
@@ -59,6 +58,7 @@ public class RequestContent {
     }
 
     //getters
+    @SuppressWarnings("unused")
     public Object getRequestAttribute(String s){
         return requestAttributes.get(s);
     }
@@ -71,17 +71,17 @@ public class RequestContent {
         }
         return requestParameters.get(s)[0];
     }
+    @SuppressWarnings("unused")
     public Map<String, String[]> getParameterMap(){
         return requestParameters;
     }
+    @SuppressWarnings("unused")
     public String[] getParameterValues(String s){
         return requestParameters.get(s);
     }
-    //new
     public Cookie[] getCookies() {
         return cookies;
     }
-    //
 
     public void setRequestAttribute(String name, Object value) {
         requestAttributes.put(name, value);
@@ -89,14 +89,15 @@ public class RequestContent {
     public void setSessionAttribute(String name, Object value) {
         sessionAttributes.put(name, value);
     }
+    @SuppressWarnings("unused")
     public void setRequestParameters(String name, String ... values) {
         requestParameters.put(name, values);
     }
-    //new
+    @SuppressWarnings("unused")
     public void setCookies(Cookie... cookies) {
         this.cookies = cookies;
     }
-
+    @SuppressWarnings("unused")
     public void removeRequestAttribute(String s) {
         requestAttributes.remove(s);
     }

@@ -8,7 +8,7 @@ public enum OrderStatus {
     OrderStatus(int value) {
         statusValue = value;
     }
-
+    @SuppressWarnings("unused")
     public int getStatusValue() {
         return statusValue;
     }

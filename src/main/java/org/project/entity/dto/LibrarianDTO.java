@@ -21,7 +21,7 @@ public class LibrarianDTO implements IUserDTO{
     public void setLogin(String login) {
         this.login = login;
     }
-
+    @SuppressWarnings("unused")
     public String getFullName() {
         return fullName;
     }

@@ -2,13 +2,14 @@ package org.project.services;
 
 import org.project.entity.Book;
 import org.project.entity.Checkout;
-import org.project.entity.Role;
 import org.project.entity.User;
 import org.project.entity.dto.BookDTO;
 import org.project.entity.dto.CheckoutDTO;
 import org.project.entity.dto.LibrarianDTO;
 import org.project.entity.dto.UserDTO;
 import org.project.utils.UtilProvider;
+
+import java.util.List;
 
 
 public class Mapper {
@@ -24,6 +25,12 @@ public class Mapper {
         bookDTO.setPublisher(book.getPublisher().getName());
 
         return bookDTO;
+    }
+
+    public static List<BookDTO> booksToDTO(List<Book> books) {
+        return books.stream()
+                .map(Mapper::bookToDTO)
+                .toList();
     }
 
     public static CheckoutDTO checkoutToDTO(Checkout checkout) {
@@ -42,6 +49,12 @@ public class Mapper {
         return checkoutDTO;
     }
 
+    public static List<CheckoutDTO> checkoutsToDTO(List<Checkout> checkouts) {
+        return checkouts.stream()
+                .map(Mapper::checkoutToDTO)
+                .toList();
+    }
+
     public static LibrarianDTO userToLibrarianDTO(User user) {
         LibrarianDTO librarian = new LibrarianDTO();
 
@@ -53,6 +66,12 @@ public class Mapper {
         librarian.setAge(user.getAge());
 
         return librarian;
+    }
+
+    public static List<LibrarianDTO> usersToLibrariansDTO(List<User> users) {
+        return users.stream()
+                .map(Mapper::userToLibrarianDTO)
+                .toList();
     }
 
     public static UserDTO userToUserDTO(User user) {
@@ -71,5 +90,11 @@ public class Mapper {
         userDTO.setSubscription(user.getSubscription().getValue());
 
         return userDTO;
+    }
+
+    public static List<UserDTO> usersToUsersDTO(List<User> users) {
+        return users.stream()
+                .map(Mapper::userToUserDTO)
+                .toList();
     }
 }

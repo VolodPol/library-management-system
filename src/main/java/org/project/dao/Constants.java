@@ -11,11 +11,9 @@ public interface Constants {
 
     //Book DAO
     String GET_ALL_BOOKS = "SELECT SQL_CALC_FOUND_ROWS b.id, title, author, isbn, copies_number, date_of_publication, p.id, name FROM book b JOIN publisher p ON b.publisher_id = p.id";
-    String GET_ALL_BOOKS_LIMIT = "SELECT SQL_CALC_FOUND_ROWS b.id, title, author, isbn, copies_number, date_of_publication, p.id, name FROM book b JOIN publisher p ON b.publisher_id = p.id LIMIT ?, ?";
     String SEARCH_FOR_BOOK_BY_AUTHOR = "SELECT b.id, title, author, isbn, copies_number, date_of_publication, p.id, name FROM book b JOIN publisher p ON b.publisher_id = p.id WHERE author LIKE ?";
     String SEARCH_FOR_BOOK_BY_TITLE = "SELECT b.id, title, author, isbn, copies_number, date_of_publication, p.id, name FROM book b JOIN publisher p ON b.publisher_id = p.id WHERE title LIKE ?";
     String FIND_BOOK_BY_ISBN = "SELECT b.id, title, author, isbn, copies_number, date_of_publication, p.id, name FROM book b JOIN publisher p ON b.publisher_id = p.id WHERE b.isbn = ?";
-    String FIND_BOOK_BY_ID = "SELECT b.id, title, author, isbn, copies_number, date_of_publication, p.id, name FROM book b JOIN publisher p ON b.publisher_id = p.id WHERE b.id = ?";
     String CREATE_BOOK = "INSERT INTO book (title, author, isbn, copies_number, date_of_publication, publisher_id) VALUES (?, ?, ?, ?, ?, ?)";
     String DELETE_BOOK = "DELETE FROM book WHERE isbn = ?";
     String UPDATE_BOOK = "UPDATE book SET title = ?, author = ?, isbn = ?, copies_number = ?, date_of_publication = ?, publisher_id = ? WHERE isbn = ?";

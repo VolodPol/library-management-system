@@ -1,7 +1,6 @@
 package org.project.dao;
 
 import org.project.connection.ConnectionManager;
-import org.project.connection.DataSource;
 import org.project.entity.Role;
 import org.project.entity.Subscription;
 import org.project.entity.User;
@@ -19,7 +18,7 @@ public class UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDao.class);
     private int numOfRecs;
 
-    public List<User> getAll(int offSet, int total, Role role) throws DaoException {
+    public List<User> findAll(int offSet, int total, Role role) throws DaoException {
         List<User> users = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection()) {
             PreparedStatement ps = connection.prepareStatement(GET_ALL_USERS_LIMIT);
@@ -49,7 +48,7 @@ public class UserDao {
         return this.numOfRecs;
     }
 
-    public User findUser(String login) throws DaoException {
+    public User findByLogin(String login) throws DaoException {
         User user = new User();
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_LOGIN)) {
@@ -86,7 +85,7 @@ public class UserDao {
         }
     }
 
-    public void blockUser(int id, boolean block) throws DaoException {
+    public void block(int id, boolean block) throws DaoException {
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("Save");
@@ -120,7 +119,7 @@ public class UserDao {
         }
     }
 
-    public boolean deleteUser(int id) throws DaoException {
+    public void delete(int id) throws DaoException {
         try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint sp = connection.setSavepoint("Savepoint");
@@ -133,13 +132,11 @@ public class UserDao {
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, sp);
                 exception.printStackTrace();
-                return false;
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
-        return true;
     }
 
     public void insertLibrarian(User user) throws DaoException {

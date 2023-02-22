@@ -1,6 +1,5 @@
 package org.project.tags;
 
-import jakarta.servlet.jsp.JspException;
 import jakarta.servlet.jsp.tagext.TagSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +26,7 @@ public class LangDropdownTag extends TagSupport {
                     <form name="localForm" method="post">
                         <label for="localization"></label>
                         <select name="locale" id="localization" onclick="this.form.submit()">""");
-        if (locale.equals("en_US")) {
+        if (locale == null || locale.equals("en_US")) {
             html.append("""
                         <option value="en_US" selected>En</option>
                         <option value="uk_UA">Ua</option>""");

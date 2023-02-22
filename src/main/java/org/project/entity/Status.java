@@ -1,5 +1,5 @@
 package org.project.entity;
-
+@SuppressWarnings("unused")
 public enum Status {
     PENDING(1),
     CONFIRMED(2);

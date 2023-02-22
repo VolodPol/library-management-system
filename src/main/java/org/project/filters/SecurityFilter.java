@@ -13,7 +13,7 @@ import static org.project.utils.UtilProvider.isAccessDenied;
 public class SecurityFilter implements Filter {
     private Role userRole;
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         userRole = Role.USER;
     }
 

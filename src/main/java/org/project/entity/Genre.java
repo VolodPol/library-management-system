@@ -1,7 +1,7 @@
 package org.project.entity;
 
 import java.util.Objects;
-
+@SuppressWarnings("unused")
 public class Genre {
     private int id;
     private String name;

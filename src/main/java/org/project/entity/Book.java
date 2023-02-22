@@ -1,6 +1,8 @@
 package org.project.entity;
 
 
+import org.project.utils.UtilProvider;
+
 import java.sql.Date;
 import java.util.Objects;
 
@@ -52,21 +54,24 @@ public class Book {
         return title;
     }
     public void setTitle(String title) {
-        this.title = title;
+        if (!UtilProvider.isEmpty(title))
+            this.title = title;
     }
 
     public String getAuthor() {
         return author;
     }
     public void setAuthor(String author) {
-        this.author = author;
+        if (!UtilProvider.isEmpty(author))
+            this.author = author;
     }
 
     public String getIsbn() {
         return isbn;
     }
     public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        if (!UtilProvider.isEmpty(isbn))
+            this.isbn = isbn;
     }
 
     public int getCopiesNumber() {

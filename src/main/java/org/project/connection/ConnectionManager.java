@@ -10,7 +10,7 @@ public class ConnectionManager {
     public static Connection getConnection() throws SQLException {
         return DataSource.getConnection();
     }
-
+    @SuppressWarnings("unused")
     public static void closeSafely(Connection connection) throws DaoException{
         try {
             connection.close();
@@ -18,7 +18,7 @@ public class ConnectionManager {
             throw new DaoException(exception.getMessage(), exception);
         }
     }
-
+    @SuppressWarnings("unused")
     public static void rollback(Connection connection) throws DaoException {
         if (connection != null) {
             try {

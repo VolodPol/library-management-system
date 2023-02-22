@@ -8,7 +8,7 @@ public class LogInChecker {
     private static final UserDao dao = new UserDao();
 
     public static boolean doesMatch(String enteredLogin, String enteredPassword) throws DaoException {
-        User user = dao.findUser(enteredLogin);
+        User user = dao.findByLogin(enteredLogin);
         String userLogin = user.getLogin();
         String userPassword = user.getPassword();
 
@@ -17,7 +17,7 @@ public class LogInChecker {
     }
 
     public static boolean doesUserExist(String login, String email) throws DaoException{
-        User user = dao.findUser(login);
+        User user = dao.findByLogin(login);
         if (user.getLogin() == null) {
             return false;
         }

@@ -10,4 +10,5 @@ public interface MessageName {
     String NO_SUB = "page.error_message.no_sub";
     String PUBLISHER_EXISTS = "page.error_message.publisher_exists";
     String LOGIN_EMAIL = "page.error_message.login_email_used";
+    String EMPTY_FORM = "page.error_message.empty_form";
 }

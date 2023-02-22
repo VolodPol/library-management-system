@@ -1,8 +1,16 @@
 package org.project.commands;
 
 
-import org.project.commands.get.*;
-import org.project.commands.post.*;
+import org.project.commands.impl.get.*;
+import org.project.commands.impl.get.ShowLibrariansCommand;
+import org.project.commands.impl.get.ShowOrdersCommand;
+import org.project.commands.impl.get.ShowMyBooksCommand;
+import org.project.commands.impl.post.*;
+import org.project.commands.impl.post.admin.*;
+import org.project.commands.impl.post.librarian.ConfirmOrderCommand;
+import org.project.commands.impl.post.user.OrderBookCommand;
+import org.project.commands.impl.post.user.ReturnBookCommand;
+import org.project.commands.impl.post.user.SignUpCommand;
 
 public enum CommandEnum {
     LOGIN {

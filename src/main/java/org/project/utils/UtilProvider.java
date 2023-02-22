@@ -31,4 +31,7 @@ public class UtilProvider {
             result = true;
         return !result;
     }
+    public static String getFineCookie(String login) {
+        return "fines".concat("_" + login);
+    }
 }

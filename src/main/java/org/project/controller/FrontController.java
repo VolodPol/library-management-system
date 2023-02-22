@@ -6,8 +6,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.project.commands.ActionCommand;
-import org.project.commands.ActionFactory;
-import org.project.commands.CommandResult;
+import org.project.commands.factory.ActionFactory;
+import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
 import org.project.exceptions.DaoException;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class FrontController extends HttpServlet {
 
         ActionCommand command = client.defineCommand(req);
         RequestContent content = new RequestContent(req);
-        CommandResult result;
+        ActionResult result;
         try {
             result = command.execute(content, resp);
         } catch (DaoException e) {

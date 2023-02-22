@@ -1,7 +1,6 @@
 package org.project.dao;
 
 import org.project.connection.ConnectionManager;
-import org.project.connection.DataSource;
 import org.project.entity.Publisher;
 import org.project.exceptions.DaoException;
 import org.slf4j.Logger;
@@ -32,7 +31,7 @@ public class PublisherDao {
         return false;
     }
 
-    public Publisher findPublisher(String name) throws DaoException {
+    public Publisher findByName(String name) throws DaoException {
         Publisher publisher = new Publisher();
         try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(QUERY);
@@ -51,7 +50,7 @@ public class PublisherDao {
         return publisher;
     }
 
-    public void insertPublisher(Publisher publisher) throws DaoException {
+    public void insert(Publisher publisher) throws DaoException {
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("Save");

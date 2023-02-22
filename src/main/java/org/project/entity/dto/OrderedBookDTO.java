@@ -10,7 +10,7 @@ public class OrderedBookDTO {
     private Timestamp returnDate;
     private String finedStatus;
     private String subscription;
-
+    @SuppressWarnings("unused")
     public int getBookId() {
         return bookId;
     }
@@ -31,21 +31,21 @@ public class OrderedBookDTO {
     public void setAuthor(String author) {
         this.author = author;
     }
-
+    @SuppressWarnings("unused")
     public Timestamp getOrderDate() {
         return orderDate;
     }
     public void setOrderDate(Timestamp orderDate) {
         this.orderDate = orderDate;
     }
-
+    @SuppressWarnings("unused")
     public Timestamp getReturnDate() {
         return returnDate;
     }
     public void setReturnDate(Timestamp returnDate) {
         this.returnDate = returnDate;
     }
-
+    @SuppressWarnings("unused")
     public String getFinedStatus() {
         return finedStatus;
     }
