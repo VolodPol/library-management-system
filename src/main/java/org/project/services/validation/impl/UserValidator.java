@@ -7,9 +7,6 @@ import org.project.services.validation.dataset.impl.UserDataSet;
 import java.util.regex.Pattern;
 
 public class UserValidator implements Validator {
-    /* Encapsulate RequestSessionContent to send errorMessage as Parameter */
-    //Apply fabric pattern (get from content ... and define validator)
-    //+ interface Validator with method to override - validate - which calls these private methods
     private final UserDataSet dataSet;
     private String errorMessage;
 

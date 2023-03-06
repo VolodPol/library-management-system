@@ -35,9 +35,9 @@ public class LoginCommand implements ActionCommand {
         }
         //check if match
         String login = dataSet.getUsername();
-        if (LogInChecker.doesMatch(login, PasswordEncryptor.encrypt(dataSet.getPassword()))) {
+        if (LoginService.doesMatch(login, PasswordEncryptor.encrypt(dataSet.getPassword()))) {
             UserDao userDao = new UserDao();
-            User user = userDao.findByLogin(login);
+            User user = userDao.findByLogin(login).orElse(new User());//
             setFines(user, userDao, content, response);
 
             //check if user is blocked

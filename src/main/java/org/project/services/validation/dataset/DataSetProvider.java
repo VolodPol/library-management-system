@@ -26,6 +26,14 @@ public class DataSetProvider {
         String phone = content.getParameter("phone");
         String age = content.getParameter("age");
 
+        System.out.println(username);
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println(firstName);
+        System.out.println(surname);
+        System.out.println(phone);
+        System.out.println(age);
+        System.out.println(" inside getUserDataSet method ");
         return new UserDataSet(username, email, password, firstName, surname, phone, age);
     }
 

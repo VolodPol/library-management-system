@@ -1,6 +1,6 @@
-package org.project.dao;
+package org.project.dao.constants;
 
-public interface Constants {
+public interface Queries {
     String GET_ALL_USERS_LIMIT = "SELECT SQL_CALC_FOUND_ROWS * FROM user WHERE role = ? LIMIT ?, ?";
     String CREATE_USER = "INSERT INTO `user` (login, `password`, email, first_name, surname, phonenumber, age, fine_amount, `status`, role, subscription) VALUES (?, ?, ?, ?, ?, ?, ?, 0, 0, ?, 'basic')";
     String DELETE_USER = "DELETE FROM `user` WHERE id = ?";

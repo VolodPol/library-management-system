@@ -11,8 +11,9 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.project.dao.Constants.*;
+import static org.project.dao.constants.Queries.*;
 
 public class UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDao.class);
@@ -25,12 +26,11 @@ public class UserDao {
             ps.setString(1, role.getRoleValue());
             ps.setInt(2, offSet);
             ps.setInt(3, total);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             User user;
             while (rs.next()) {
-                user = new User();
-                extractUser(rs, user);
+                user = extractUser(rs);
                 users.add(user);
             }
             rs.close();
@@ -48,24 +48,27 @@ public class UserDao {
         return this.numOfRecs;
     }
 
-    public User findByLogin(String login) throws DaoException {
-        User user = new User();
+    public Optional<User> findByLogin(String login) throws DaoException {
+        Optional<User> result;
+        User user = null;
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_LOGIN)) {
             preparedStatement.setString(1, login);
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                extractUser(rs, user);
+                user = extractUser(rs);
             }
+            result = Optional.ofNullable(user);
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
-        return user;
+        return result;
     }
 
-    public void setFineAmount(int id, int fine) throws DaoException {
+    public boolean setFineAmount(int id, int fine) throws DaoException {
+        boolean result = false;
         try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint save = connection.setSavepoint("Save");
@@ -73,9 +76,10 @@ public class UserDao {
             try (PreparedStatement statement = connection.prepareStatement(FINE_AMOUNT)) {
                 statement.setInt(1, fine);
                 statement.setInt(2, id);
-                statement.executeUpdate();
-                connection.commit();
+                int update = statement.executeUpdate();
+                result = update != 0;
 
+                connection.commit();
             } catch (SQLException e) {
                 ConnectionManager.rollback(connection, save);
             }
@@ -83,9 +87,11 @@ public class UserDao {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
+        return result;
     }
 
-    public void block(int id, boolean block) throws DaoException {
+    public boolean block(int id, boolean block) throws DaoException {
+        boolean result = false;
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("Save");
@@ -93,9 +99,10 @@ public class UserDao {
             try (PreparedStatement ps = con.prepareStatement(BLOCK_USER)) {
                 ps.setInt(1, block ? 1 : 0);
                 ps.setInt(2, id);
-                ps.executeUpdate();
-                con.commit();
 
+                int update = ps.executeUpdate();
+                result = update != 0;
+                con.commit();
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, save);
             }
@@ -103,55 +110,52 @@ public class UserDao {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
 
-    public void insertUser(User user) throws DaoException {
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER)
-        ) {
-            fillStatement(preparedStatement, user);
-            preparedStatement.setString(8, "user");
+    public boolean insertUser(User user, Role role) throws DaoException {
+        boolean result = false;
+        try (Connection connection = ConnectionManager.getConnection()) {
+            connection.setAutoCommit(false);
+            Savepoint sp = connection.setSavepoint("Save");
 
-            preparedStatement.executeUpdate();
+            try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER)) {
+                fillStatement(preparedStatement, user);
+                preparedStatement.setString(8, role.equals(Role.USER) ? "user" : "librarian");
+
+                int update = preparedStatement.executeUpdate();
+                result = update != 0;
+                connection.commit();
+            } catch (SQLException exception) {
+                ConnectionManager.rollback(connection, sp);
+            }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
 
-    public void delete(int id) throws DaoException {
+    public boolean delete(int id) throws DaoException {
+        boolean result = false;
         try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint sp = connection.setSavepoint("Savepoint");
 
             try (PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
                 statement.setInt(1, id);
-                statement.executeUpdate();
-                connection.commit();
+                int update = statement.executeUpdate();
+                result = update != 0;
 
+                connection.commit();
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, sp);
-                exception.printStackTrace();
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
-    }
-
-    public void insertLibrarian(User user) throws DaoException {
-        try (Connection connection = ConnectionManager.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(CREATE_USER)
-        ) {
-            fillStatement(preparedStatement, user);
-            preparedStatement.setString(8, "librarian");
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
-        }
-
+        return result;
     }
 
     private void fillStatement(PreparedStatement preparedStatement, User user) throws SQLException {
@@ -163,7 +167,9 @@ public class UserDao {
         preparedStatement.setString(6, user.getPhoneNumber());
         preparedStatement.setInt(7, user.getAge());
     }
-    private void extractUser(ResultSet rs, User user) throws SQLException {
+    private User extractUser(ResultSet rs) throws SQLException {
+        User user = new User();
+
         user.setId(rs.getInt(1));
         user.setLogin(rs.getString(2));
         user.setPassword(rs.getString(3));
@@ -176,5 +182,7 @@ public class UserDao {
         user.setStatus(rs.getByte(10));
         user.setRole(Role.valueOf(rs.getString(11).toUpperCase()));
         user.setSubscription(Subscription.valueOf(rs.getString(12).toUpperCase()));
+
+        return user;
     }
 }

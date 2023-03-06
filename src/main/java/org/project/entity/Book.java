@@ -6,7 +6,7 @@ import org.project.utils.UtilProvider;
 import java.sql.Date;
 import java.util.Objects;
 
-public class Book {
+public class Book extends Entity {
     private int id;
     private String title;
     private String author;

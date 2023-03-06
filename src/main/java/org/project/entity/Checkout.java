@@ -3,7 +3,7 @@ package org.project.entity;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Checkout {
+public class Checkout extends Entity {
     private int id;
     private Timestamp startTime;
     private Timestamp endTime;

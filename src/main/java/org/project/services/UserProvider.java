@@ -23,23 +23,15 @@ public class UserProvider {
             return false;
         }
 
-        if (LogInChecker.doesUserExist(data.getUsername(), data.getEmail())) {
+        if (LoginService.doesUserExist(data.getUsername(), data.getEmail())) {
             content.setRequestAttribute("error", MessageName.LOGIN_EMAIL);
             return false;
         }
         User currentUser = new User(data.getUsername(), PasswordEncryptor.encrypt(data.getPassword()), data.getEmail(), data.getFirstName(), data.getSurname(),
                 data.getPhone(), Integer.parseInt(data.getAge()), (byte) 0, (byte) 0, role, Subscription.BASIC
         );
-        insertByRole(currentUser, role);
+        UserDao userDao = new UserDao();
+        userDao.insertUser(currentUser, role);
         return true;
-    }
-
-    private static void insertByRole(User currentUser, Role role) throws DaoException {
-        UserDao userCreator = new UserDao();
-        if (role.equals(Role.USER)) {
-            userCreator.insertUser(currentUser);
-        } else if (role.equals(Role.LIBRARIAN)) {
-            userCreator.insertLibrarian(currentUser);
-        }
     }
 }

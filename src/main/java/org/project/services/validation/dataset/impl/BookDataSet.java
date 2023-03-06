@@ -10,9 +10,6 @@ public class BookDataSet implements DataSet {
     private String copies;
     private String dateOfPublication;
     private String publisher;
-    @SuppressWarnings("unused")
-    public BookDataSet() {
-    }
     public BookDataSet(String title, String author, String isbn, String copies, String dateOfPublication, String publisher) {
         this.title = title;
         this.author = author;

@@ -1,7 +1,7 @@
 package org.project.entity;
 import java.util.Objects;
 
-public class Publisher {
+public class Publisher extends Entity {
     private int id;
     private String name;
 

@@ -8,6 +8,7 @@ public enum PageNavigation {
                     "/login.jsp",
                     "logout",
                     "/register.jsp",
+                    "register",//
                     "books"
             }
     ),
@@ -18,6 +19,7 @@ public enum PageNavigation {
                     "/login.jsp",
                     "logout",
                     "/register.jsp",
+                    "register",//
                     "books",
                     "/new_order.jsp",
                     "order",

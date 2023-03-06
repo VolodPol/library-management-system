@@ -22,7 +22,7 @@ public class FindBookCommand implements ActionCommand {
         String textInput = content.getParameter("text-input");
 
         BookDao finder = new BookDao();
-        List<Book> books = finder.search(criteria, textInput);
+        List<Book> books = finder.searchFor(criteria, textInput);
         List<BookDTO> dtoList = Mapper.booksToDTO(books);
 
         content.setRequestAttribute("bookList", dtoList);

@@ -8,8 +8,8 @@
 <html>
 <head>
     <title><fmt:message bundle="${bundle}" key="page.new_publisher.title"/></title>
-    <link rel="stylesheet" href="css/content/nav_bar.css">
-    <link rel="stylesheet" href="css/buttons/submit-button.css">
+<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
+<%--    <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 

@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.project.dao.Constants.*;
+import static org.project.dao.constants.Queries.*;
 
 public class CheckoutDao {
     private static final Logger log = LoggerFactory.getLogger(CheckoutDao.class);
@@ -27,7 +27,7 @@ public class CheckoutDao {
         return checkouts;
     }
 
-    public List<Checkout> findCheckoutsByLogin(String login) throws DaoException{
+    public List<Checkout> findAllByLogin(String login) throws DaoException{
         List<Checkout> checkouts = new ArrayList<>();
         try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(GET_CHECKOUTS_BY_LOGIN);
@@ -41,9 +41,8 @@ public class CheckoutDao {
         return checkouts;
     }
 
-
-
-    public void insert(Checkout checkout) throws DaoException {
+    public boolean insert(Checkout checkout) throws DaoException {
+        boolean result = false;
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("SavePoint");
@@ -56,26 +55,29 @@ public class CheckoutDao {
                 ps.setInt(5, checkout.getUser().getId());
                 ps.setInt(6, checkout.getBook().getId());
 
-                ps.executeUpdate();
+                int update = ps.executeUpdate();
+                result = update != 0;
                 con.commit();
             } catch (SQLException e) {
                 ConnectionManager.rollback(con, sp);
-                throw new DaoException(e.getMessage(), e.getCause());
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book user class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
 
-    public void confirm(int id) throws DaoException {
+    public boolean confirm(int id) throws DaoException {
+        boolean result = false;
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("Savepoint");
 
             try (PreparedStatement ps = con.prepareStatement(UPDATE_CHECKOUT_BY_ID)) {
                 ps.setInt(1, id);
-                ps.execute();
+                int update = ps.executeUpdate();
+                result = update != 0;
 
                 con.commit();
             } catch (SQLException exception) {
@@ -86,9 +88,11 @@ public class CheckoutDao {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
 
-    public void setFineStatus(int id, byte status) throws DaoException {
+    public boolean setFineStatus(int id, byte status) throws DaoException {
+        boolean result = false;
         try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint sp = connection.setSavepoint("Save");
@@ -96,7 +100,8 @@ public class CheckoutDao {
             try (PreparedStatement ps = connection.prepareStatement(CHECK_FINE_BY_ID)){
                 ps.setByte(1, status);
                 ps.setInt(2, id);
-                ps.executeUpdate();
+                int update = ps.executeUpdate();
+                result = update != 0;
 
                 connection.commit();
             } catch (SQLException e) {
@@ -107,9 +112,11 @@ public class CheckoutDao {
             log.error("dao exception occurred in user dao class: " + exception.getMessage());
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
+        return result;
     }
 
-    public void delete(int bookId, Timestamp startTime, Timestamp endTime) throws DaoException {
+    public boolean delete(int bookId, Timestamp startTime, Timestamp endTime) throws DaoException {
+        boolean result = false;
         try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint sp = connection.setSavepoint("Savepoint");
@@ -118,9 +125,10 @@ public class CheckoutDao {
                 statement.setInt(1, bookId);
                 statement.setTimestamp(2, startTime);
                 statement.setTimestamp(3, endTime);
-                statement.executeUpdate();
-                connection.commit();
 
+                int update = statement.executeUpdate();
+                result = update != 0;
+                connection.commit();
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, sp);
                 log.error("Couldn't rollback connection to savepoint");
@@ -129,6 +137,7 @@ public class CheckoutDao {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
     private void getOrderBy(List<Checkout> checkouts, ResultSet rs) throws SQLException, DaoException {
         while (rs.next()) {
@@ -143,10 +152,10 @@ public class CheckoutDao {
             currentCheck.setFinedStatus(rs.getByte("fined_status"));// ATTENTION!
             try {
                 currentCheck.setUser(
-                        new UserDao().findByLogin(rs.getString("login"))
+                        new UserDao().findByLogin(rs.getString("login")).orElse(new User())//
                 );
                 currentCheck.setBook(
-                        new BookDao().findByIsbn(rs.getString("isbn"))
+                        new BookDao().findByIsbn(rs.getString("isbn")).orElse(new Book())//
                 );
             } catch (DaoException exception) {
                 log.error("dao exception occurred in book dao class: " + exception.getMessage());

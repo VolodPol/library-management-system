@@ -19,9 +19,9 @@
 <html>
 <head>
     <title>${title}</title>
+    <meta name="viewport" content="width=device-width">
 <%--    <link rel="stylesheet" href="css/all.min.css">--%>
 <%--    <link rel="stylesheet" href="css/style.css">--%>
-    <meta name="viewport" content="width=device-width">
 <%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
 </head>
 <body>
@@ -40,7 +40,7 @@
     <div class="box">
         <h1>${h1_sign_up}</h1>
         <form name="registerForm" action="front" method="POST">
-            <input name="command" type="hidden" value="sign_up"/>
+            <input name="command" type="hidden" value="register"/>
 
             <label>${username}</label>
             <div>

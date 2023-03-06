@@ -24,9 +24,9 @@ public class OrderBookCommand implements ActionCommand {
         String login = (String) content.getSessionAttribute("login");
 
         BookDao bookFinder = new BookDao();
-        Book book = bookFinder.findByIsbn(isbn);
+        Book book = bookFinder.findByIsbn(isbn).orElse(new Book());//
         UserDao userFinder = new UserDao();
-        User user = userFinder.findByLogin(login);
+        User user = userFinder.findByLogin(login).orElse(new User());
 
         String startTime = content.getParameter("startTime");
         String endTime = content.getParameter("endTime");

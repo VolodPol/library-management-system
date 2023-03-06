@@ -38,7 +38,8 @@ public class FrontController extends HttpServlet {
             result = command.execute(content, resp);
         } catch (DaoException e) {
             log.error("Dao exception caught in controller");
-            return;
+            e.printStackTrace();
+            return;// Here forward to error page
         }
         content.insertAttributes(req);
         String page = result.getDestinationPage();

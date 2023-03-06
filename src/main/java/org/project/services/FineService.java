@@ -21,7 +21,7 @@ public class FineService {
         int fineSum = 0;
 
         String login = user.getLogin();
-        List<Checkout> orders = dao.findCheckoutsByLogin(login);
+        List<Checkout> orders = dao.findAllByLogin(login);
         Timestamp now = new Timestamp(System.currentTimeMillis());
         for (Checkout order : orders) {
             if (now.after(order.getEndTime())) {
@@ -40,13 +40,20 @@ public class FineService {
     }
     // Actual - поточний, last - останній запис з кукі
     public static int calculateFine(String username, Cookie[] cookies, int actualNum, int oldAmount) {
+        boolean isCookiesEmpty = true;
+
         int lastRec = 0;
         for (Cookie cookie : cookies) {
             if (cookie.getName().equals(UtilProvider.getFineCookie(username)) && !cookie.getValue().isEmpty()) {
                 lastRec = Integer.parseInt(cookie.getValue());
+                isCookiesEmpty = false;
             }
         }
-        if (lastRec == 0 && oldAmount > 0) return 0;
+        if (isCookiesEmpty || (lastRec == 0 && oldAmount > 0))
+            return 0;
+        if (actualNum * 50 > oldAmount)
+            return actualNum * 50 - oldAmount;
+
         return (actualNum - lastRec) * 50;
     }
 }

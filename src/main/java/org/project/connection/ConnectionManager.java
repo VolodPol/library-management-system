@@ -28,6 +28,16 @@ public class ConnectionManager {
             }
         }
     }
+    @SuppressWarnings("unused")
+    public static void commit(Connection connection) throws DaoException {
+        if (connection != null) {
+            try {
+                connection.commit();
+            } catch (SQLException exception) {
+                throw new DaoException(exception.getMessage(), exception);
+            }
+        }
+    }
 
     public static void rollback(Connection connection, Savepoint savepoint) throws DaoException {
         if (connection != null) {

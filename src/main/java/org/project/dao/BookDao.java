@@ -12,40 +12,24 @@ import org.slf4j.LoggerFactory;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-import static org.project.dao.Constants.*;
+import static org.project.dao.constants.Queries.*;
 
 public class BookDao {
     private final static Logger log = LoggerFactory.getLogger(BookDao.class);
-
     private int numOfRecs;
     public List<Book> findAll(int offSet, int total, Sorting sorting, OrderType type) throws DaoException {
         List<Book> books = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection()) {
-            StringBuilder query = new StringBuilder(GET_ALL_BOOKS);
-            if (!type.equals(OrderType.DEFAULT))
-                query.append(String.format(" ORDER BY %s ", type.getValue()));
-            if (sorting.equals(Sorting.DESC))
-                query.append(sorting.getValue());
-            query.append(String.format(" LIMIT %d, %d", offSet, total));
+            String query = buildFindQuery(offSet, total, sorting, type);
 
-            PreparedStatement ps = connection.prepareStatement(query.toString());
+            PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
 
             Book currentBook;
             while (rs.next()) {
-                int id = rs.getInt(1);
-                String title = rs.getString(2);
-                String author = rs.getString(3);
-                String isbn = rs.getString(4);
-                int copiesNumber = rs.getInt(5);
-                Date dateOfPublication = rs.getDate(6);
-
-                Publisher currentPublisher = new Publisher();
-                currentPublisher.setId(rs.getInt(7));
-                currentPublisher.setName(rs.getString(8));
-
-                currentBook = new Book(id, title, author, isbn, copiesNumber, dateOfPublication, currentPublisher);
+                currentBook = retrieveBook(rs);
                 books.add(currentBook);
             }
             rs.close();
@@ -64,21 +48,27 @@ public class BookDao {
         return this.numOfRecs;
     }
 
-    public Book findByIsbn(String isbn) throws DaoException {
-        Book book = new Book();
+    public Optional<Book> findByIsbn(String isbn) throws DaoException {
+        Optional<Book> result;
+        Book book = null;
         try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ISBN);
             ps.setString(1, isbn);
-            extractBook(book, ps);
+
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                book = retrieveBook(resultSet);
+            }
+            result = Optional.ofNullable(book);
 
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
-        return book;
+        return result;
     }
 
-    public List<Book> search(String category, String searchedAs) throws DaoException {
+    public List<Book> searchFor(String category, String searchedAs) throws DaoException {
         List<Book> foundBooks = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection()) {
             PreparedStatement statement;
@@ -92,19 +82,7 @@ public class BookDao {
             ResultSet rs = statement.executeQuery();
             Book book;
             while (rs.next()) {
-                book = new Book();
-
-                book.setId(rs.getInt(1));
-                book.setTitle(rs.getString(2));
-                book.setAuthor(rs.getString(3));
-                book.setIsbn(rs.getString(4));
-                book.setCopiesNumber(rs.getInt(5));
-                book.setDateOfPublication(rs.getDate(6));
-                book.setPublisher(new Publisher(
-                        rs.getInt(7),
-                        rs.getString(8)
-                ));
-
+                book = retrieveBook(rs);
                 foundBooks.add(book);
             }
         } catch (SQLException e) {
@@ -114,36 +92,32 @@ public class BookDao {
         return foundBooks;
     }
 
-
-
-    public void changeCopiesNum(int bookId, boolean toIncrease) throws DaoException {
-        //"UPDATE book SET copies_number = copies_number - 1 WHERE id = ? and copies_number > 0"
-        StringBuilder query = new StringBuilder();
-        query
-                .append("UPDATE book SET copies_number = copies_number ")
-                .append(toIncrease ? "+ 1 " : "- 1 ")
-                .append("WHERE id = ").append(bookId)
-                .append(" AND copies_number > 0");
+    public boolean changeCopiesNum(int bookId, boolean toIncrease) throws DaoException {
+        boolean result = false;
+        String query = buildCopyQuery(bookId, toIncrease);
 
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("SavePoint");
 
-            try (PreparedStatement ps = con.prepareStatement(query.toString())) {
-                ps.executeUpdate();
+            try (PreparedStatement ps = con.prepareStatement(query)) {
+                int update = ps.executeUpdate();
+                result = update != 0;
                 con.commit();
 
             } catch (SQLException exception) {
                 con.rollback(save);
-                exception.printStackTrace();
             }
+
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
 
-    public void update(Book newBook, String isbn) throws DaoException {
+    public boolean update(Book newBook, String isbn) throws DaoException {
+        boolean result = false;
         try (Connection connection = ConnectionManager.getConnection()) {
             connection.setAutoCommit(false);
             Savepoint savepoint = connection.setSavepoint("Save");
@@ -152,19 +126,21 @@ public class BookDao {
                 fillPreparedStatement(ps, newBook);
                 ps.setString(7, isbn);
 
-                ps.executeUpdate();
+                int update = ps.executeUpdate();
+                result = update != 0;
                 connection.commit();
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, savepoint);
-                exception.printStackTrace();
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
 
-    public void insert(Book book) throws DaoException {
+    public boolean insert(Book book) throws DaoException {
+        boolean result = false;
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("SavePoint");
@@ -172,37 +148,39 @@ public class BookDao {
             try (PreparedStatement statement = con.prepareStatement(CREATE_BOOK)) {
                 fillPreparedStatement(statement, book);
 
-                statement.executeUpdate();
+                int update = statement.executeUpdate();
+                result = update != 0;
                 con.commit();
 
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, sp);
-                exception.printStackTrace();
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
+        return result;
     }
-
-    public void delete(String isbn) throws DaoException {
+    public boolean delete(String isbn) throws DaoException {
+        boolean result = false;
         try(Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint savepoint = con.setSavepoint("Save");
 
             try (PreparedStatement ps = con.prepareStatement(DELETE_BOOK)) {
                 ps.setString(1, isbn);
-                ps.execute();
+                int update = ps.executeUpdate();
+                result = update != 0;
 
                 con.commit();
             } catch (SQLException e) {
                 ConnectionManager.rollback(con, savepoint);
-                e.printStackTrace();
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
+        return result;
     }
 
     public boolean isIsbnPresent(String isbn) throws DaoException {
@@ -221,21 +199,39 @@ public class BookDao {
         return false;
     }
 
-    private void extractBook(Book book, PreparedStatement ps) throws SQLException {
-        ResultSet resultSet = ps.executeQuery();
+    private static String buildFindQuery(int offSet, int total, Sorting sorting, OrderType type) {
+        StringBuilder query = new StringBuilder(GET_ALL_BOOKS);
 
-        if (resultSet.next()) {
-            book.setId(resultSet.getInt("b.id"));
-            book.setTitle(resultSet.getString("title"));
-            book.setAuthor(resultSet.getString("author"));
-            book.setIsbn(resultSet.getString("isbn"));
-            book.setCopiesNumber(resultSet.getInt("copies_number"));
-            book.setDateOfPublication(resultSet.getDate("date_of_publication"));
-            book.setPublisher(new Publisher(
-                    resultSet.getInt("p.id"),
-                    resultSet.getString("name")
-            ));
-        }
+        if (!type.equals(OrderType.DEFAULT))
+            query.append(String.format(" ORDER BY %s ", type.getValue()));
+        if (sorting.equals(Sorting.DESC))
+            query.append(sorting.getValue());
+
+        query.append(String.format(" LIMIT %d, %d", offSet, total));
+        return query.toString();
+    }
+
+    private static String buildCopyQuery(int bookId, boolean toIncrease) {
+        //"UPDATE book SET copies_number = copies_number - 1 WHERE id = ? and copies_number > 0"
+        return "UPDATE book SET copies_number = copies_number " +
+                (toIncrease ? "+ 1 " : "- 1 ") +
+                "WHERE id = " + bookId +
+                " AND copies_number > 0";
+    }
+
+    private static Book retrieveBook(ResultSet resultSet) throws SQLException {
+        Book book = new Book();
+
+        book.setId(resultSet.getInt(1));
+        book.setTitle(resultSet.getString(2));
+        book.setAuthor(resultSet.getString(3));
+        book.setIsbn(resultSet.getString(4));
+        book.setCopiesNumber(resultSet.getInt(5));
+        book.setDateOfPublication(resultSet.getDate(6));
+        book.setPublisher(new Publisher(
+                resultSet.getInt(7),
+                resultSet.getString(8)));
+        return book;
     }
 
     private void fillPreparedStatement(PreparedStatement statement, Book newBook) throws SQLException {

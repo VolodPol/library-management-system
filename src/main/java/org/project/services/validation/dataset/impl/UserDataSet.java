@@ -11,9 +11,6 @@ public class UserDataSet implements DataSet {
     private String surname;
     private String phone;
     private String age;
-    @SuppressWarnings("unused")
-    public UserDataSet() {
-    }
 
     public UserDataSet(String username, String email, String password, String firstName, String surname, String phone, String age) {
         this.username = username;
@@ -27,7 +24,8 @@ public class UserDataSet implements DataSet {
 
     @Override
     public boolean isBlank() {
-        return isEmpty(username) && isEmpty(email) && isEmpty(firstName) && isEmpty(surname) && isEmpty(phone) && isEmpty(age);
+        return isEmpty(username) && isEmpty(email) && isEmpty(firstName)
+                && isEmpty(surname) && isEmpty(phone) && isEmpty(age);
     }
 
     public String getUsername() {

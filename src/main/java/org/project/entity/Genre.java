@@ -2,7 +2,7 @@ package org.project.entity;
 
 import java.util.Objects;
 @SuppressWarnings("unused")
-public class Genre {
+public class Genre extends Entity{
     private int id;
     private String name;
 

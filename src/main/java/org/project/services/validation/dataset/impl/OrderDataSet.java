@@ -8,9 +8,6 @@ public class OrderDataSet implements DataSet {
     private String endTime;
     private String orderType;
     private String userSub;
-    @SuppressWarnings("unused")
-    public OrderDataSet() {
-    }
 
     public OrderDataSet(String startTime, String endTime, String orderType, String userSub) {
         this.startTime = startTime;

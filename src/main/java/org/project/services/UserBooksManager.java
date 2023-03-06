@@ -16,7 +16,7 @@ import java.util.List;
 public class UserBooksManager {
     public static List<OrderedBookDTO> getUserBooks(String subscription, String login) throws DaoException {
         CheckoutDao ordersProvider = new CheckoutDao();
-        List<Checkout> orders = ordersProvider.findCheckoutsByLogin(login);
+        List<Checkout> orders = ordersProvider.findAllByLogin(login);
 
         List<OrderedBookDTO> userBooks = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class UserBooksManager {
         if (!publisherDao.isPresent(name)) {
             publisherDao.insert(new Publisher(name));
         }
-        Publisher publisher = publisherDao.findByName(name);
+        Publisher publisher = publisherDao.findByName(name).orElse(new Publisher());//
         book.setPublisher(publisher);
     }
 

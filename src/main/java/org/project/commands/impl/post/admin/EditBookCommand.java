@@ -25,7 +25,7 @@ public class EditBookCommand implements ActionCommand {
     public ActionResult execute(RequestContent content, HttpServletResponse response) throws DaoException {
         BookDao bookDao = new BookDao();
         String formerIsbn = content.getParameter("formerIsbn");
-        Book bookToEdit = bookDao.findByIsbn(formerIsbn);
+        Book bookToEdit = bookDao.findByIsbn(formerIsbn).orElse(new Book());//
 
         BookDataSet data = DataSetProvider.getBookDataSet(content);
         Validator validator = new EditBookValidator(data);

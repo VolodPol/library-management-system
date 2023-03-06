@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.Optional;
 
 public class PublisherDao {
     private final static Logger log = LoggerFactory.getLogger(PublisherDao.class);
@@ -31,26 +32,31 @@ public class PublisherDao {
         return false;
     }
 
-    public Publisher findByName(String name) throws DaoException {
-        Publisher publisher = new Publisher();
+    public Optional<Publisher> findByName(String name) throws DaoException {
+        Optional<Publisher> result;
+        Publisher publisher = null;
         try (Connection con = ConnectionManager.getConnection()) {
             PreparedStatement ps = con.prepareStatement(QUERY);
             ps.setString(1, name);
             ResultSet resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
-                publisher.setId(resultSet.getInt(1));
-                publisher.setName(resultSet.getString(2));
+                publisher = new Publisher(
+                        resultSet.getInt(1),
+                        resultSet.getString(2)
+                );
             }
+            result = Optional.ofNullable(publisher);
 
         } catch (SQLException exception) {
             log.error("DaoException occurred in " + PublisherDao.class);
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
-        return publisher;
+        return result;
     }
 
-    public void insert(Publisher publisher) throws DaoException {
+    public boolean insert(Publisher publisher) throws DaoException {
+        boolean result = false;
         try (Connection con = ConnectionManager.getConnection()) {
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("Save");
@@ -58,15 +64,16 @@ public class PublisherDao {
             try (PreparedStatement ps = con.prepareStatement(INSERT)) {
                 ps.setString(1, publisher.getName());
 
-                ps.execute();
+                int update = ps.executeUpdate();
+                result = update != 0;
                 con.commit();
             } catch (SQLException e) {
                 ConnectionManager.rollback(con, sp);
-                e.printStackTrace();
             }
         } catch (SQLException exception) {
             log.error("DaoException occurred in " + PublisherDao.class);
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
+        return result;
     }
 }

@@ -5,9 +5,6 @@ import org.project.utils.UtilProvider;
 
 public class PublisherDataSet implements DataSet {
     private String publisherName;
-    @SuppressWarnings("unused")
-    public PublisherDataSet() {
-    }
 
     public PublisherDataSet(String publisherName) {
         this.publisherName = publisherName;
