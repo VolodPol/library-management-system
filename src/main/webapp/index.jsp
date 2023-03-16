@@ -10,7 +10,6 @@
 <html>
 <head>
     <title><fmt:message bundle="${bundle}" key="page.index.title"/></title>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/content/nav_bar.css">--%>
 </head>
 <body>
 <fmt:bundle basename="Localization" prefix="page.navigation.">
@@ -46,7 +45,7 @@
 
 <div class="main-div">
     <div class="welcome-box">
-        <ctg:hi role="${sessionScope.role}" login="${sessionScope.name}"/>
+        <ctg:hi role="${sessionScope.role}" login="${sessionScope.name}" locale="${sessionScope.locale}"/>
     </div>
 </div>
 <jsp:include page="elements/footer.jspf"/>

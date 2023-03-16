@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.project.commands.ActionCommand;
 import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
+import org.project.dao.CheckoutDao;
 import org.project.dao.UserDao;
 import org.project.entity.Role;
 import org.project.entity.User;
@@ -22,6 +23,10 @@ import static org.project.services.resources.FilePath.*;
 import static org.project.utils.PathProvider.getPath;
 
 public class LoginCommand implements ActionCommand {
+    private final LoginService loginService;
+    {
+        loginService = new LoginService();
+    }
     @Override
     public ActionResult execute(RequestContent content, HttpServletResponse response) throws DaoException {
         String page;
@@ -35,9 +40,9 @@ public class LoginCommand implements ActionCommand {
         }
         //check if match
         String login = dataSet.getUsername();
-        if (LoginService.doesMatch(login, PasswordEncryptor.encrypt(dataSet.getPassword()))) {
+        if (loginService.doesMatch(login, PasswordEncryptor.encrypt(dataSet.getPassword()))) {
             UserDao userDao = new UserDao();
-            User user = userDao.findByLogin(login).orElse(new User());//
+            User user = userDao.findByLogin(login).orElse(new User());
             setFines(user, userDao, content, response);
 
             //check if user is blocked
@@ -64,10 +69,11 @@ public class LoginCommand implements ActionCommand {
         if (!user.getRole().equals(Role.USER))
             return;
         //calculate fine
-        int fines = FineService.checkOrders(user);
+        FineService service = new FineService(new CheckoutDao());
+        int fines = service.checkOrders(user);
         Cookie[] cookies = content.getCookies();
 
-        int fineAmount = FineService.calculateFine(user.getLogin(), cookies, fines, user.getFineAmount());
+        int fineAmount = service.calculateFine(user.getLogin(), cookies, fines, user.getFineAmount());
         response.addCookie(new Cookie(UtilProvider.getFineCookie(user.getLogin()), String.valueOf(fines)));
 
         if (fineAmount != 0)

@@ -8,8 +8,6 @@
 <html>
 <head>
     <title><fmt:message bundle="${bundle}" key="page.profile.title"/></title>
-<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
-<%--    <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 
@@ -42,21 +40,21 @@
 <c:set var="user" value="${requestScope.user}" scope="page"/>
 <h2 style="text-align: center"><fmt:message bundle="${bundle}" key="page.profile.h2_greeting"/> ${sessionScope.name}!</h2>
 <div id="container">
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_login"/>   :   ${user.login}</h2>
+        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_login"/>   :   ${requestScope.user.login}</h2>
 
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_email"/>  :   ${user.email}</h2>
-
-
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_phone"/>    :   ${user.phone}</h2>
+        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_email"/>  :   ${requestScope.user.email}</h2>
 
 
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_role"/>    :   ${user.role}</h2>
+        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_phone"/>    :   ${requestScope.user.phone}</h2>
 
 
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_fine_amount"/>    :   ${user.fineAmount}</h2>
+        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_role"/>    :   ${requestScope.user.role}</h2>
+
+        <fmt:setLocale value="${sessionScope.locale}"/>
+        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_fine_amount"/>    :   <fmt:formatNumber type="currency" value="${requestScope.user.fineAmount}"/></h2>
 
 
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_sub"/>     :   ${user.subscription}</h2>
+        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_sub"/>     :   ${requestScope.user.subscription}</h2>
 
 </div>
 
@@ -69,14 +67,6 @@
     #container {
         display: block;
         margin: auto 50px;
-    }
-
-    .input-div {
-        padding-left: 20px;
-    }
-
-    .input {
-        font-size: x-large;
     }
 
     * {
@@ -111,26 +101,6 @@
 
     .active {
         background-color: #1e6839;
-    }
-    /*    submit */
-    .submit-button {
-        padding: 10px;
-        background: #0066A2;
-        color: white;
-        border-style: outset;
-        border-color: #0066A2;
-        font: bold 18px arial,sans-serif;
-        text-shadow: none;
-        cursor: pointer;
-        box-shadow: 0 2px #999;
-    }
-
-    .submit-button:hover {background-color: #3e8e41}
-
-    .submit-button:active {
-        background-color: #3e8e41;
-        box-shadow: 0 5px #666;
-        transform: translateY(4px);
     }
 
 </style>

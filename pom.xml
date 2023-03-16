@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.project</groupId>
@@ -12,32 +12,19 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <junit5.api.version>5.9.0</junit5.api.version>
+        <junit5.launcher.version>1.9.2</junit5.launcher.version>
+        <jakarta.servlet.version>3.0.0</jakarta.servlet.version>
+        <log4j.version>2.19.0</log4j.version>
     </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.2</version>
-      <scope>test</scope>
-    </dependency>
-
-      <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+      <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
       <dependency>
-          <groupId>mysql</groupId>
-          <artifactId>mysql-connector-java</artifactId>
-          <version>8.0.31</version>
+          <groupId>com.mysql</groupId>
+          <artifactId>mysql-connector-j</artifactId>
+          <version>8.0.32</version>
       </dependency>
-
-<!--     CHANGE TO THIS! -> com.mysql:mysql-connector-j:jar:8.0.31  -->
-
-<!--      https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
-<!--      <dependency>-->
-<!--          <groupId>com.mysql</groupId>-->
-<!--          <artifactId>mysql-connector-j</artifactId>-->
-<!--          <version>8.0.31</version>-->
-<!--      </dependency>-->
-
 
       <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
       <dependency>
@@ -65,70 +52,27 @@
       <dependency>
           <groupId>jakarta.servlet.jsp.jstl</groupId>
           <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
-          <version>3.0.0</version>
+          <version>${jakarta.servlet.version}</version>
       </dependency>
 
       <dependency>
           <groupId>jakarta.servlet.jsp</groupId>
           <artifactId>jakarta.servlet.jsp-api</artifactId>
-          <version>3.0.0</version>
+          <version>${jakarta.servlet.version}</version>
       </dependency>
-
-      <!-- log4j -->
-<!--      <dependency>-->
-<!--          <groupId>org.slf4j</groupId>-->
-<!--          <artifactId>slf4j-api</artifactId>-->
-<!--          <version>2.0.5</version> &lt;!&ndash; 2.0.5 &ndash;&gt;-->
-<!--      </dependency>-->
-<!--      <dependency>-->
-<!--          <groupId>org.apache.logging.log4j</groupId>-->
-<!--          <artifactId>log4j-api</artifactId>-->
-<!--          <version>2.19.0</version> &lt;!&ndash; 2.19.0 &ndash;&gt;-->
-<!--      </dependency>-->
-<!--      <dependency>-->
-<!--          <groupId>org.apache.logging.log4j</groupId>-->
-<!--          <artifactId>log4j-core</artifactId>-->
-<!--          <version>2.19.0</version> &lt;!&ndash; 2.19.0 &ndash;&gt;-->
-<!--      </dependency>-->
-<!--      <dependency>-->
-<!--          <groupId>org.apache.logging.log4j</groupId>-->
-<!--          <artifactId>log4j-slf4j2-impl</artifactId>-->
-<!--          <version>2.19.0</version> &lt;!&ndash; 2.19.0 &ndash;&gt;-->
-<!--      </dependency>-->
-
-<!--=====================================================================-->
-<!--      <dependency>-->
-<!--          <groupId>org.slf4j</groupId>-->
-<!--          <artifactId>slf4j-api</artifactId>-->
-<!--          <version>2.0.6</version>-->
-<!--      </dependency>-->
-
-<!--      <dependency>-->
-<!--          <groupId>org.slf4j</groupId>-->
-<!--          <artifactId>slf4j-log4j12</artifactId>-->
-<!--          <version>2.0.6</version>-->
-
-<!--      </dependency>-->
-
-<!--      <dependency>-->
-<!--          <groupId>org.apache.logging.log4j</groupId>-->
-<!--          <artifactId>log4j-core</artifactId>-->
-<!--          <version>2.19.0</version>-->
-<!--      </dependency>-->
-      <!--=====================================================================-->
 
       <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j-impl -->
       <dependency>
           <groupId>org.apache.logging.log4j</groupId>
           <artifactId>log4j-slf4j-impl</artifactId>
-          <version>2.19.0</version>
+          <version>${log4j.version}</version>
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
       <dependency>
           <groupId>org.apache.logging.log4j</groupId>
           <artifactId>log4j-api</artifactId>
-          <version>2.19.0</version>
+          <version>${log4j.version}</version>
       </dependency>
 
       <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
@@ -145,6 +89,40 @@
           <version>2.19.0</version>
       </dependency>
 
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-core</artifactId>
+          <version>5.2.0</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-engine</artifactId>
+          <version>${junit5.api.version}</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-api</artifactId>
+          <version>${junit5.api.version}</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-params</artifactId>
+          <version>${junit5.api.version}</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.junit.platform</groupId>
+          <artifactId>junit-platform-launcher</artifactId>
+          <version>${junit5.launcher.version}</version>
+          <scope>test</scope>
+      </dependency>
 
   </dependencies>
   <build>

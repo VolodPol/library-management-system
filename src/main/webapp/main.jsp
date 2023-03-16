@@ -11,6 +11,8 @@
 <fmt:message bundle="${bundle}" key="page.main.search_option.title" var="title_search"/>
 <fmt:message bundle="${bundle}" key="page.main.search_option.author" var="author_search"/>
 <fmt:message bundle="${bundle}" key="page.main.h1_my_books" var="h1_my_books"/>
+<fmt:message bundle="${bundle}" key="page.sorting.sort_by.default" var="defaultType"/>
+<fmt:message bundle="${bundle}" key="page.sorting.sort_order.default" var="defaultSorting"/>
 <fmt:message bundle="${bundle}" key="page.main.order_by_option.title" var="title_order"/>
 <fmt:message bundle="${bundle}" key="page.main.order_by_option.author" var="author_order"/>
 <fmt:message bundle="${bundle}" key="page.main.order_by_option.publication" var="publication_order"/>
@@ -28,11 +30,6 @@
 <html>
 <head>
     <title>${title}</title>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/content/nav_bar.css">--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/buttons/edit.css">--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/buttons/delete.css">--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/buttons/submit-button.css">--%>
-<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/content/pagination.css">--%>
 </head>
 <body>
 <c:if test="${empty sessionScope.role}" var="isEmptyRole" scope="page"/>
@@ -68,12 +65,17 @@
         </ul>
     </nav>
 </fmt:bundle>
+<%--Атрибути для пагінації--%>
+<c:set var="page" value="${requestScope.currentPage}" scope="page"/>
+<c:set var="sortBy" value="${requestScope.sortBy}" scope="page"/>
+<c:set var="sortOrder" value="${requestScope.sortOrder}" scope="page"/>
+<c:set var="recordsPerPage" value="${requestScope.recordsPerPage}" scope="page"/>
+
 <div class="container">
 
     <div class="center">
         <div class="search-box">
             <form name="searchForm" action="front" method="get">
-
                 <div class="inside-search">
                     <label for="criteria">${search}</label>
                     <select name="filter" id="criteria">
@@ -82,13 +84,13 @@
                     </select>
                 </div>
 
-
                 <div class="search-area">
                     <input type="hidden" name="command" value="find_book">
                     <label>
                         <input type="text" name="text-input" placeholder="Search">
                     </label>
                 </div>
+
                 <div class="search-area">
                     <input class="submit-button" type="submit" value="<fmt:message bundle="${bundle}" key="page.button.find"/>"/>
                 </div>
@@ -102,21 +104,31 @@
             <form action="front" method="get" style="font-size: 1.35em">
                 <input type="hidden" name="command" value="books"/>
                 <div class="inside-filter">
-                    <label for="order-by"></label>
-                    <select name="orderBy" id="order-by">
+                    <label for="sort-by"></label>
+                    <select name="sortBy" id="sort-by">
+                        <option value="defaultType">${defaultType}</option>
                         <option value="title">${title_order}</option>
                         <option value="author">${author_order}</option>
                         <option value="publication">${publication_order}</option>
                         <option value="date">${date_order}</option>
                     </select>
                 </div>
+
                 <div class="inside-filter">
-                    <label for="order-type"></label>
-                    <select name="orderType" id="order-type">
+                    <label for="sort-order"></label>
+                    <select name="sortOrder" id="sort-order">
+                        <option value="defaultSorting">${defaultSorting}</option>
                         <option value="asc">${asc}</option>
                         <option value="desc">${desc}</option>
                     </select>
                 </div>
+<%--                Скільки записів відображати              --%>
+                <div class="inside-filter">
+                    <label>
+                        <input type="number" name="recNum" min="1" max="10" step="1" value="${recordsPerPage}">
+                    </label>
+                </div>
+
                 <div class="inside-filter">
                     <input class="submit-button" type="submit" value="<fmt:message bundle="${bundle}" key="page.button.confirm"/>"/>
                 </div>
@@ -184,25 +196,32 @@
 
     <div class="center">
         <div class="pagination">
-            <%--Display previous page--%>
-            <c:if test="${requestScope.currentPage > 1}">
-                <a href="front?command=books&page=${requestScope.currentPage - 1}"><fmt:message bundle="${bundle}" key="page.pagination.prev"/></a>
+            <%-- Попередня сторінка --%>
+            <c:if test="${page > 1}">
+                <a href="front?command=books&page=${page - 1}&sortBy=${sortBy}&sortOrder=${sortOrder}&recNum=${recordsPerPage}">
+                    <fmt:message bundle="${bundle}" key="page.pagination.prev"/>
+                </a>
             </c:if>
 
-            <%--        Pages--%>
+            <%--        Усі сторінки --%>
             <c:forEach var="i" begin="1" end="${requestScope.numOfPages}">
                 <c:choose>
-                    <c:when test="${i == requestScope.currentPage}">
+                    <c:when test="${i == page}">
                         <a class="active">${i}</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="front?command=books&page=${i}">${i}</a>
+<%--                        <a href="front?command=books&page=${i}">${i}</a>--%>
+                        <a href="front?command=books&page=${i}&sortBy=${sortBy}&sortOrder=${sortOrder}&recNum=${recordsPerPage}">
+                                ${i}
+                        </a>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
-            <%--        Display next page--%>
-            <c:if test="${requestScope.currentPage < requestScope.numOfPages}">
-                <a href="front?command=books&page=${requestScope.currentPage + 1}"><fmt:message bundle="${bundle}" key="page.pagination.next"/></a>
+            <%--        Наступна сторінка--%>
+            <c:if test="${page < requestScope.numOfPages}">
+                <a href="front?command=books&page=${page + 1}&sortBy=${sortBy}&sortOrder=${sortOrder}&recNum=${recordsPerPage}">
+                    <fmt:message bundle="${bundle}" key="page.pagination.next"/>
+                </a>
             </c:if>
         </div>
     </div>
@@ -256,10 +275,10 @@
         border-bottom: 2px solid #1e673a;
     }
 
-    .content-table tbody tr.active-row {
-        font-weight: bold;
-        color: #1e673a;
-    }
+    /*.content-table tbody tr.active-row {*/
+    /*    font-weight: bold;*/
+    /*    color: #1e673a;*/
+    /*}*/
 
 /*    -----------------------------------------*/
 /*search styles*/
@@ -418,4 +437,9 @@
     }
 
     .pagination a:hover:not(.active) {background-color: #ddd;}
+/*    input number*/
+    input[type='number']{
+        width: 40px;
+        height: 30px;
+    }
 </style>

@@ -96,9 +96,9 @@
         background-color: #111;
     }
 
-    .active {
-        background-color: #1e6839;
-    }
+    /*.active {*/
+    /*    background-color: #1e6839;*/
+    /*}*/
 
 /*    page */
 </style>

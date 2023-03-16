@@ -1,6 +1,7 @@
 package org.project.entity.dto;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
 public class OrderedBookDTO {
     private int bookId;
@@ -58,5 +59,33 @@ public class OrderedBookDTO {
     }
     public void setSubscription(String subscription) {
         this.subscription = subscription;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        OrderedBookDTO that = (OrderedBookDTO) o;
+
+        if (bookId != that.bookId) return false;
+        if (!Objects.equals(title, that.title)) return false;
+        if (!Objects.equals(author, that.author)) return false;
+        if (!Objects.equals(orderDate, that.orderDate)) return false;
+        if (!Objects.equals(returnDate, that.returnDate)) return false;
+        if (!Objects.equals(finedStatus, that.finedStatus)) return false;
+        return Objects.equals(subscription, that.subscription);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bookId;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (author != null ? author.hashCode() : 0);
+        result = 31 * result + (orderDate != null ? orderDate.hashCode() : 0);
+        result = 31 * result + (returnDate != null ? returnDate.hashCode() : 0);
+        result = 31 * result + (finedStatus != null ? finedStatus.hashCode() : 0);
+        result = 31 * result + (subscription != null ? subscription.hashCode() : 0);
+        return result;
     }
 }

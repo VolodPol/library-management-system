@@ -31,9 +31,7 @@ public class DataSource {
         } catch (IOException exception){
             exception.printStackTrace();
         }
-
         ds = new HikariDataSource(config);
-
     }
 
     private DataSource() {}

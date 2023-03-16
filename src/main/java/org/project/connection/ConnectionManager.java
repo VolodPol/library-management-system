@@ -1,21 +1,42 @@
 package org.project.connection;
 
 import org.project.exceptions.DaoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
+import java.sql.Statement;
 
 public class ConnectionManager {
-    public static Connection getConnection() throws SQLException {
-        return DataSource.getConnection();
+    private static final Logger log = LoggerFactory.getLogger(ConnectionManager.class);
+    public static synchronized Connection getConnection() {
+        Connection connection = null;
+        try {
+            connection = DataSource.getConnection();
+        } catch (SQLException exception) {
+            log.error("Failed to get connection ", exception);
+        }
+        return connection;
     }
     @SuppressWarnings("unused")
-    public static void closeSafely(Connection connection) throws DaoException{
+    public static void closeConnection(Connection connection) throws DaoException{
         try {
             connection.close();
         } catch (SQLException exception) {
+            log.warn("Couldn't close connection ", exception);
             throw new DaoException(exception.getMessage(), exception);
+        }
+    }
+    @SuppressWarnings("unused")
+    public static void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException exception) {
+                log.warn("Couldn't close statement ", exception);
+            }
         }
     }
     @SuppressWarnings("unused")
@@ -24,6 +45,7 @@ public class ConnectionManager {
             try {
                 connection.rollback();
             } catch (SQLException exception) {
+                log.warn("Couldn't rollback ", exception);
                 throw new DaoException(exception.getMessage(), exception);
             }
         }
@@ -34,6 +56,7 @@ public class ConnectionManager {
             try {
                 connection.commit();
             } catch (SQLException exception) {
+                log.warn("Couldn't commit ", exception);
                 throw new DaoException(exception.getMessage(), exception);
             }
         }
@@ -44,6 +67,7 @@ public class ConnectionManager {
             try {
                 connection.rollback(savepoint);
             } catch (SQLException exception) {
+                log.warn("Couldn't rollback to savepoint ", exception);
                 throw new DaoException(exception.getMessage(), exception);
             }
         }

@@ -20,9 +20,6 @@
 <head>
     <title>${title}</title>
     <meta name="viewport" content="width=device-width">
-<%--    <link rel="stylesheet" href="css/all.min.css">--%>
-<%--    <link rel="stylesheet" href="css/style.css">--%>
-<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
 </head>
 <body>
 <fmt:bundle basename="Localization" prefix="page.navigation.">

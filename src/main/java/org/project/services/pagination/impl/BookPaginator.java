@@ -3,8 +3,8 @@ package org.project.services.pagination.impl;
 import org.project.commands.RequestContent;
 import org.project.dao.BookDao;
 import org.project.entity.Book;
-import org.project.entity.sorting.OrderType;
-import org.project.entity.sorting.Sorting;
+import org.project.entity.sorting.SortBy;
+import org.project.entity.sorting.SortOrder;
 import org.project.exceptions.DaoException;
 import org.project.services.pagination.DataForPagination;
 import org.project.services.pagination.Paginator;
@@ -19,15 +19,21 @@ public class BookPaginator extends Paginator<Book> {
     }
 
     private static class ParamData extends DataForPagination {
-        private Sorting sorting = Sorting.ASC;
-        private OrderType type = OrderType.DEFAULT;
+        private SortOrder sortOrder = SortOrder.ASC;
+        private SortBy sortBy = SortBy.DEFAULT;
+        private int recsPerPage = 5;
 
-        public ParamData(String page, String sorting, String type) {
+        private final static String defaultSorting = "defaultSorting";
+        private final static String defaultType = "defaultType";
+
+        public ParamData(String page, String sortOrder, String sortBy, String recsPerPage) {
             super(page);
-            if (sorting != null)
-                this.sorting = Sorting.valueOf(sorting.toUpperCase());
-            if (type != null)
-                this.type = OrderType.valueOf(type.toUpperCase());
+            if (sortOrder != null && !sortOrder.equals(defaultSorting))
+                this.sortOrder = SortOrder.valueOf(sortOrder.toUpperCase());
+            if (sortBy != null && !sortBy.equals(defaultType))
+                this.sortBy = SortBy.valueOf(sortBy.toUpperCase());
+            if (recsPerPage != null)
+                this.recsPerPage = Integer.parseInt(recsPerPage);
         }
 
         @Override
@@ -35,28 +41,43 @@ public class BookPaginator extends Paginator<Book> {
             return super.getPage();
         }
 
-        private Sorting getSorting() {
-            return sorting;
+        private SortOrder getSortOrder() {
+            return sortOrder;
         }
-        private OrderType getType() {
-            return type;
+        private SortBy getSortBy() {
+            return sortBy;
+        }
+        public int getRecsPerPage() {
+            return recsPerPage;
         }
     }
 
-    //5 instead of recsPerPage
     @Override
     public List<Book> provideData(RequestContent content) throws DaoException {
         ParamData data = new ParamData(
                 content.getParameter("page"),
-                content.getParameter("orderType"),
-                content.getParameter("orderBy")
+                content.getParameter("sortOrder"),
+                content.getParameter("sortBy"),
+                content.getParameter("recNum")
         );
-        List<Book> books = bookDao.findAll((data.getPage() - 1) * 5, 5, data.getSorting(), data.getType());
-
-        numberOrRecords = bookDao.getNumOfRecs();
-        numberOfPages = calcNumOfPages();
-        currentPage = data.getPage();
+        super.recordsPerPage = data.getRecsPerPage();
+        setPaginationAttributes(content, data);
+        List<Book> books = bookDao.findAll(
+                (data.getPage() - 1) * data.getRecsPerPage(),
+                data.getRecsPerPage(),
+                data.getSortOrder(),
+                data.getSortBy()
+        );
+        super.numberOrRecords = bookDao.getNumOfRecs();
+        super.numberOfPages = calcNumOfPages();
+        super.currentPage = data.getPage();
+        super.recordsPerPage = data.getRecsPerPage();
 
         return books;
+    }
+
+    private void setPaginationAttributes(RequestContent content, ParamData data) {
+        content.setRequestAttribute("sortBy", data.getSortBy());
+        content.setRequestAttribute("sortOrder", data.getSortOrder());
     }
 }

@@ -8,8 +8,6 @@
 <html>
 <head>
     <title><fmt:message bundle="${bundle}" key="page.new_publisher.title"/></title>
-<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
-<%--    <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 
@@ -98,9 +96,9 @@
         background-color: #111;
     }
 
-    .active {
-        background-color: #1e6839;
-    }
+    /*.active {*/
+    /*    background-color: #1e6839;*/
+    /*}*/
     /*    submit */
     .submit-button {
         padding: 10px;

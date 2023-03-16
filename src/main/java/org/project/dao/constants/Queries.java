@@ -23,6 +23,7 @@ public interface Queries {
     //Order DAO
     String GET_ALL_CHECKOUTS = "SELECT c.id, start_time, end_time, is_returned, order_status, c.type, fined_status, u.id, u.login, b.id, b.isbn FROM checkout c JOIN user u JOIN book b ON c.user_id = u.id AND c.book_id = b.id";
     String GET_CHECKOUTS_BY_LOGIN = "SELECT c.id, start_time, end_time, is_returned, order_status, c.type, fined_status, u.id, u.login, b.id, b.isbn FROM checkout c JOIN user u JOIN book b ON c.user_id = u.id AND c.book_id = b.id WHERE order_status = 1 AND u.login = ?";
+    String GET_CHECKOUTS_BY_BOOK_ID = "SELECT c.id, start_time, end_time, is_returned, order_status, c.type, fined_status, u.id, u.login, b.id, b.isbn FROM checkout c JOIN user u JOIN book b ON c.user_id = u.id AND c.book_id = b.id WHERE order_status = 0 AND b.id = ?";
     String CREATE_CHECKOUT = "INSERT INTO checkout (start_time, end_time, is_returned, order_status, `type`, fined_status, user_id, book_id) VALUES (?, ?, 1, 0, ?, ?, ?, ?)";
     String UPDATE_CHECKOUT_BY_ID = "UPDATE checkout SET is_returned = 0, order_status = 1 WHERE id = ?";
     String DELETE_CHECKOUT = "DELETE FROM checkout WHERE book_id = ? AND start_time = ? AND end_time = ?";

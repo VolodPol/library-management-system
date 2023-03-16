@@ -19,8 +19,6 @@
 <html>
 <head>
     <title>${title}</title>
-<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
-<%--    <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 <c:set var="userRole" value="${sessionScope.role}" scope="page"/>
@@ -133,10 +131,10 @@
         border-bottom: 2px solid #1e673a;
     }
 
-    .content-table tbody tr.active-row {
-        font-weight: bold;
-        color: #1e673a;
-    }
+    /*.content-table tbody tr.active-row {*/
+    /*    font-weight: bold;*/
+    /*    color: #1e673a;*/
+    /*}*/
 
     * {
         font-family: 'Raleway', sans-serif;

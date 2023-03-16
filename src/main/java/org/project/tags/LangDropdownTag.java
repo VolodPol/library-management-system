@@ -28,8 +28,8 @@ public class LangDropdownTag extends TagSupport {
                         <select name="locale" id="localization" onclick="this.form.submit()">""");
         if (locale == null || locale.equals("en_US")) {
             html.append("""
-                        <option value="en_US" selected>En</option>
-                        <option value="uk_UA">Ua</option>""");
+                    <option value="en_US" selected>En</option>
+                    <option value="uk_UA">Ua</option>""");
         } else {
             html.append("""
                         <option value="en_US">En</option>

@@ -9,10 +9,6 @@
 <head>
     <title><fmt:message bundle="${bundle}" key="page.new_librarian.title"/></title>
     <meta name="viewport" content="width=device-width">
-<%--    <link rel="stylesheet" href="css/all.min.css">--%>
-<%--    <link rel="stylesheet" href="css/style.css">--%>
-<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
-<%--    <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 <fmt:bundle basename="Localization" prefix="page.navigation.">

@@ -2,11 +2,9 @@ package org.project.services;
 
 import org.project.entity.Book;
 import org.project.entity.Checkout;
+import org.project.entity.Publisher;
 import org.project.entity.User;
-import org.project.entity.dto.BookDTO;
-import org.project.entity.dto.CheckoutDTO;
-import org.project.entity.dto.LibrarianDTO;
-import org.project.entity.dto.UserDTO;
+import org.project.entity.dto.*;
 import org.project.utils.UtilProvider;
 
 import java.util.List;
@@ -95,6 +93,16 @@ public class Mapper {
     public static List<UserDTO> usersToUsersDTO(List<User> users) {
         return users.stream()
                 .map(Mapper::userToUserDTO)
+                .toList();
+    }
+
+    public static PublisherDTO publisherToDTO(Publisher publisher) {
+        return new PublisherDTO(publisher.getId(), publisher.getName());
+    }
+
+    public static List<PublisherDTO> publishersToPublishersDTO(List<Publisher> publishers) {
+        return publishers.stream()
+                .map(Mapper::publisherToDTO)
                 .toList();
     }
 }

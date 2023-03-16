@@ -23,10 +23,10 @@ public class ShowBooksCommand implements ActionCommand {
         List<Book> books = paginator.provideData(content);
         List<BookDTO> bookDTOs = Mapper.booksToDTO(books);
 
-        //setting attributes
         content.setRequestAttribute("bookList", bookDTOs);
         content.setRequestAttribute("currentPage", paginator.getCurrentPage());
         content.setRequestAttribute("numOfPages", paginator.getNumberOfPages());
+        content.setRequestAttribute("recordsPerPage", paginator.getRecordsPerPage());
 
         return new ActionResult(PathProvider.getPath(MAIN), false);
     }

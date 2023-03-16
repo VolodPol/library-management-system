@@ -11,13 +11,13 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class FineService {
-    private final static CheckoutDao dao;
+    private final CheckoutDao dao;
 
-    static {
-        dao = new CheckoutDao();
+    public FineService(CheckoutDao dao) {
+        this.dao = dao;
     }
     //checkOrders() повертає кількість штрафів (заборгованостей)
-    public static int checkOrders(User user) throws DaoException {
+    public int checkOrders(User user) throws DaoException {
         int fineSum = 0;
 
         String login = user.getLogin();
@@ -39,7 +39,7 @@ public class FineService {
         return fineSum;
     }
     // Actual - поточний, last - останній запис з кукі
-    public static int calculateFine(String username, Cookie[] cookies, int actualNum, int oldAmount) {
+    public int calculateFine(String username, Cookie[] cookies, int actualNum, int oldAmount) {
         boolean isCookiesEmpty = true;
 
         int lastRec = 0;

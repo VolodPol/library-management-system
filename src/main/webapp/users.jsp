@@ -19,11 +19,6 @@
 <html>
 <head>
   <title>${title}</title>
-<%--  <link rel="stylesheet" href="css/content/nav_bar.css">--%>
-<%--  <link rel="stylesheet" href="css/content/pagination.css">--%>
-<%--  <link rel="stylesheet" href="css/buttons/edit.css">--%>
-<%--  <link rel="stylesheet" href="css/buttons/delete.css">--%>
-<%--  <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 <c:set var="userRole" value="${sessionScope.role}" scope="page"/>
@@ -188,11 +183,6 @@
     border-bottom: 2px solid #1e673a;
   }
 
-  .content-table tbody tr.active-row {
-    font-weight: bold;
-    color: #1e673a;
-  }
-
   * {
     font-family: 'Raleway', sans-serif;
   }
@@ -224,27 +214,6 @@
 
   .active {
     background-color: #1e6839;
-  }
-
-/*  submit */
-  .submit-button {
-    padding: 10px;
-    background: #0066A2;
-    color: white;
-    border-style: outset;
-    border-color: #0066A2;
-    font: bold 18px arial,sans-serif;
-    text-shadow: none;
-    cursor: pointer;
-    box-shadow: 0 2px #999;
-  }
-
-  .submit-button:hover {background-color: #3e8e41}
-
-  .submit-button:active {
-    background-color: #3e8e41;
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
   }
 /*  edit*/
   .edit-button {

@@ -1,6 +1,8 @@
 package org.project.services.resources;
 
 public interface MessageName {
+    String WELCOME_NO_NAME = "page.welcome.not_signed_in";
+    String WELCOME_USER = "page.welcome.signed_in";
     String INCORRECT_FORM = "page.error_message.incorrect_form";
     String BLOCKED = "page.error_message.blocked_account";
     String NO_PUBLISHER = "page.error_message.publication_error";
@@ -11,4 +13,5 @@ public interface MessageName {
     String PUBLISHER_EXISTS = "page.error_message.publisher_exists";
     String LOGIN_EMAIL = "page.error_message.login_email_used";
     String EMPTY_FORM = "page.error_message.empty_form";
+    String NOT_AVAILABLE = "page.error_message.no_available_books";
 }

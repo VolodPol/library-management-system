@@ -9,6 +9,7 @@ import org.project.dao.CheckoutDao;
 import org.project.dao.UserDao;
 import org.project.entity.*;
 import org.project.exceptions.DaoException;
+import org.project.services.OrderService;
 import org.project.services.resources.CommandPath;
 import org.project.services.validation.impl.OrderValidator;
 import org.project.services.validation.dataset.impl.OrderDataSet;
@@ -18,15 +19,16 @@ import org.project.utils.UtilProvider;
 import static org.project.services.resources.FilePath.NEW_ORDER;
 
 public class OrderBookCommand implements ActionCommand {
+    private final OrderService service = new OrderService(new CheckoutDao());
     @Override
     public ActionResult execute(RequestContent content, HttpServletResponse response) throws DaoException {
         String isbn = content.getParameter("isbn");
         String login = (String) content.getSessionAttribute("login");
 
-        BookDao bookFinder = new BookDao();
-        Book book = bookFinder.findByIsbn(isbn).orElse(new Book());//
-        UserDao userFinder = new UserDao();
-        User user = userFinder.findByLogin(login).orElse(new User());
+        Book book = new BookDao().findByIsbn(isbn).orElse(new Book());
+        if (!service.verifyOrder(book, content))
+            return new ActionResult(PathProvider.getPath(NEW_ORDER).concat("?isbn=").concat(book.getIsbn()), false);
+        User user = new UserDao().findByLogin(login).orElse(new User());
 
         String startTime = content.getParameter("startTime");
         String endTime = content.getParameter("endTime");

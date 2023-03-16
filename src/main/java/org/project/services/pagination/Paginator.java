@@ -10,15 +10,19 @@ public abstract class Paginator<E extends Entity> {
     protected int numberOrRecords;
     protected int numberOfPages;
     protected int currentPage;
+    protected int recordsPerPage;
 
     public abstract List<E> provideData(RequestContent content) throws DaoException;
+    protected int calcNumOfPages() {
+        return (int) Math.ceil((double) numberOrRecords / recordsPerPage);
+    }
     public final int getNumberOfPages() {
         return numberOfPages;
     }
     public final int getCurrentPage() {
         return currentPage;
     }
-    protected int calcNumOfPages() {
-        return (int) Math.ceil((double) numberOrRecords / 5);
+    public final int getRecordsPerPage(){
+        return recordsPerPage;
     }
 }

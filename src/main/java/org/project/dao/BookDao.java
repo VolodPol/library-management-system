@@ -3,8 +3,8 @@ package org.project.dao;
 import org.project.connection.ConnectionManager;
 import org.project.entity.Book;
 import org.project.entity.Publisher;
-import org.project.entity.sorting.OrderType;
-import org.project.entity.sorting.Sorting;
+import org.project.entity.sorting.SortBy;
+import org.project.entity.sorting.SortOrder;
 import org.project.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +19,10 @@ import static org.project.dao.constants.Queries.*;
 public class BookDao {
     private final static Logger log = LoggerFactory.getLogger(BookDao.class);
     private int numOfRecs;
-    public List<Book> findAll(int offSet, int total, Sorting sorting, OrderType type) throws DaoException {
+    public List<Book> findAll(int offSet, int total, SortOrder sortOrder, SortBy type) throws DaoException {
         List<Book> books = new ArrayList<>();
         try (Connection connection = ConnectionManager.getConnection()) {
-            String query = buildFindQuery(offSet, total, sorting, type);
+            String query = buildFindQuery(offSet, total, sortOrder, type);
 
             PreparedStatement ps = connection.prepareStatement(query);
             ResultSet rs = ps.executeQuery();
@@ -92,33 +92,33 @@ public class BookDao {
         return foundBooks;
     }
 
-    public boolean changeCopiesNum(int bookId, boolean toIncrease) throws DaoException {
-        boolean result = false;
+    public void changeCopiesNum(int bookId, boolean toIncrease) throws DaoException {
         String query = buildCopyQuery(bookId, toIncrease);
 
         try (Connection con = ConnectionManager.getConnection()) {
+            boolean auto = con.getAutoCommit();
             con.setAutoCommit(false);
             Savepoint save = con.setSavepoint("SavePoint");
 
             try (PreparedStatement ps = con.prepareStatement(query)) {
-                int update = ps.executeUpdate();
-                result = update != 0;
+                ps.executeUpdate();
                 con.commit();
 
             } catch (SQLException exception) {
                 con.rollback(save);
+            } finally {
+                con.setAutoCommit(auto);
             }
 
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
-        return result;
     }
 
-    public boolean update(Book newBook, String isbn) throws DaoException {
-        boolean result = false;
+    public void update(Book newBook, String isbn) throws DaoException {
         try (Connection connection = ConnectionManager.getConnection()) {
+            boolean auto = connection.getAutoCommit();
             connection.setAutoCommit(false);
             Savepoint savepoint = connection.setSavepoint("Save");
 
@@ -126,61 +126,61 @@ public class BookDao {
                 fillPreparedStatement(ps, newBook);
                 ps.setString(7, isbn);
 
-                int update = ps.executeUpdate();
-                result = update != 0;
+                ps.executeUpdate();
                 connection.commit();
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, savepoint);
+            } finally {
+                connection.setAutoCommit(auto);
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
-        return result;
     }
 
-    public boolean insert(Book book) throws DaoException {
-        boolean result = false;
+    public void insert(Book book) throws DaoException {
         try (Connection con = ConnectionManager.getConnection()) {
+            boolean auto = con.getAutoCommit();
             con.setAutoCommit(false);
             Savepoint sp = con.setSavepoint("SavePoint");
 
             try (PreparedStatement statement = con.prepareStatement(CREATE_BOOK)) {
                 fillPreparedStatement(statement, book);
 
-                int update = statement.executeUpdate();
-                result = update != 0;
+                statement.executeUpdate();
                 con.commit();
 
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, sp);
+            } finally {
+                con.setAutoCommit(auto);
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
             throw new DaoException(e.getMessage(), e.getCause());
         }
-        return result;
     }
-    public boolean delete(String isbn) throws DaoException {
-        boolean result = false;
-        try(Connection con = ConnectionManager.getConnection()) {
+    public void delete(String isbn) throws DaoException {
+        try (Connection con = ConnectionManager.getConnection()) {
+            boolean auto = con.getAutoCommit();
             con.setAutoCommit(false);
             Savepoint savepoint = con.setSavepoint("Save");
 
             try (PreparedStatement ps = con.prepareStatement(DELETE_BOOK)) {
                 ps.setString(1, isbn);
-                int update = ps.executeUpdate();
-                result = update != 0;
+                ps.executeUpdate();
 
                 con.commit();
             } catch (SQLException e) {
                 ConnectionManager.rollback(con, savepoint);
+            } finally {
+                con.setAutoCommit(auto);
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
             throw new DaoException(exception.getMessage(), exception.getCause());
         }
-        return result;
     }
 
     public boolean isIsbnPresent(String isbn) throws DaoException {
@@ -199,13 +199,13 @@ public class BookDao {
         return false;
     }
 
-    private static String buildFindQuery(int offSet, int total, Sorting sorting, OrderType type) {
+    private static String buildFindQuery(int offSet, int total, SortOrder sortOrder, SortBy type) {
         StringBuilder query = new StringBuilder(GET_ALL_BOOKS);
 
-        if (!type.equals(OrderType.DEFAULT))
+        if (!type.equals(SortBy.DEFAULT))
             query.append(String.format(" ORDER BY %s ", type.getValue()));
-        if (sorting.equals(Sorting.DESC))
-            query.append(sorting.getValue());
+        if (sortOrder.equals(SortOrder.DESC))
+            query.append(sortOrder.getValue());
 
         query.append(String.format(" LIMIT %d, %d", offSet, total));
         return query.toString();

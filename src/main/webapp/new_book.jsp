@@ -8,8 +8,6 @@
 <html>
 <head>
   <title><fmt:message bundle="${bundle}" key="page.create_book.title"/></title>
-<%--  <link rel="stylesheet" href="css/content/nav_bar.css">--%>
-<%--  <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 
@@ -23,15 +21,6 @@
       <li><a href="front?command=show_users"><fmt:message key="users"/></a></li>
       <li style="float:right"><a href="front?command=logout"><fmt:message key="logout"/></a></li>
       <li style="float:right" ><a href="front?command=profile"><fmt:message key="profile"/></a></li>
-<%--      <li style="float:right">--%>
-<%--        <form name="localForm" method="post">--%>
-<%--          <label for="localization"></label>--%>
-<%--          <select name="locale" id="localization" onclick="this.form.submit()">--%>
-<%--            <option value="en_US">En</option>--%>
-<%--            <option value="uk_UA">Ua</option>--%>
-<%--          </select>--%>
-<%--        </form>--%>
-<%--      </li>--%>
       <ctg:lang locale="${sessionScope.locale}"/>
     </ul>
   </nav>
@@ -83,6 +72,14 @@
     <div class="input-div">
       <label>
         <input class="input" name="publisher" type="text">
+<%--        <br>--%>
+<%--        <input class="input" name="publisher" type="text" list="publishers"--%>
+<%--               placeholder="<fmt:message bundle="${bundle}" key="page.create_book.h2_publisher"/>">--%>
+<%--        <datalist id="publishers">--%>
+<%--        <c:forEach var="publisher" items="${requestScope.publisherList}">--%>
+<%--          <option>${publisher}</option>--%>
+<%--        </c:forEach>--%>
+<%--        </datalist>--%>
       </label>
     </div>
 
@@ -177,4 +174,21 @@
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
+/*  */
+/*  .input-div-container {*/
+/*    !*height: 100vh;*!*/
+/*    !*width: 100%;*!*/
+/*    display: flex;*/
+/*    justify-content: center;*/
+/*    align-items: center;*/
+/*    flex-direction: column;*/
+/*    background: #d3d3d3;*/
+/*  }*/
+/*  .input-div-container input {*/
+/*    padding: 10px 20px;*/
+/*    background: white;*/
+/*    border: none;*/
+/*    outline: none;*/
+/*    border-radius: 5px;*/
+/*  }*/
 </style>

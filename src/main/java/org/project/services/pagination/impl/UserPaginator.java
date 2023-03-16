@@ -31,7 +31,9 @@ public class UserPaginator extends Paginator<User> {
         private Role getRole() {
             return role;
         }
-
+        private int getRecsPerPage(){
+            return 5;
+        }
     }
     @Override
     public List<User> provideData(RequestContent content) throws DaoException {
@@ -41,11 +43,13 @@ public class UserPaginator extends Paginator<User> {
                 content.getParameter("page"),
                 (String) content.getRequestAttribute("usersRole")
         );
-        users = userDao.findAll((data.getPage() - 1) * 5, 5, data.getRole());
-
-        numberOrRecords = userDao.getNumOfRecs();
-        numberOfPages = calcNumOfPages();
-        currentPage = data.getPage();
+        super.recordsPerPage = data.getRecsPerPage();
+        users = userDao.findAll(
+                (data.getPage() - 1) * data.getRecsPerPage(), data.getRecsPerPage(), data.getRole()
+        );
+        super.numberOrRecords = userDao.getNumOfRecs();
+        super.numberOfPages = calcNumOfPages();
+        super.currentPage = data.getPage();
 
         content.removeRequestAttribute("usersRole");
         return users;

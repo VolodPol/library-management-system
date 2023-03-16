@@ -23,7 +23,8 @@ public class UserProvider {
             return false;
         }
 
-        if (LoginService.doesUserExist(data.getUsername(), data.getEmail())) {
+        LoginService loginService = new LoginService();
+        if (loginService.doesUserExist(data.getUsername(), data.getEmail())) {
             content.setRequestAttribute("error", MessageName.LOGIN_EMAIL);
             return false;
         }

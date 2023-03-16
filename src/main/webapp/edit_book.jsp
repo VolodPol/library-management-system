@@ -8,8 +8,6 @@
 <html>
 <head>
     <title><fmt:message bundle="${bundle}" key="page.edit_book.title"/></title>
-<%--    <link rel="stylesheet" href="css/content/nav_bar.css">--%>
-<%--    <link rel="stylesheet" href="css/buttons/submit-button.css">--%>
 </head>
 <body>
 <fmt:bundle basename="Localization" prefix="page.navigation.">
@@ -133,9 +131,9 @@
         background-color: #111;
     }
 
-    .active {
-        background-color: #1e6839;
-    }
+    /*.active {*/
+    /*    background-color: #1e6839;*/
+    /*}*/
 /*    submit button*/
     .submit-button {
         padding: 10px;
