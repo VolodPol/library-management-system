@@ -6,6 +6,10 @@ import jakarta.servlet.http.HttpSessionAttributeListener;
 import jakarta.servlet.http.HttpSessionBindingEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+/**
+ * WebListener class for logging the authorization process of users
+ */
 @WebListener
 public class SignListener implements HttpSessionAttributeListener {
     private final static Logger log = LoggerFactory.getLogger(SignListener.class);

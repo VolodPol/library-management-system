@@ -7,6 +7,9 @@ import org.project.commands.impl.get.EmptyCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Factory that defines specific implementation of ActionCommand by the request's parameter
+ */
 public class ActionFactory {
     private static final Logger log = LoggerFactory.getLogger(ActionFactory.class);
     public ActionCommand defineCommand (HttpServletRequest request) {

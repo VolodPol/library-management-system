@@ -3,6 +3,9 @@ package org.project.services.validation.dataset.impl;
 import org.project.services.validation.dataset.DataSet;
 import static org.project.utils.UtilProvider.isEmpty;
 
+/**
+ * The class contains order data to validate
+ */
 public class OrderDataSet implements DataSet {
     private String startTime;
     private String endTime;

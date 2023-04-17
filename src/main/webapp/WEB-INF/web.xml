@@ -13,11 +13,9 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 
-<!--  <jsp-config>-->
-<!--    <taglib>-->
-<!--      <taglib-uri>custom_tag</taglib-uri>-->
-<!--      <taglib-location>/WEB-INF/tag_tld/custom_tag.tld</taglib-location>-->
-<!--    </taglib>-->
-<!--  </jsp-config>
-version of web.xml is not compatible-->
+  <error-page>
+    <exception-type>org.project.exceptions.DaoException</exception-type>
+    <location>/WEB-INF/errors/error_page.jsp</location>
+  </error-page>
+
 </web-app>

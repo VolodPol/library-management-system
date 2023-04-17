@@ -7,6 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 
+/**
+ * WebFilter for localization purposes which coordinates the locale value from the session
+ */
 @WebFilter(urlPatterns = "/*", initParams = @WebInitParam(name="locale", value = "en_US"))
 public class LocalizationFilter implements Filter {
     private String locale;

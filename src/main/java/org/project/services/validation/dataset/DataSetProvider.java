@@ -5,6 +5,10 @@ import org.project.services.validation.dataset.impl.BookDataSet;
 import org.project.services.validation.dataset.impl.PublisherDataSet;
 import org.project.services.validation.dataset.impl.UserDataSet;
 
+/**
+ * The class provides different implementations of the DataSet interface
+ * {@link DataSet}.
+ */
 public class DataSetProvider {
     public static BookDataSet getBookDataSet(RequestContent content) {
         String title = content.getParameter("title");
@@ -26,14 +30,6 @@ public class DataSetProvider {
         String phone = content.getParameter("phone");
         String age = content.getParameter("age");
 
-        System.out.println(username);
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(firstName);
-        System.out.println(surname);
-        System.out.println(phone);
-        System.out.println(age);
-        System.out.println(" inside getUserDataSet method ");
         return new UserDataSet(username, email, password, firstName, surname, phone, age);
     }
 

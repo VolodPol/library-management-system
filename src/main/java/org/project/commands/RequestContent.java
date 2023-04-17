@@ -13,6 +13,13 @@ import java.util.Map;
     2. set attr/params if necessary
     3. insert attributes in request
  */
+
+/**
+ * The class that wraps the content of HttpRequest class for the sake of safe manipulation of request's attributes,
+ * parameters and cookies. After class initialization, the class extracts values from request. Has the possibility
+ * to set attributes/parameters manually by the corresponding setters. And finally inserts the data to request after
+ * the process of request's data handling is finished.
+ */
 public class RequestContent {
     private final HashMap<String, Object> requestAttributes;
     private final HashMap<String, String[]> requestParameters;
@@ -24,10 +31,20 @@ public class RequestContent {
         requestParameters = new HashMap<>();
         sessionAttributes = new HashMap<>();
     }
+
+    /**
+     * Constructor for empty initialization
+     */
     public RequestContent() {}
+
+    /**
+     * Constructor for complete initialization
+     * @param request the object of HttpRequest with the data to retrieve
+     */
     public RequestContent(HttpServletRequest request) {
         extractValues(request);
     }
+
     //Retrieve attributes and params from request and put to fields
     public void extractValues(HttpServletRequest request){
         Enumeration<?> reqAttributeNames  = request.getAttributeNames();

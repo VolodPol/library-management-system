@@ -12,6 +12,9 @@ import org.project.commands.impl.post.user.OrderBookCommand;
 import org.project.commands.impl.post.user.ReturnBookCommand;
 import org.project.commands.impl.post.user.SignUpCommand;
 
+/**
+ * The enumeration that contains all the Commands
+ */
 public enum CommandEnum {
     LOGIN (new LoginCommand()),
     LOGOUT (new LogoutCommand()),

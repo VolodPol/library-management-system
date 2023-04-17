@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="ctg" uri="/WEB-INF/tag_tld/custom_tag.tld"%>
+<%@ taglib prefix="stock" tagdir="/WEB-INF/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
@@ -30,6 +31,7 @@
 <html>
 <head>
     <title>${title}</title>
+    <link rel="icon" href="https://img.icons8.com/external-flaticons-flat-flat-icons/64/null/external-library-university-flaticons-flat-flat-icons-3.png"/>
 </head>
 <body>
 <c:if test="${empty sessionScope.role}" var="isEmptyRole" scope="page"/>
@@ -156,14 +158,7 @@
                     <td><c:out value="${book.author}"/></td>
                     <td><c:out value="${book.isbn}"/></td>
                     <td>
-                        <c:choose>
-                            <c:when test="${book.copiesNumber == 0}">
-                                <p>${message}</p>
-                            </c:when>
-                            <c:otherwise>
-                                <c:out value="${book.copiesNumber}"/>
-                            </c:otherwise>
-                        </c:choose>
+                        <stock:stock_message amount="${book.copiesNumber}" message="${message}"/>
                     </td>
                     <td><c:out value="${book.dateOfPublication}"/></td>
                     <c:if test="${userRole == 'user'}">

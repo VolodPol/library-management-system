@@ -45,4 +45,19 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>stock_message</name>
+        <tagclass>org.project.tags.StockTag</tagclass>
+        <bodycontent>empty</bodycontent>
+        <attribute>
+            <name>amount</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>message</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 </taglib>

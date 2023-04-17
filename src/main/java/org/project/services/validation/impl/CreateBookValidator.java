@@ -3,7 +3,16 @@ package org.project.services.validation.impl;
 import org.project.services.validation.dataset.impl.BookDataSet;
 import org.project.utils.UtilProvider;
 
+/**
+ * Concrete class for the case of validation during creating of the book.
+ * In other words, data for validation cannot be empty, otherwise
+ * it fails to validate.
+ */
 public class CreateBookValidator extends BookValidator{
+    /**
+     * Constructor with one parameter
+     * @param dataSet BookDataset object
+     */
     public CreateBookValidator(BookDataSet dataSet){
         super(dataSet);
     }

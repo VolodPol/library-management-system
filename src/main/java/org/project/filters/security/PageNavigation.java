@@ -1,5 +1,8 @@
-package org.project.filters;
+package org.project.filters.security;
 
+/**
+ * Enum that contains all possible action separated by access rights
+ */
 public enum PageNavigation {
     UNREGISTERED(
             new String[]{

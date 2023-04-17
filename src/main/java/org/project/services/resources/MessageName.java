@@ -14,4 +14,5 @@ public interface MessageName {
     String LOGIN_EMAIL = "page.error_message.login_email_used";
     String EMPTY_FORM = "page.error_message.empty_form";
     String NOT_AVAILABLE = "page.error_message.no_available_books";
+    String CAPTCHA_ERROR = "page.error_message.invalid_captcha";
 }

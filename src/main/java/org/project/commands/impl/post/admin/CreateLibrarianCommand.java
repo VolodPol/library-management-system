@@ -13,9 +13,10 @@ import static org.project.services.resources.FilePath.*;
 import static org.project.utils.PathProvider.getPath;
 
 public class CreateLibrarianCommand implements ActionCommand {
+    private final UserProvider provider = new UserProvider();
     @Override
     public ActionResult execute(RequestContent content, HttpServletResponse response) throws DaoException {
-        boolean action = UserProvider.createUser(content, Role.LIBRARIAN);
+        boolean action = provider.createUser(content, Role.LIBRARIAN);
         if (action) {
             return new ActionResult(CommandPath.SHOW_LIBRARIANS, true);
         } else {

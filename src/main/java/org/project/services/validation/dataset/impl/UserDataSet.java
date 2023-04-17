@@ -3,6 +3,9 @@ package org.project.services.validation.dataset.impl;
 import org.project.services.validation.dataset.DataSet;
 import static org.project.utils.UtilProvider.isEmpty;
 
+/**
+ * The class contains user data to validate
+ */
 public class UserDataSet implements DataSet {
     private String username;
     private String email;

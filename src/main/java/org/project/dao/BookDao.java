@@ -102,10 +102,10 @@ public class BookDao {
 
             try (PreparedStatement ps = con.prepareStatement(query)) {
                 ps.executeUpdate();
-                con.commit();
+                ConnectionManager.commit(con);
 
             } catch (SQLException exception) {
-                con.rollback(save);
+                ConnectionManager.rollback(con, save);
             } finally {
                 con.setAutoCommit(auto);
             }
@@ -127,7 +127,7 @@ public class BookDao {
                 ps.setString(7, isbn);
 
                 ps.executeUpdate();
-                connection.commit();
+                ConnectionManager.commit(connection);
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, savepoint);
             } finally {
@@ -149,7 +149,7 @@ public class BookDao {
                 fillPreparedStatement(statement, book);
 
                 statement.executeUpdate();
-                con.commit();
+                ConnectionManager.commit(con);
 
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, sp);
@@ -171,7 +171,7 @@ public class BookDao {
                 ps.setString(1, isbn);
                 ps.executeUpdate();
 
-                con.commit();
+                ConnectionManager.commit(con);
             } catch (SQLException e) {
                 ConnectionManager.rollback(con, savepoint);
             } finally {

@@ -1,7 +1,10 @@
 package org.project.utils;
 
 import java.util.ResourceBundle;
-/* provides page path */
+
+/**
+ * Utility class to provide the path of the resource.
+ */
 public class PathProvider {
     private final static ResourceBundle bundle;
 

@@ -6,20 +6,35 @@ import org.project.services.validation.dataset.impl.UserDataSet;
 
 import java.util.regex.Pattern;
 
+/**
+ * General class for user validation
+ */
 public class UserValidator implements Validator {
+    /**
+     * User's data
+     */
     private final UserDataSet dataSet;
+    /**
+     * Encapsulates error message
+     */
     private String errorMessage;
 
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
     private static final String LOGIN_REGEX = "^[a-zA-Z0-9_-]{3,16}$";
     private static final String PASSWORD_REGEX = "^[a-zA-Z0-9~`!@#$%^&*()_\\-+={}:;|\"'<,>.?/]{8,16}$";
-    private static final String NAME_REGEX = "^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$";
+    private static final String NAME_REGEX = "^[a-zA-Zа-яА-ЯіІ]+(([',.-][a-zA-Zа-яА-ЯіІ ])?[a-zA-Zа-яА-ЯіІ]*)*$";
     private static final String PHONE_REGEX = "^[+]?[(]?[0-9]{1,4}[)]?[-\\s./0-9]*$";
 
     public UserValidator(UserDataSet dataSet){
         this.dataSet = dataSet;
     }
 
+    /**
+     * Implementation of validate() method {@link Validator#validate()}, which checks if dataset is not
+     * empty and validates with the helper methods that validate each piece of data by RegExp or other rules if
+     * it is decimal data.
+     * @return boolean to confirm that the data is valid
+     */
     @Override
     public boolean validate() {
         if (dataSet.isBlank()) {

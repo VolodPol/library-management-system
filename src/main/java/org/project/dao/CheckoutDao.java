@@ -69,7 +69,7 @@ public class CheckoutDao {
                 ps.setInt(6, checkout.getBook().getId());
 
                 ps.executeUpdate();
-                con.commit();
+                ConnectionManager.commit(con);
             } catch (SQLException e) {
                 ConnectionManager.rollback(con, sp);
             } finally {
@@ -91,7 +91,7 @@ public class CheckoutDao {
                 ps.setInt(1, id);
                 ps.executeUpdate();
 
-                con.commit();
+                ConnectionManager.commit(con);
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, save);
                 log.error("Couldn't rollback connection to savepoint");
@@ -115,7 +115,7 @@ public class CheckoutDao {
                 ps.setInt(2, id);
                 ps.executeUpdate();
 
-                connection.commit();
+                ConnectionManager.commit(connection);
             } catch (SQLException e) {
                 ConnectionManager.rollback(connection, sp);
                 log.error("Couldn't rollback connection to savepoint");
@@ -140,7 +140,7 @@ public class CheckoutDao {
                 statement.setTimestamp(3, endTime);
 
                 statement.executeUpdate();
-                connection.commit();
+                ConnectionManager.commit(connection);
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, sp);
                 log.error("Couldn't rollback connection to savepoint");

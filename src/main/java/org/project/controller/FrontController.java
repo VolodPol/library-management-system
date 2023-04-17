@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
+/**
+ * The main servlet-controller that manages the flow of the application
+ */
 @WebServlet("/front")
 public class FrontController extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(FrontController.class);
@@ -38,8 +41,8 @@ public class FrontController extends HttpServlet {
             result = command.execute(content, resp);
         } catch (DaoException e) {
             log.error("Dao exception caught in controller");
-            e.printStackTrace();
-            return;// Here forward to error page
+            req.getRequestDispatcher("/WEB-INF/errors/error_page.jsp").forward(req, resp);
+            return;
         }
         content.insertAttributes(req);
         String page = result.getDestinationPage();

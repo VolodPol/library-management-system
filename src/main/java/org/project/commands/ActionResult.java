@@ -1,5 +1,8 @@
 package org.project.commands;
 
+/**
+ * Encapsulates the result of ActionCommand and supports PRG pattern.
+ */
 public class ActionResult {
     private String destinationPage;
     private boolean isSendRedirect;

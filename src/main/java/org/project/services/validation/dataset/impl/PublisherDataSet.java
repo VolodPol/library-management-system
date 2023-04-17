@@ -3,6 +3,9 @@ package org.project.services.validation.dataset.impl;
 import org.project.services.validation.dataset.DataSet;
 import org.project.utils.UtilProvider;
 
+/**
+ * The class contains publisher data to validate
+ */
 public class PublisherDataSet implements DataSet {
     private String publisherName;
 

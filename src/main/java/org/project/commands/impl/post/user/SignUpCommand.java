@@ -12,9 +12,10 @@ import static org.project.services.resources.FilePath.*;
 import static org.project.utils.PathProvider.getPath;
 
 public class SignUpCommand implements ActionCommand {
+    private final UserProvider provider = new UserProvider();
     @Override
     public ActionResult execute(RequestContent content, HttpServletResponse response) throws DaoException {
-        boolean action = UserProvider.createUser(content, Role.USER);
+        boolean action = provider.createUser(content, Role.USER);
         if (action) {
             return new ActionResult(getPath(LOGIN), true);
         } else {

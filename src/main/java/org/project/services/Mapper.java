@@ -9,7 +9,9 @@ import org.project.utils.UtilProvider;
 
 import java.util.List;
 
-
+/**
+ * Class for mapping entities to their DTO counterparts.
+ */
 public class Mapper {
     public static BookDTO bookToDTO(Book book){
         BookDTO bookDTO = new BookDTO();
@@ -99,7 +101,7 @@ public class Mapper {
     public static PublisherDTO publisherToDTO(Publisher publisher) {
         return new PublisherDTO(publisher.getId(), publisher.getName());
     }
-
+    @SuppressWarnings("unused")
     public static List<PublisherDTO> publishersToPublishersDTO(List<Publisher> publishers) {
         return publishers.stream()
                 .map(Mapper::publisherToDTO)

@@ -9,9 +9,12 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 
+/**
+ * Class to delegate operations with connection and statements with exception handling and logging
+ */
 public class ConnectionManager {
     private static final Logger log = LoggerFactory.getLogger(ConnectionManager.class);
-    public static synchronized Connection getConnection() {
+    public static Connection getConnection() {
         Connection connection = null;
         try {
             connection = DataSource.getConnection();
@@ -39,18 +42,6 @@ public class ConnectionManager {
             }
         }
     }
-    @SuppressWarnings("unused")
-    public static void rollback(Connection connection) throws DaoException {
-        if (connection != null) {
-            try {
-                connection.rollback();
-            } catch (SQLException exception) {
-                log.warn("Couldn't rollback ", exception);
-                throw new DaoException(exception.getMessage(), exception);
-            }
-        }
-    }
-    @SuppressWarnings("unused")
     public static void commit(Connection connection) throws DaoException {
         if (connection != null) {
             try {

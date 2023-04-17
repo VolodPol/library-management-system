@@ -3,6 +3,9 @@ package org.project.services.validation.dataset.impl;
 import org.project.services.validation.dataset.DataSet;
 import static org.project.utils.UtilProvider.isEmpty;
 
+/**
+ * The class contains book data to validate
+ */
 public class BookDataSet implements DataSet {
     private String title;
     private String author;

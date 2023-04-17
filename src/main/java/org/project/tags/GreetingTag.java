@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * JSP custom tag for displaying greetings, support localization by means of ResourceBundle
+ */
 public class GreetingTag extends TagSupport {
     private static final Logger log = LoggerFactory.getLogger(GreetingTag.class);
     private String role;

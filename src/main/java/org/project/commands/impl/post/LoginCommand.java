@@ -2,6 +2,7 @@ package org.project.commands.impl.post;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.project.utils.CaptchaVerifier;
 import org.project.commands.ActionCommand;
 import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
@@ -50,20 +51,26 @@ public class LoginCommand implements ActionCommand {
                 content.setRequestAttribute("error", MessageName.BLOCKED);
                 return new ActionResult(PathProvider.getPath(LOGIN), false);
             }
-            String userRole = user.getRole().getRoleValue();
+            //captcha verification
+            String reCaptchaResponse = content.getParameter("g-recaptcha-response");
+            if (!CaptchaVerifier.verify(reCaptchaResponse)) {
+                content.setRequestAttribute("error", MessageName.CAPTCHA_ERROR);
+                return new ActionResult(PathProvider.getPath(LOGIN), false);
+            }
 
-            content.setSessionAttribute("role", userRole);
-            content.setSessionAttribute("name", user.getFirstName() + " " + user.getSurname());
-            content.setSessionAttribute("login", user.getLogin());
-            content.setSessionAttribute("subscription", user.getSubscription().getValue());
-
+            setSessionAttributes(content, user);
             page = getPath(INDEX);
         } else {
             page = getPath(LOGIN);
         }
         return new ActionResult(page, true);
     }
-
+    private void setSessionAttributes(RequestContent content, User user) {
+        content.setSessionAttribute("role", user.getRole().getRoleValue());
+        content.setSessionAttribute("name", user.getFirstName() + " " + user.getSurname());
+        content.setSessionAttribute("login", user.getLogin());
+        content.setSessionAttribute("subscription", user.getSubscription().getValue());
+    }
     private void setFines(User user, UserDao userDao, RequestContent content, HttpServletResponse response)
             throws DaoException {
         if (!user.getRole().equals(Role.USER))

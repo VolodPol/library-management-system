@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.regex.Pattern;
 
+/**
+ * The class for publisher data validation
+ */
 public class PublisherValidator implements Validator {
     private final PublisherDataSet dataSet;
     private String errorMessage;
@@ -19,6 +22,11 @@ public class PublisherValidator implements Validator {
     private final static Logger log = LoggerFactory.getLogger(BookDao.class);
     private static final String PUBLISHER_REGEX = "^[A-Za-z,.'\\- ]{3,129}";
 
+    /**
+     * The constructor with two arguments to init dao and set dataSet
+     * @param dataSet PublisherDataSet object
+     * @param dao PublisherDao object to work with
+     */
     public PublisherValidator(PublisherDataSet dataSet, PublisherDao dao) {
         this.dataSet = dataSet;
         this.dao = dao;
@@ -45,6 +53,12 @@ public class PublisherValidator implements Validator {
         return result;
     }
 
+    /**
+     * The method validates presence by using PublisherDao.isPresent() method
+     * {@link PublisherDao#isPresent(String)}.
+     * @param publisher publisher's name
+     * @return boolean as a result
+     */
     private boolean validatePresence(String publisher) {
         boolean result = true;
         try {

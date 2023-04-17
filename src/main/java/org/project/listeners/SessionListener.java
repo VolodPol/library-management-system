@@ -7,6 +7,9 @@ import jakarta.servlet.http.HttpSessionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * WebListener class for accounting the lifecycle of session
+ */
 @WebListener
 public class SessionListener implements HttpSessionListener {
     private final Logger log = LoggerFactory.getLogger(SessionListener.class);

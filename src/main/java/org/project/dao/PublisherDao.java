@@ -89,7 +89,7 @@ public class PublisherDao {
 
                 int update = ps.executeUpdate();
                 result = update != 0;
-                con.commit();
+                ConnectionManager.commit(con);
             } catch (SQLException e) {
                 ConnectionManager.rollback(con, sp);
             } finally {

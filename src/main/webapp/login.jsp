@@ -5,17 +5,20 @@
 
 <fmt:setLocale value="${sessionScope.locale}" scope="session"/>
 <fmt:setBundle basename="Localization" var="bundle"/>
+<fmt:setBundle basename="captcha_credentials" var="captchaBundle"/>
 
 <fmt:message bundle="${bundle}" key="page.login.title" var="title"/>
 <fmt:message bundle="${bundle}" key="page.login.h1_sign_in" var="login"/>
 <fmt:message bundle="${bundle}" key="page.login.input_label.username" var="username"/>
 <fmt:message bundle="${bundle}" key="page.login.input_label.password" var="password"/>
-<html>
+<html lang="en">
 <head>
     <title>${title}</title>
     <meta name="viewport" content="width=device-width">
-    <link rel="stylesheet" type="text/css" href="./css/all.min.css"/>
-    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/all.min.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+    <link rel="icon" href="https://img.icons8.com/external-flaticons-flat-flat-icons/64/null/external-library-university-flaticons-flat-flat-icons-3.png"/>
+    <script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
 </head>
 <body>
 <fmt:bundle basename="Localization" prefix="page.navigation.">
@@ -24,16 +27,13 @@
             <li><a href="front?command=books">
                 <fmt:message key="catalog"/>
             </a></li>
-                <li style="float:right" ><a href="front?command=profile">
-                    <fmt:message key="profile"/>
-                </a></li>
             <ctg:lang locale="${sessionScope.locale}"/>
         </ul>
     </nav>
 </fmt:bundle>
 
-<div class="container">
-    <div class="box">
+<div id="container">
+    <div id="box">
         <h1>${login}</h1>
         <form name="loginForm" action="front" method="POST">
             <input name="command" type="hidden" value="login"/>
@@ -53,6 +53,7 @@
                     <input name="password" type="password" placeholder="Enter Password">
                 </label>
             </div>
+            <div class="g-recaptcha" data-sitekey="<fmt:message bundle="${captchaBundle}" key="Site_key"/>"></div>
 
             <c:set var="error" value="${requestScope.error}" scope="page"/>
             <c:if test="${not empty error}">
@@ -96,9 +97,31 @@
         background-color: #111;
     }
 
-    /*.active {*/
-    /*    background-color: #1e6839;*/
-    /*}*/
 
-/*    page */
+    /* Задній фон */
+    body {
+        background-color: #fff; /* білий фон */
+        font-family: 'Raleway', sans-serif;
+    }
+
+    /* Фоновий блок */
+    #container {
+        width: 100%; /* 90% ширини сторінки */
+        height: 100vh; /* 100% висоти видимої частини сторінки */
+        background-color: #96d38c; /* салатово-зелений фон */
+        display: flex;
+        justify-content: center; /* центруємо по горизонталі */
+        align-items: center; /* центруємо по вертикалі */
+    }
+
+    /* Форма входу */
+    #box {
+        width: 300px; /* ширина форми */
+        padding: 20px; /* внутрішні відступи */
+        background-color: #fff; /* білий фон форми */
+        border-radius: 5px; /* закруглені кути форми */
+        text-align: center; /* центруємо текст в формі */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* тінь форми */
+    }
+
 </style>

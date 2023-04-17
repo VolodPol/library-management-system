@@ -3,7 +3,15 @@ package org.project.services;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * The class is supposed to encrypt passwords into hashcode by
+ * the MD5 MessageDigest
+ */
 public class PasswordEncryptor {
+    /**
+     * @param exposed the bare password
+     * @return encrypted hashcode of the password
+     */
     public static String encrypt(String exposed) {
         String encrypted = null;
         try {

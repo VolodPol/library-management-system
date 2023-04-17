@@ -7,6 +7,9 @@ import jakarta.servlet.annotation.WebInitParam;
 
 import java.io.IOException;
 
+/**
+ * WebFilter Filter's descendant for assigning the encoding of the page
+ */
 @WebFilter(urlPatterns = "/*", initParams = @WebInitParam(name="encoding", value = "UTF-8"))
 public class EncodingFilter implements Filter {
     private String encoding;

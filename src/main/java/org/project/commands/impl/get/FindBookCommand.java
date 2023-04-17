@@ -26,6 +26,7 @@ public class FindBookCommand implements ActionCommand {
         List<BookDTO> dtoList = Mapper.booksToDTO(books);
 
         content.setRequestAttribute("bookList", dtoList);
+        content.setRequestAttribute("recordsPerPage", 5);
         return new ActionResult(PathProvider.getPath(MAIN), false);
     }
 }

@@ -8,6 +8,7 @@
 <html>
 <head>
     <title><fmt:message bundle="${bundle}" key="page.new_order.title"/></title>
+    <link rel="icon" href="https://img.icons8.com/external-flaticons-flat-flat-icons/64/null/external-library-university-flaticons-flat-flat-icons-3.png"/>
 </head>
 <body>
 

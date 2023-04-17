@@ -7,18 +7,37 @@ import org.project.services.validation.dataset.impl.BookDataSet;
 import java.sql.Date;
 import java.util.regex.Pattern;
 
+/**
+ * General class for book validation
+ */
 public class BookValidator implements Validator {
+    /**
+     * Consists book's data
+     */
     private final BookDataSet dataSet;
+    /**
+     * Encapsulates error message
+     */
     private String errorMessage;
 
     private static final String TITLE_REGEX = "^[A-Za-z,.'\\- ]{3,129}";
     private static final String AUTHOR_REGEX = "^[a-zA-Z]+(([',.-][a-zA-Z ])?[a-zA-Z]*)*$";
     private static final String ISBN_REGEX = "^(?=(?:\\D*\\d){10}(?:(?:\\D*\\d){3})?$)[\\d-]+$";
 
+    /**
+     * Constructor with one parameter to initialize dataSet
+     * @param dataSet book BookDataSet object
+     */
     public BookValidator(BookDataSet dataSet) {
         this.dataSet = dataSet;
     }
 
+    /**
+     * Implementation of validate() method {@link Validator#validate()}, which checks if dataset is not
+     * empty and validates with the help of private methods that validate
+     * each piece of data by RegExp or other rules
+     * @return boolean to confirm that the data is valid
+     */
     @Override
     public boolean validate() {
         if (dataSet.isBlank()) {

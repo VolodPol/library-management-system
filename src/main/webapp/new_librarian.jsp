@@ -9,6 +9,7 @@
 <head>
     <title><fmt:message bundle="${bundle}" key="page.new_librarian.title"/></title>
     <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://img.icons8.com/external-flaticons-flat-flat-icons/64/null/external-library-university-flaticons-flat-flat-icons-3.png"/>
 </head>
 <body>
 <fmt:bundle basename="Localization" prefix="page.navigation.">

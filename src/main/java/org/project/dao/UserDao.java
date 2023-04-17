@@ -78,7 +78,7 @@ public class UserDao {
                 statement.setInt(2, id);
                 statement.executeUpdate();
 
-                connection.commit();
+                ConnectionManager.commit(connection);
             } catch (SQLException e) {
                 ConnectionManager.rollback(connection, save);
             } finally {
@@ -102,7 +102,7 @@ public class UserDao {
                 ps.setInt(2, id);
 
                 ps.executeUpdate();
-                con.commit();
+                ConnectionManager.commit(con);
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, save);
             } finally {
@@ -126,7 +126,7 @@ public class UserDao {
                 preparedStatement.setString(8, role.equals(Role.USER) ? "user" : "librarian");
 
                 preparedStatement.executeUpdate();
-                connection.commit();
+                ConnectionManager.commit(connection);
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, sp);
             } finally {
@@ -150,7 +150,7 @@ public class UserDao {
                 int update = statement.executeUpdate();
                 result = update != 0;
 
-                connection.commit();
+                ConnectionManager.commit(connection);
             } catch (SQLException exception) {
                 ConnectionManager.rollback(connection, sp);
             } finally {
