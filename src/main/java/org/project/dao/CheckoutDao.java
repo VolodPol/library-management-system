@@ -16,41 +16,46 @@ public class CheckoutDao {
     private static final Logger log = LoggerFactory.getLogger(CheckoutDao.class);
     public List<Checkout> findAll() throws DaoException {
         List<Checkout> checkouts = new ArrayList<>();
-        try (Connection con = ConnectionManager.getConnection()) {
-            Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery(GET_ALL_CHECKOUTS);
+        try (Connection con = ConnectionManager.getConnection();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(GET_ALL_CHECKOUTS)) {
+
             getOrderBy(checkouts, rs);
         } catch (SQLException e) {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in CheckoutDao class", e);
         }
         return checkouts;
     }
 
     public List<Checkout> findAllByLogin(String login) throws DaoException{
         List<Checkout> checkouts = new ArrayList<>();
-        try (Connection con = ConnectionManager.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(GET_CHECKOUTS_BY_LOGIN);
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(GET_CHECKOUTS_BY_LOGIN)) {
+
             ps.setString(1, login);
-            ResultSet rs = ps.executeQuery();
-            getOrderBy(checkouts, rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                getOrderBy(checkouts, rs);
+            }
         } catch (SQLException e) {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in CheckoutDao class", e);
         }
         return checkouts;
     }
 
     public List<Checkout> findAllByBookId(int id) throws DaoException {
         List<Checkout> checkouts = new ArrayList<>();
-        try (Connection con = ConnectionManager.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(GET_CHECKOUTS_BY_BOOK_ID);
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(GET_CHECKOUTS_BY_BOOK_ID)) {
+
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            getOrderBy(checkouts, rs);
+            try (ResultSet rs = ps.executeQuery()) {
+                getOrderBy(checkouts, rs);
+            }
         } catch (SQLException e) {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in CheckoutDao class", e);
         }
         return checkouts;
     }
@@ -77,7 +82,7 @@ public class CheckoutDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book user class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in CheckoutDao class", e);
         }
     }
 
@@ -124,7 +129,7 @@ public class CheckoutDao {
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in user dao class: " + exception.getMessage());
-            throw new DaoException(exception.getMessage(), exception.getCause());
+            throw new DaoException("DaoException occurred in CheckoutDao class", exception);
         }
     }
 
@@ -149,7 +154,7 @@ public class CheckoutDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in CheckoutDao class", e);
         }
     }
     private void getOrderBy(List<Checkout> checkouts, ResultSet rs) throws SQLException, DaoException {
@@ -162,17 +167,17 @@ public class CheckoutDao {
             currentCheck.setIsReturned(rs.getByte("is_returned"));
             currentCheck.setOrderStatus(rs.getByte("order_status") == 0 ? OrderStatus.UNCONFIRMED : OrderStatus.CONFIRMED);
             currentCheck.setType(rs.getString("c.type").equals("subscription") ? Type.SUBSCRIPTION : Type.READING_ROOM);
-            currentCheck.setFinedStatus(rs.getByte("fined_status"));// ATTENTION!
+            currentCheck.setFinedStatus(rs.getByte("fined_status"));
             try {
                 currentCheck.setUser(
-                        new UserDao().findByLogin(rs.getString("login")).orElse(new User())//
+                        new UserDao().findByLogin(rs.getString("login")).orElse(new User())
                 );
                 currentCheck.setBook(
-                        new BookDao().findByIsbn(rs.getString("isbn")).orElse(new Book())//
+                        new BookDao().findByIsbn(rs.getString("isbn")).orElse(new Book())
                 );
             } catch (DaoException exception) {
                 log.error("dao exception occurred in book dao class: " + exception.getMessage());
-                throw new DaoException(exception.getMessage(), exception.getCause());
+                throw new DaoException("DaoException occurred in CheckoutDao class", exception);
             }
             checkouts.add(currentCheck);
         }

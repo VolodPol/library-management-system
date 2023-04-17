@@ -20,9 +20,9 @@ public class PublisherDao {
     @SuppressWarnings("unused")
     public List<Publisher> findAll() throws DaoException {
         List<Publisher> publishers = new ArrayList<>();
-        try (Connection connection = ConnectionManager.getConnection()) {
+        try (Connection connection = ConnectionManager.getConnection();
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery(FIND_ALL);
+            ResultSet rs = st.executeQuery(FIND_ALL)){
 
             while(rs.next()) {
                 Publisher thisPublisher = new Publisher();
@@ -33,23 +33,24 @@ public class PublisherDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in user dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in PublisherDao class", e);
         }
         return publishers;
     }
 
     public boolean isPresent(String name) throws DaoException {
-        try (Connection con = ConnectionManager.getConnection()) {
-            PreparedStatement statement = con.prepareStatement(QUERY);
+        try (Connection con = ConnectionManager.getConnection();
+            PreparedStatement statement = con.prepareStatement(QUERY)){
             statement.setString(1, name);
 
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return true;
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
             }
         } catch (SQLException e) {
             log.error("DaoException occurred in " + PublisherDao.class);
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in PublisherDao class", e);
         }
         return false;
     }
@@ -57,22 +58,23 @@ public class PublisherDao {
     public Optional<Publisher> findByName(String name) throws DaoException {
         Optional<Publisher> result;
         Publisher publisher = null;
-        try (Connection con = ConnectionManager.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(QUERY);
+        try (Connection con = ConnectionManager.getConnection();
+            PreparedStatement ps = con.prepareStatement(QUERY)){
             ps.setString(1, name);
-            ResultSet resultSet = ps.executeQuery();
 
-            if (resultSet.next()) {
-                publisher = new Publisher(
-                        resultSet.getInt(1),
-                        resultSet.getString(2)
-                );
+            try (ResultSet resultSet = ps.executeQuery()) {
+                if (resultSet.next()) {
+                    publisher = new Publisher(
+                            resultSet.getInt(1),
+                            resultSet.getString(2)
+                    );
+                }
             }
             result = Optional.ofNullable(publisher);
 
         } catch (SQLException exception) {
             log.error("DaoException occurred in " + PublisherDao.class);
-            throw new DaoException(exception.getMessage(), exception.getCause());
+            throw new DaoException("DaoException occurred in PublisherDao class", exception);
         }
         return result;
     }

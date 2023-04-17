@@ -19,7 +19,6 @@ import java.util.Properties;
  */
 public class CaptchaVerifier {
     private static final Logger log = LoggerFactory.getLogger(CaptchaVerifier.class);
-    private static String SITE_KEY;
     private static String SECRET_KEY;
     private static String VERIFY_URL;
 
@@ -28,7 +27,6 @@ public class CaptchaVerifier {
             Properties properties = new Properties();
             properties.load(in);
 
-            SITE_KEY = properties.getProperty("Site_key");
             SECRET_KEY = properties.getProperty("Secret_key");
             VERIFY_URL = properties.getProperty("Site_verify_URL");
         } catch (IOException exception) {
@@ -51,8 +49,7 @@ public class CaptchaVerifier {
             out.flush();
             out.close();
 
-            log.info(String.format("Captcha response code from connection verify URL is: %s\nWith SiteKey :%s",
-                    con.getResponseCode(), SITE_KEY));
+            log.info(String.format("Captcha response code from connection verify URL is: %s", con.getResponseCode()));
             InputStream in = con.getInputStream();
 
             JsonReader jsonReader = Json.createReader(in);

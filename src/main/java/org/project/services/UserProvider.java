@@ -56,7 +56,8 @@ public class UserProvider {
         }
 
         String captchaResponse = content.getParameter("g-recaptcha-response");
-        if (!CaptchaVerifier.verify(captchaResponse)) {
+        boolean valid = CaptchaVerifier.verify(captchaResponse);
+        if (!valid) {
             content.setRequestAttribute("error", MessageName.CAPTCHA_ERROR);
             return false;
         }

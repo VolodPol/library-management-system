@@ -21,25 +21,25 @@ public class UserDao {
 
     public List<User> findAll(int offSet, int total, Role role) throws DaoException {
         List<User> users = new ArrayList<>();
-        try (Connection connection = ConnectionManager.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement(GET_ALL_USERS_LIMIT);
+        try (Connection connection = ConnectionManager.getConnection();
+            PreparedStatement ps = connection.prepareStatement(GET_ALL_USERS_LIMIT)) {
             ps.setString(1, role.getRoleValue());
             ps.setInt(2, offSet);
             ps.setInt(3, total);
 
-            ResultSet rs = ps.executeQuery();
             User user;
-            while (rs.next()) {
-                user = extractUser(rs);
-                users.add(user);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    user = extractUser(rs);
+                    users.add(user);
+                }
             }
-            rs.close();
             ResultSet newRs = ps.executeQuery("SELECT FOUND_ROWS()");
             if (newRs.next()) this.numOfRecs = newRs.getInt(1);
             newRs.close();
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in UserDao class", e);
         }
         return users;
     }
@@ -54,15 +54,16 @@ public class UserDao {
         try (Connection connection = ConnectionManager.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(FIND_USER_BY_LOGIN)) {
             preparedStatement.setString(1, login);
-            ResultSet rs = preparedStatement.executeQuery();
 
-            if (rs.next()) {
-                user = extractUser(rs);
+            try (ResultSet rs = preparedStatement.executeQuery()) {
+                if (rs.next()) {
+                    user = extractUser(rs);
+                }
             }
             result = Optional.ofNullable(user);
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in UserDao class", e);
         }
         return result;
     }
@@ -86,7 +87,7 @@ public class UserDao {
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
-            throw new DaoException(exception.getMessage(), exception.getCause());
+            throw new DaoException("DaoException occurred in UserDao class", exception);
         }
     }
 
@@ -110,7 +111,7 @@ public class UserDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in UserDao class", e);
         }
         return result;
     }
@@ -134,7 +135,7 @@ public class UserDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in UserDao class", e);
         }
     }
 
@@ -158,7 +159,7 @@ public class UserDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in UserDao class", e);
         }
         return result;
     }

@@ -21,26 +21,26 @@ public class BookDao {
     private int numOfRecs;
     public List<Book> findAll(int offSet, int total, SortOrder sortOrder, SortBy type) throws DaoException {
         List<Book> books = new ArrayList<>();
-        try (Connection connection = ConnectionManager.getConnection()) {
-            String query = buildFindQuery(offSet, total, sortOrder, type);
+        String query = buildFindQuery(offSet, total, sortOrder, type);
 
-            PreparedStatement ps = connection.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
+        try (Connection connection = ConnectionManager.getConnection();
+             PreparedStatement ps = connection.prepareStatement(query)) {
 
-            Book currentBook;
-            while (rs.next()) {
-                currentBook = retrieveBook(rs);
-                books.add(currentBook);
+            try (ResultSet rs = ps.executeQuery()) {
+                Book currentBook;
+                while (rs.next()) {
+                    currentBook = retrieveBook(rs);
+                    books.add(currentBook);
+                }
             }
-            rs.close();
-            ResultSet rs1 = ps.executeQuery("SELECT FOUND_ROWS()");
-            if (rs1.next()){
-                this.numOfRecs = rs1.getInt(1);
+
+            try (ResultSet rs1 = ps.executeQuery("SELECT FOUND_ROWS()")) {
+                if (rs1.next())
+                    this.numOfRecs = rs1.getInt(1);
             }
-            rs1.close();
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", e);
         }
         return books;
     }
@@ -51,19 +51,20 @@ public class BookDao {
     public Optional<Book> findByIsbn(String isbn) throws DaoException {
         Optional<Book> result;
         Book book = null;
-        try (Connection con = ConnectionManager.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ISBN);
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(FIND_BOOK_BY_ISBN)) {
             ps.setString(1, isbn);
 
-            ResultSet resultSet = ps.executeQuery();
-            if (resultSet.next()) {
-                book = retrieveBook(resultSet);
+            try (ResultSet resultSet = ps.executeQuery()) {
+                if (resultSet.next()) {
+                    book = retrieveBook(resultSet);
+                }
             }
             result = Optional.ofNullable(book);
 
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
-            throw new DaoException(exception.getMessage(), exception.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", exception);
         }
         return result;
     }
@@ -79,15 +80,18 @@ public class BookDao {
 
             statement.setString(1, "%".concat(searchedAs).concat("%"));
 
-            ResultSet rs = statement.executeQuery();
             Book book;
-            while (rs.next()) {
-                book = retrieveBook(rs);
-                foundBooks.add(book);
+            try (ResultSet rs = statement.executeQuery()) {
+                while (rs.next()) {
+                    book = retrieveBook(rs);
+                    foundBooks.add(book);
+                }
+            } finally {
+                statement.close();
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", e);
         }
         return foundBooks;
     }
@@ -112,7 +116,7 @@ public class BookDao {
 
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", e);
         }
     }
 
@@ -135,7 +139,7 @@ public class BookDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", e);
         }
     }
 
@@ -150,7 +154,6 @@ public class BookDao {
 
                 statement.executeUpdate();
                 ConnectionManager.commit(con);
-
             } catch (SQLException exception) {
                 ConnectionManager.rollback(con, sp);
             } finally {
@@ -158,7 +161,7 @@ public class BookDao {
             }
         } catch (SQLException e) {
             log.error("dao exception occurred in book dao class: " + e.getMessage());
-            throw new DaoException(e.getMessage(), e.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", e);
         }
     }
     public void delete(String isbn) throws DaoException {
@@ -179,22 +182,23 @@ public class BookDao {
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
-            throw new DaoException(exception.getMessage(), exception.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", exception);
         }
     }
 
     public boolean isIsbnPresent(String isbn) throws DaoException {
-        try (Connection con = ConnectionManager.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(ISBN_PRESENT);
+        try (Connection con = ConnectionManager.getConnection();
+             PreparedStatement ps = con.prepareStatement(ISBN_PRESENT)) {
             ps.setString(1, isbn);
-            ResultSet rs = ps.executeQuery();
 
-            if (rs.next()){
-                return true;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return true;
+                }
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());
-            throw new DaoException(exception.getMessage(), exception.getCause());
+            throw new DaoException("DaoException occurred in BookDao class", exception);
         }
         return false;
     }

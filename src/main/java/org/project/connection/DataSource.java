@@ -49,4 +49,7 @@ public class DataSource {
     public static synchronized Connection getConnection() throws SQLException {
         return ds.getConnection();
     }
+    public static HikariDataSource getDataSource() {
+        return ds;
+    }
 }
