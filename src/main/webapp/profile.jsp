@@ -41,21 +41,21 @@
 <c:set var="user" value="${requestScope.user}" scope="page"/>
 <h2 style="text-align: center"><fmt:message bundle="${bundle}" key="page.profile.h2_greeting"/> ${sessionScope.name}!</h2>
 <div id="container">
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_login"/>   :   ${requestScope.user.login}</h2>
+    <p><fmt:message bundle="${bundle}" key="page.profile.h2_login"/> :</p><h2>   ${requestScope.user.login}</h2>
 
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_email"/>  :   ${requestScope.user.email}</h2>
-
-
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_phone"/>    :   ${requestScope.user.phone}</h2>
+    <p><fmt:message bundle="${bundle}" key="page.profile.h2_email"/> :</p><h2>   ${requestScope.user.email}</h2>
 
 
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_role"/>    :   ${requestScope.user.role}</h2>
-
-        <fmt:setLocale value="${sessionScope.locale}"/>
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_fine_amount"/>    :   <fmt:formatNumber type="currency" value="${requestScope.user.fineAmount}"/></h2>
+    <p><fmt:message bundle="${bundle}" key="page.profile.h2_phone"/> :</p><h2>   ${requestScope.user.phone}</h2>
 
 
-        <h2><fmt:message bundle="${bundle}" key="page.profile.h2_sub"/>     :   ${requestScope.user.subscription}</h2>
+    <p><fmt:message bundle="${bundle}" key="page.profile.h2_role"/> :</p><h2>   ${requestScope.user.role}</h2>
+
+    <fmt:setLocale value="${sessionScope.locale}"/>
+    <p><fmt:message bundle="${bundle}" key="page.profile.h2_fine_amount"/> :</p><h2>   <fmt:formatNumber type="currency" value="${requestScope.user.fineAmount}"/></h2>
+
+
+    <p><fmt:message bundle="${bundle}" key="page.profile.h2_sub"/> :</p><h2>   ${requestScope.user.subscription}</h2>
 
 </div>
 
@@ -102,6 +102,10 @@
 
     .active {
         background-color: #1e6839;
+    }
+    p {
+        margin-left: 25px;
+        font-size: 1.35em;
     }
 
 </style>

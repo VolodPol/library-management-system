@@ -1,4 +1,4 @@
-package org.project.entity;
+package org.project.entity.impl;
 
 public enum Subscription {
     BASIC("basic"),

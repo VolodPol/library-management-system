@@ -8,8 +8,8 @@ import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
 import org.project.dao.CheckoutDao;
 import org.project.dao.UserDao;
-import org.project.entity.Role;
-import org.project.entity.User;
+import org.project.entity.impl.Role;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 import org.project.services.*;
 import org.project.services.resources.MessageName;
@@ -45,7 +45,6 @@ public class LoginCommand implements ActionCommand {
             UserDao userDao = new UserDao();
             User user = userDao.findByLogin(login).orElse(new User());
             setFines(user, userDao, content, response);
-
             //check if user is blocked
             if (user.isStatus() == 1) {
                 content.setRequestAttribute("error", MessageName.BLOCKED);
@@ -57,11 +56,12 @@ public class LoginCommand implements ActionCommand {
                 content.setRequestAttribute("error", MessageName.CAPTCHA_ERROR);
                 return new ActionResult(PathProvider.getPath(LOGIN), false);
             }
-
             setSessionAttributes(content, user);
             page = getPath(INDEX);
         } else {
             page = getPath(LOGIN);
+            content.setRequestAttribute("error", MessageName.NOT_CORRECT_INPUT);
+            return new ActionResult(page, false);
         }
         return new ActionResult(page, true);
     }
@@ -84,6 +84,6 @@ public class LoginCommand implements ActionCommand {
         response.addCookie(new Cookie(UtilProvider.getFineCookie(user.getLogin()), String.valueOf(fines)));
 
         if (fineAmount != 0)
-            userDao.setFineAmount(user.getId(), user.getFineAmount() + fineAmount);
+            userDao.upgradeSub(user.getId(), user.getFineAmount() + fineAmount);
     }
 }

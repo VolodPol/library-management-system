@@ -11,9 +11,11 @@ import org.project.commands.impl.post.librarian.ConfirmOrderCommand;
 import org.project.commands.impl.post.user.OrderBookCommand;
 import org.project.commands.impl.post.user.ReturnBookCommand;
 import org.project.commands.impl.post.user.SignUpCommand;
+import org.project.commands.impl.post.user.UpgradeSubscriptionCommand;
 
 /**
  * The enumeration that contains all the Commands
+ * Command pattern
  */
 public enum CommandEnum {
     LOGIN (new LoginCommand()),
@@ -35,7 +37,8 @@ public enum CommandEnum {
     DELETE_LIBRARIAN (new DeleteLibrarianCommand()),
     SHOW_USERS (new ShowUsersCommand()),
     BLOCK_USER (new BlockUserCommand()),
-    PROFILE (new UserProfileCommand());
+    PROFILE (new UserProfileCommand()),
+    UPGRADE (new UpgradeSubscriptionCommand());
 
     private final ActionCommand command;
     CommandEnum(ActionCommand command) {

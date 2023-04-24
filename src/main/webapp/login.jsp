@@ -34,23 +34,24 @@
 
 <div id="container">
     <div id="box">
-        <h1>${login}</h1>
+        <h1 style="margin-bottom: 2px">${login}</h1>
+        <hr>
         <form name="loginForm" action="front" method="POST">
             <input name="command" type="hidden" value="login"/>
 
-            <label>${username}</label>
-            <div>
+            <p><strong>${username}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-user"></i>
                 <label>
-                    <input name="login" type="text" placeholder="Enter Username">
+                    <input class="input" name="login" type="text" placeholder="Enter Username">
                 </label>
             </div>
 
-            <label>${password}</label>
-            <div>
+            <p><strong>${password}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-lock"></i>
                 <label>
-                    <input name="password" type="password" placeholder="Enter Password">
+                    <input class="input" name="password" type="password" placeholder="Enter Password">
                 </label>
             </div>
             <div class="g-recaptcha" data-sitekey="<fmt:message bundle="${captchaBundle}" key="Site_key"/>"></div>
@@ -62,7 +63,9 @@
                 </div>
             </c:if>
 
-            <input type="submit" value="${login}">
+            <div class="input-div">
+                <input class="submit-button" type="submit" value="${login}">
+            </div>
         </form>
         <a href="register.jsp" class="sign-up"><fmt:message bundle="${bundle}" key="page.register.h1_sign_up"/></a>
     </div>
@@ -122,6 +125,40 @@
         border-radius: 5px; /* закруглені кути форми */
         text-align: center; /* центруємо текст в формі */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* тінь форми */
+    }
+
+    .input-div {
+        padding-left: 20px;
+        margin: 10px 5px 10px 5px;
+    }
+
+    .input {
+        font-size: large;
+    }
+
+    p {
+        font-size: 1.32em;
+        margin: 5px;
+    }
+    /*  submit */
+    .submit-button {
+        padding: 10px;
+        background: #0066A2;
+        color: white;
+        border-style: outset;
+        border-color: #0066A2;
+        font: bold 18px arial,sans-serif;
+        text-shadow: none;
+        cursor: pointer;
+        box-shadow: 0 2px #999;
+    }
+
+    .submit-button:hover {background-color: #3e8e41}
+
+    .submit-button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
     }
 
 </style>

@@ -5,10 +5,11 @@ import org.project.commands.ActionCommand;
 import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
 import org.project.dao.BookDao;
-import org.project.entity.Book;
+import org.project.entity.impl.Book;
 import org.project.entity.dto.BookDTO;
 import org.project.exceptions.DaoException;
 import org.project.services.Mapper;
+import org.project.services.resources.MessageName;
 import org.project.utils.PathProvider;
 
 import static org.project.services.resources.FilePath.*;
@@ -23,9 +24,12 @@ public class FindBookCommand implements ActionCommand {
 
         BookDao finder = new BookDao();
         List<Book> books = finder.searchFor(criteria, textInput);
-        List<BookDTO> dtoList = Mapper.booksToDTO(books);
-
-        content.setRequestAttribute("bookList", dtoList);
+        if (books.isEmpty())
+            content.setRequestAttribute("errorMessage", MessageName.NOT_FOUND);
+        else {
+            List<BookDTO> dtoList = Mapper.booksToDTO(books);
+            content.setRequestAttribute("bookList", dtoList);
+        }
         content.setRequestAttribute("recordsPerPage", 5);
         return new ActionResult(PathProvider.getPath(MAIN), false);
     }

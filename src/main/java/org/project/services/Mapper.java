@@ -1,9 +1,9 @@
 package org.project.services;
 
-import org.project.entity.Book;
-import org.project.entity.Checkout;
-import org.project.entity.Publisher;
-import org.project.entity.User;
+import org.project.entity.impl.Book;
+import org.project.entity.impl.Checkout;
+import org.project.entity.impl.Publisher;
+import org.project.entity.impl.User;
 import org.project.entity.dto.*;
 import org.project.utils.UtilProvider;
 

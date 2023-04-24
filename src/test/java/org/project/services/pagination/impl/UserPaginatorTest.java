@@ -7,8 +7,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.project.commands.RequestContent;
 import org.project.dao.UserDao;
-import org.project.entity.Role;
-import org.project.entity.User;
+import org.project.entity.impl.Role;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 import org.project.services.pagination.Paginator;
 

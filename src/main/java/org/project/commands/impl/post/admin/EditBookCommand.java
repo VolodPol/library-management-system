@@ -6,7 +6,7 @@ import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
 import org.project.dao.BookDao;
 import org.project.dao.PublisherDao;
-import org.project.entity.Book;
+import org.project.entity.impl.Book;
 import org.project.exceptions.DaoException;
 import org.project.services.BookService;
 import org.project.services.resources.CommandPath;

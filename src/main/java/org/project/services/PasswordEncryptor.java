@@ -1,5 +1,8 @@
 package org.project.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -8,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * the MD5 MessageDigest
  */
 public class PasswordEncryptor {
+    private static final Logger log = LoggerFactory.getLogger(PasswordEncryptor.class);
     /**
      * @param exposed the bare password
      * @return encrypted hashcode of the password
@@ -26,9 +30,8 @@ public class PasswordEncryptor {
             }
 
             encrypted = s.toString();
-        }
-        catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            log.error("Couldn't encrypt the password", e);
         }
         return encrypted;
     }

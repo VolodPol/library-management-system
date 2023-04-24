@@ -11,7 +11,7 @@ public enum PageNavigation {
                     "/login.jsp",
                     "logout",
                     "/register.jsp",
-                    "register",//
+                    "register",
                     "books"
             }
     ),
@@ -22,14 +22,15 @@ public enum PageNavigation {
                     "/login.jsp",
                     "logout",
                     "/register.jsp",
-                    "register",//
+                    "register",
                     "books",
                     "/new_order.jsp",
                     "order",
                     "return",
                     "profile",
                     "my_books",
-                    "find_book"
+                    "find_book",
+                    "upgrade"
             }
     ),
     ADMIN(

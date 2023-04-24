@@ -73,14 +73,6 @@
     <div class="input-div">
       <label>
         <input class="input" name="publisher" type="text">
-<%--        <br>--%>
-<%--        <input class="input" name="publisher" type="text" list="publishers"--%>
-<%--               placeholder="<fmt:message bundle="${bundle}" key="page.create_book.h2_publisher"/>">--%>
-<%--        <datalist id="publishers">--%>
-<%--        <c:forEach var="publisher" items="${requestScope.publisherList}">--%>
-<%--          <option>${publisher}</option>--%>
-<%--        </c:forEach>--%>
-<%--        </datalist>--%>
       </label>
     </div>
 
@@ -175,21 +167,4 @@
     box-shadow: 0 5px #666;
     transform: translateY(4px);
   }
-/*  */
-/*  .input-div-container {*/
-/*    !*height: 100vh;*!*/
-/*    !*width: 100%;*!*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    flex-direction: column;*/
-/*    background: #d3d3d3;*/
-/*  }*/
-/*  .input-div-container input {*/
-/*    padding: 10px 20px;*/
-/*    background: white;*/
-/*    border: none;*/
-/*    outline: none;*/
-/*    border-radius: 5px;*/
-/*  }*/
 </style>

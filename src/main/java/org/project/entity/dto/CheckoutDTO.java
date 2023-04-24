@@ -1,6 +1,6 @@
 package org.project.entity.dto;
 
-import org.project.entity.OrderStatus;
+import org.project.entity.impl.OrderStatus;
 
 import java.sql.Timestamp;
 

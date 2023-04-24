@@ -38,63 +38,64 @@
 
 <div id="container">
     <div id="box">
-        <h1>${h1_sign_up}</h1>
+        <h1 style="margin-bottom: 2px; margin-top: 2px">${h1_sign_up}</h1>
+        <hr>
         <form name="registerForm" action="front" method="POST">
             <input name="command" type="hidden" value="register"/>
 
-            <label>${username}</label>
-            <div>
+            <p><strong>${username}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-user"></i>
                 <label>
-                    <input name="login" type="text" placeholder="Enter Username">
+                    <input class="input" name="login" type="text" placeholder="Enter Username">
                 </label>
             </div>
 
-            <label>${email}</label>
-            <div>
+            <p><strong>${email}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-mail-bulk"></i>
                 <label>
-                    <input name="email" type="email" placeholder="Enter Email">
+                    <input class="input" name="email" type="email" placeholder="Enter Email">
                 </label>
             </div>
 
-            <label>${password}</label>
-            <div>
+            <p><strong>${password}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-lock"></i>
                 <label>
-                    <input name="password" type="password" placeholder="Enter Password">
+                    <input class="input" name="password" type="password" placeholder="Enter Password">
                 </label>
             </div>
 
-            <label>${first_name}</label>
-            <div>
+            <p><strong>${first_name}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-user-tag"></i>
                 <label>
-                    <input name="firstname" type="text" placeholder="Enter Your First Name">
+                    <input class="input" name="firstname" type="text" placeholder="Enter Your First Name">
                 </label>
             </div>
 
-            <label>${surname}</label>
-            <div>
+            <p><strong>${surname}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-user-tag"></i>
                 <label>
-                    <input name="surname" type="text" placeholder="Enter Your Surname">
+                    <input class="input" name="surname" type="text" placeholder="Enter Your Surname">
                 </label>
             </div>
 
-            <label>${phone}</label>
-            <div>
+            <p><strong>${phone}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-phone"></i>
                 <label>
-                    <input name="phone" type="tel" placeholder="Input Your Phone">
+                    <input class="input" name="phone" type="tel" placeholder="Input Your Phone">
                 </label>
             </div>
 
-            <label>${age}</label>
-            <div>
+            <p><strong>${age}</strong></p>
+            <div class="input-div">
                 <i class="fa-solid fa-clock"></i>
                 <label>
-                    <input name="age" type="text" placeholder="Enter Your Age">
+                    <input class="input" name="age" type="text" placeholder="Enter Your Age">
                 </label>
             </div>
 
@@ -107,7 +108,9 @@
                 </div>
             </c:if>
 
-            <input type="submit" value="${title}">
+            <div class="input-div">
+                <input class="submit-button" type="submit" value="${title}">
+            </div>
         </form>
         <a href="login.jsp" class="sign-up">${sign_in}</a>
     </div>
@@ -172,4 +175,38 @@
         text-align: center; /* центруємо текст в формі */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* тінь форми */
     }
+    .input-div {
+        padding-left: 20px;
+        margin: 5px;
+    }
+
+    .input {
+        font-size: large;
+    }
+
+    p {
+        font-size: 1.32em;
+        margin: 5px;
+    }
+    /*  submit */
+    .submit-button {
+        padding: 10px;
+        background: #0066A2;
+        color: white;
+        border-style: outset;
+        border-color: #0066A2;
+        font: bold 18px arial,sans-serif;
+        text-shadow: none;
+        cursor: pointer;
+        box-shadow: 0 2px #999;
+    }
+
+    .submit-button:hover {background-color: #3e8e41}
+
+    .submit-button:active {
+        background-color: #3e8e41;
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
+
 </style>

@@ -48,7 +48,7 @@
         <c:if test="${not empty requestScope.error}">
             <h3 style="color: red"><fmt:message bundle="${bundle}" key="${requestScope.error}"/></h3>
             <c:if test="${requestScope.error == 'page.error_message.no_sub'}">
-                <a href="#" ><fmt:message bundle="${bundle}" key="page.new_order.message.link"/></a>
+                <a href="front?command=upgrade" ><fmt:message bundle="${bundle}" key="page.new_order.message.link"/></a>
             </c:if>
         </c:if>
 

@@ -2,7 +2,7 @@ package org.project.services.pagination.impl;
 
 import org.project.commands.RequestContent;
 import org.project.dao.BookDao;
-import org.project.entity.Book;
+import org.project.entity.impl.Book;
 import org.project.entity.sorting.SortBy;
 import org.project.entity.sorting.SortOrder;
 import org.project.exceptions.DaoException;

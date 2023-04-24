@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.project.commands.RequestContent;
-import org.project.entity.Role;
+import org.project.entity.impl.Role;
 import org.project.exceptions.DaoException;
 
 import static org.junit.jupiter.api.Assertions.*;

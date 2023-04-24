@@ -12,7 +12,10 @@ public interface MessageName {
     String NO_SUB = "page.error_message.no_sub";
     String PUBLISHER_EXISTS = "page.error_message.publisher_exists";
     String LOGIN_EMAIL = "page.error_message.login_email_used";
+    String NOT_CORRECT_INPUT = "page.error_message.not_correct_input";
     String EMPTY_FORM = "page.error_message.empty_form";
     String NOT_AVAILABLE = "page.error_message.no_available_books";
     String CAPTCHA_ERROR = "page.error_message.invalid_captcha";
+    String FINED = "page.error_message.fined";
+    String NOT_FOUND = "page.error_message.not_found";
 }

@@ -1,7 +1,7 @@
 package org.project.dao;
 
 import org.project.connection.ConnectionManager;
-import org.project.entity.Publisher;
+import org.project.entity.impl.Publisher;
 import org.project.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

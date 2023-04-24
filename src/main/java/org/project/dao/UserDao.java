@@ -1,9 +1,9 @@
 package org.project.dao;
 
 import org.project.connection.ConnectionManager;
-import org.project.entity.Role;
-import org.project.entity.Subscription;
-import org.project.entity.User;
+import org.project.entity.impl.Role;
+import org.project.entity.impl.Subscription;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +68,7 @@ public class UserDao {
         return result;
     }
 
-    public void setFineAmount(int id, int fine) throws DaoException {
+    public void upgradeSub(int id, int fine) throws DaoException {
         try (Connection connection = ConnectionManager.getConnection()) {
             boolean auto = connection.getAutoCommit();
             connection.setAutoCommit(false);
@@ -84,6 +84,28 @@ public class UserDao {
                 ConnectionManager.rollback(connection, save);
             } finally {
                 connection.setAutoCommit(auto);
+            }
+        } catch (SQLException exception) {
+            log.error("dao exception occurred in book dao class: " + exception.getMessage());
+            throw new DaoException("DaoException occurred in UserDao class", exception);
+        }
+    }
+
+    public void upgradeSub(String login) throws DaoException {
+        try (Connection con = ConnectionManager.getConnection()) {
+            boolean auto = con.getAutoCommit();
+            con.setAutoCommit(false);
+            Savepoint savePoint = con.setSavepoint("SavePoint");
+
+            try (PreparedStatement statement = con.prepareStatement(UPGRADE)) {
+                statement.setString(1, login);
+                statement.executeUpdate();
+
+                ConnectionManager.commit(con);
+            } catch (SQLException e) {
+                ConnectionManager.rollback(con, savePoint);
+            } finally {
+                con.setAutoCommit(auto);
             }
         } catch (SQLException exception) {
             log.error("dao exception occurred in book dao class: " + exception.getMessage());

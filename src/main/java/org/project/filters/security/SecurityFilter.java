@@ -3,7 +3,7 @@ package org.project.filters.security;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
-import org.project.entity.Role;
+import org.project.entity.impl.Role;
 
 import java.io.IOException;
 import java.util.Arrays;

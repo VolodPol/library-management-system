@@ -5,7 +5,7 @@ import org.project.commands.ActionCommand;
 import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
 import org.project.dao.PublisherDao;
-import org.project.entity.Publisher;
+import org.project.entity.impl.Publisher;
 import org.project.exceptions.DaoException;
 import org.project.services.validation.Validator;
 import org.project.services.validation.dataset.DataSetProvider;

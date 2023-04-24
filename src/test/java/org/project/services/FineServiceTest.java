@@ -8,8 +8,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.project.dao.CheckoutDao;
-import org.project.entity.Checkout;
-import org.project.entity.User;
+import org.project.entity.impl.Checkout;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 import org.project.utils.UtilProvider;
 

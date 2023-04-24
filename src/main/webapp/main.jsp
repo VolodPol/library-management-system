@@ -138,6 +138,13 @@
         </div>
     </div>
 
+    <c:if test="${not empty requestScope.errorMessage}">
+        <div class="center">
+            <h3 style="color: red"><fmt:message bundle="${bundle}" key="${requestScope.errorMessage}"/></h3>
+        </div>
+
+    </c:if>
+
     <div class="box">
         <table class="content-table">
             <thead>
@@ -205,7 +212,6 @@
                         <a class="active">${i}</a>
                     </c:when>
                     <c:otherwise>
-<%--                        <a href="front?command=books&page=${i}">${i}</a>--%>
                         <a href="front?command=books&page=${i}&sortBy=${sortBy}&sortOrder=${sortOrder}&recNum=${recordsPerPage}">
                                 ${i}
                         </a>
@@ -269,11 +275,6 @@
     .content-table tbody tr:last-of-type {
         border-bottom: 2px solid #1e673a;
     }
-
-    /*.content-table tbody tr.active-row {*/
-    /*    font-weight: bold;*/
-    /*    color: #1e673a;*/
-    /*}*/
 
 /*    -----------------------------------------*/
 /*search styles*/

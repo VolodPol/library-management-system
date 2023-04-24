@@ -1,12 +1,8 @@
 package org.project.entity.dto;
 
-import org.project.entity.Publisher;
-
 public class PublisherDTO {
     private int id;
     private String name;
-
-    public PublisherDTO() {}
 
     public PublisherDTO(int id, String name) {
         this.id = id;

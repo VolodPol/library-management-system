@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.project.dao.UserDao;
-import org.project.entity.User;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 
 import java.util.Optional;

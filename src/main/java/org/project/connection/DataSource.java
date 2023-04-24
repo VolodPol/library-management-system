@@ -13,11 +13,12 @@ import java.util.Properties;
 
 /**
  * The DataSource for hikari connection pool with static initialization of configuration
+ * Classic thread-safe Singleton
  */
 public class DataSource {
     private static final Logger log = LoggerFactory.getLogger(DataSource.class);
     private static final HikariConfig config = new HikariConfig();
-    private static final HikariDataSource ds;
+    private static HikariDataSource ds;
 
     static {
         try (InputStream inStream = DataSource.class.getResourceAsStream("/db.properties")) {
@@ -36,7 +37,6 @@ public class DataSource {
         } catch (IOException exception){
             log.error("Couldn't read DB properties");
         }
-        ds = new HikariDataSource(config);
     }
 
     private DataSource() {}
@@ -47,9 +47,12 @@ public class DataSource {
      * @throws SQLException may throw
      */
     public static synchronized Connection getConnection() throws SQLException {
-        return ds.getConnection();
+        return getDataSource().getConnection();
     }
-    public static HikariDataSource getDataSource() {
+    public static synchronized HikariDataSource getDataSource() {
+        if (ds == null) {
+            ds = new HikariDataSource(config);
+        }
         return ds;
     }
 }

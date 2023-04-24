@@ -1,9 +1,10 @@
-package org.project.entity;
+package org.project.entity.impl;
 
+import org.project.entity.Entity;
 
 import java.util.Objects;
 
-public class User extends Entity{
+public class User extends Entity {
     private int id;
     private String login;
     private String password;

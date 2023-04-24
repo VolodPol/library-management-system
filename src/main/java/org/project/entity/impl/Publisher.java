@@ -1,4 +1,6 @@
-package org.project.entity;
+package org.project.entity.impl;
+import org.project.entity.Entity;
+
 import java.util.Objects;
 
 public class Publisher extends Entity {

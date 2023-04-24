@@ -1,6 +1,7 @@
-package org.project.entity;
+package org.project.entity.impl;
 
 
+import org.project.entity.Entity;
 import org.project.utils.UtilProvider;
 
 import java.sql.Date;

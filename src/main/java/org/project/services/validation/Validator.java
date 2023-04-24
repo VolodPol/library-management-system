@@ -2,6 +2,7 @@ package org.project.services.validation;
 
 /**
  * Interface for concrete validators to implement
+ * An example of Strategy pattern
  */
 public interface Validator {
     /**

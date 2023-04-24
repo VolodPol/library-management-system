@@ -28,65 +28,65 @@
 </fmt:bundle>
 
 
-<div class="container">
-    <div class="box">
-        <h1><fmt:message bundle="${bundle}" key="page.new_librarian.h1_create_librarian"/></h1>
+<%--<div class="container">--%>
+    <div id="form-container">
+        <h1 style="text-align: center"><fmt:message bundle="${bundle}" key="page.new_librarian.h1_create_librarian"/></h1>
         <form name="registerForm" action="front" method="POST">
             <input name="command" type="hidden" value="create_librarian"/>
 
-            <label><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.login"/></label>
-            <div>
+            <h2><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.login"/></h2>
+            <div class="input-div">
                 <i class="fa-solid fa-user"></i>
                 <label>
-                    <input name="login" type="text" placeholder="Enter Username">
+                    <input class="input" name="login" type="text" placeholder="Enter Username">
                 </label>
             </div>
 
-            <label><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.email"/></label>
-            <div>
+            <h2><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.email"/></h2>
+            <div class="input-div">
                 <i class="fa-solid fa-mail-bulk"></i>
                 <label>
-                    <input name="email" type="email" placeholder="Enter Email">
+                    <input class="input" name="email" type="email" placeholder="Enter Email">
                 </label>
             </div>
 
-            <label><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.password"/></label>
-            <div>
+            <h2><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.password"/></h2>
+            <div class="input-div">
                 <i class="fa-solid fa-lock"></i>
                 <label>
-                    <input name="password" type="password" placeholder="Enter Password">
+                    <input class="input" name="password" type="password" placeholder="Enter Password">
                 </label>
             </div>
 
-            <label><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.first_name"/></label>
-            <div>
+            <h2><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.first_name"/></h2>
+            <div class="input-div">
                 <i class="fa-solid fa-user-tag"></i>
                 <label>
-                    <input name="firstname" type="text" placeholder="Enter Your First Name">
+                    <input class="input" name="firstname" type="text" placeholder="Enter Your First Name">
                 </label>
             </div>
 
-            <label><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.surname"/></label>
-            <div>
+            <h2><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.surname"/></h2>
+            <div class="input-div">
                 <i class="fa-solid fa-user-tag"></i>
                 <label>
-                    <input name="surname" type="text" placeholder="Enter Your Surname">
+                    <input class="input" name="surname" type="text" placeholder="Enter Your Surname">
                 </label>
             </div>
 
-            <label><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.phone"/></label>
-            <div>
+            <h2><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.phone"/></h2>
+            <div class="input-div">
                 <i class="fa-solid fa-phone"></i>
                 <label>
-                    <input name="phone" type="tel" placeholder="Input Your Phone">
+                    <input class="input" name="phone" type="tel" placeholder="Input Your Phone">
                 </label>
             </div>
 
-            <label><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.age"/></label>
-            <div>
+            <h2><fmt:message bundle="${bundle}" key="page.new_librarian.input_label.age"/></h2>
+            <div class="input-div">
                 <i class="fa-solid fa-clock"></i>
                 <label>
-                    <input name="age" type="text" placeholder="Enter Your Age">
+                    <input class="input" name="age" type="text" placeholder="Enter Your Age">
                 </label>
             </div>
 
@@ -96,11 +96,12 @@
                     <p><fmt:message bundle="${bundle}" key="${error}"/></p>
                 </div>
             </c:if>
-
-            <input class="submit-button" type="submit" value="<fmt:message bundle="${bundle}" key="page.button.add_librarian"/>">
+            <div class="input-div" style="padding: 20px">
+                <input class="submit-button" type="submit" value="<fmt:message bundle="${bundle}" key="page.button.add_librarian"/>">
+            </div>
         </form>
     </div>
-</div>
+<%--</div>--%>
 <jsp:include page="elements/footer.jspf"/>
 </body>
 </html>
@@ -156,4 +157,21 @@
         transform: translateY(4px);
     }
 /*    page */
+    <%--  Form styles  --%>
+    #form-container {
+        display: block;
+        margin: auto 50px;
+    }
+
+    .input-div {
+        padding-left: 20px;
+    }
+
+    .input {
+        font-size: x-large;
+    }
+
+    * {
+        font-family: 'Raleway', sans-serif;
+    }
 </style>

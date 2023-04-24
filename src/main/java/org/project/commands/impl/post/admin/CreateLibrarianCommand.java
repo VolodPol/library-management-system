@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.project.commands.ActionCommand;
 import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
-import org.project.entity.Role;
+import org.project.entity.impl.Role;
 import org.project.exceptions.DaoException;
 import org.project.services.UserProvider;
 import org.project.services.resources.CommandPath;

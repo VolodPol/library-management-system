@@ -1,7 +1,7 @@
 package org.project.services;
 
 import org.project.dao.UserDao;
-import org.project.entity.User;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 
 /**

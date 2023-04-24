@@ -1,8 +1,10 @@
-package org.project.entity;
+package org.project.entity.impl;
+
+import org.project.entity.Entity;
 
 import java.util.Objects;
 @SuppressWarnings("unused")
-public class Genre extends Entity{
+public class Genre extends Entity {
     private int id;
     private String name;
 

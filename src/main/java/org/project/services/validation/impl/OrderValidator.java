@@ -1,7 +1,7 @@
 package org.project.services.validation.impl;
 
-import org.project.entity.Subscription;
-import org.project.entity.Type;
+import org.project.entity.impl.Subscription;
+import org.project.entity.impl.Type;
 import org.project.services.resources.MessageName;
 import org.project.services.validation.Validator;
 import org.project.services.validation.dataset.impl.OrderDataSet;

@@ -42,25 +42,31 @@ public class CaptchaVerifier {
             HttpsURLConnection con = (HttpsURLConnection) verifyUrl.openConnection();
             setHeaderInfo(con);
 
-            final String postParams = String.format("secret=%s&response=%s", SECRET_KEY, reCaptchaResp);
-            con.setDoOutput(true);
-            OutputStream out = con.getOutputStream();
-            out.write(postParams.getBytes());
-            out.flush();
-            out.close();
-
+            writePostParams(con, reCaptchaResp);
             log.info(String.format("Captcha response code from connection verify URL is: %s", con.getResponseCode()));
             InputStream in = con.getInputStream();
 
-            JsonReader jsonReader = Json.createReader(in);
-            JsonObject jsonObject = jsonReader.readObject();
-            jsonReader.close();
-
-            return jsonObject.getBoolean("success");
+            return isSuccessful(in);
         } catch (Exception exception) {
             log.warn("Exception occurred during captcha verification");
         }
         return false;
+    }
+
+    private static void writePostParams(HttpsURLConnection con, String captchaResp) throws Exception {
+        final String postParams = String.format("secret=%s&response=%s", SECRET_KEY, captchaResp);
+        con.setDoOutput(true);
+        OutputStream out = con.getOutputStream();
+        out.write(postParams.getBytes());
+        out.flush();
+        out.close();
+    }
+
+    private static boolean isSuccessful(InputStream in) {
+        JsonReader jsonReader = Json.createReader(in);
+        JsonObject jsonObject = jsonReader.readObject();
+        jsonReader.close();
+        return jsonObject.getBoolean("success");
     }
 
     private static void setHeaderInfo(HttpsURLConnection con) throws ProtocolException {

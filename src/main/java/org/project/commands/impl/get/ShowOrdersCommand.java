@@ -5,7 +5,7 @@ import org.project.commands.ActionCommand;
 import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
 import org.project.dao.CheckoutDao;
-import org.project.entity.Checkout;
+import org.project.entity.impl.Checkout;
 import org.project.entity.dto.CheckoutDTO;
 import org.project.exceptions.DaoException;
 import org.project.services.Mapper;

@@ -1,4 +1,4 @@
-package org.project.entity;
+package org.project.entity.impl;
 @SuppressWarnings("unused")
 public enum Status {
     PENDING(1),

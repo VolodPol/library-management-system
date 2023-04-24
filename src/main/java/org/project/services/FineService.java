@@ -2,8 +2,8 @@ package org.project.services;
 
 import jakarta.servlet.http.Cookie;
 import org.project.dao.CheckoutDao;
-import org.project.entity.Checkout;
-import org.project.entity.User;
+import org.project.entity.impl.Checkout;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 import org.project.utils.UtilProvider;
 
@@ -18,6 +18,10 @@ public class FineService {
      * CheckoutDao instance
      */
     private final CheckoutDao dao;
+    /**
+     * The fine
+     */
+    private static final int FINE = 50;
 
     /**
      * Single-argument constructor to init dao
@@ -51,7 +55,7 @@ public class FineService {
             try {
                 dao.setFineStatus(order.getId(), order.getFinedStatus());
             } catch (DaoException exception) {
-                throw new RuntimeException(exception);
+                throw new DaoException("Dao exception caught in service layer", exception);
             }
         }
         return fineSum;
@@ -80,9 +84,9 @@ public class FineService {
         }
         if (isCookiesEmpty || (lastRec == 0 && oldAmount > 0))
             return 0;
-        if (actualNum * 50 > oldAmount)
-            return actualNum * 50 - oldAmount;
+        if (actualNum * FINE > oldAmount)
+            return actualNum * FINE - oldAmount;
 
-        return (actualNum - lastRec) * 50;
+        return (actualNum - lastRec) * FINE;
     }
 }

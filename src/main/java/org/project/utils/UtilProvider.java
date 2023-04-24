@@ -3,7 +3,7 @@ package org.project.utils;
 import java.sql.Timestamp;
 
 /**
- * The class provides small operations(utils) for the sake of convenience.
+ * The class provides small operations(utils) for convenience purposes.
  */
 public class UtilProvider {
     public static Timestamp toTimestamp(String value) {

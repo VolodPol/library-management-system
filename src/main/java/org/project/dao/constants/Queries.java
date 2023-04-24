@@ -7,6 +7,7 @@ public interface Queries {
     String FIND_USER_BY_LOGIN = "SELECT * FROM `user` WHERE login = ?";
     String BLOCK_USER = "UPDATE user SET status = ? WHERE id = ?";
     String FINE_AMOUNT = "UPDATE user SET fine_amount = ? WHERE id = ?";
+    String UPGRADE = "UPDATE user SET subscription = 'reader' WHERE login = ?";
 
 
     //Book DAO

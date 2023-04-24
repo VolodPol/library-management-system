@@ -2,16 +2,15 @@ package org.project.services;
 
 import org.project.commands.RequestContent;
 import org.project.dao.UserDao;
-import org.project.entity.Role;
-import org.project.entity.Subscription;
-import org.project.entity.User;
+import org.project.entity.impl.Role;
+import org.project.entity.impl.Subscription;
+import org.project.entity.impl.User;
 import org.project.exceptions.DaoException;
 import org.project.services.resources.MessageName;
 import org.project.services.validation.Validator;
 import org.project.services.validation.dataset.DataSetProvider;
 import org.project.services.validation.impl.UserValidator;
 import org.project.services.validation.dataset.impl.UserDataSet;
-import org.project.utils.CaptchaVerifier;
 
 /**
  * The class is meant for creating users and inserting them into DB
@@ -55,12 +54,6 @@ public class UserProvider {
             return false;
         }
 
-        String captchaResponse = content.getParameter("g-recaptcha-response");
-        boolean valid = CaptchaVerifier.verify(captchaResponse);
-        if (!valid) {
-            content.setRequestAttribute("error", MessageName.CAPTCHA_ERROR);
-            return false;
-        }
         insertUser(data, role);
         return true;
     }

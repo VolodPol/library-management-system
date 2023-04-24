@@ -5,7 +5,7 @@ import org.project.commands.ActionCommand;
 import org.project.commands.ActionResult;
 import org.project.commands.RequestContent;
 import org.project.dao.UserDao;
-import org.project.entity.User;
+import org.project.entity.impl.User;
 import org.project.entity.dto.UserDTO;
 import org.project.exceptions.DaoException;
 import org.project.services.Mapper;

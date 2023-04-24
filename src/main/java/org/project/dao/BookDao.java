@@ -1,8 +1,8 @@
 package org.project.dao;
 
 import org.project.connection.ConnectionManager;
-import org.project.entity.Book;
-import org.project.entity.Publisher;
+import org.project.entity.impl.Book;
+import org.project.entity.impl.Publisher;
 import org.project.entity.sorting.SortBy;
 import org.project.entity.sorting.SortOrder;
 import org.project.exceptions.DaoException;
