@@ -14,7 +14,12 @@
   </welcome-file-list>
 
   <error-page>
-    <exception-type>org.project.exceptions.DaoException</exception-type>
+    <exception-type>com.library.exceptions.DaoException</exception-type>
+    <location>/WEB-INF/errors/error_page.jsp</location>
+  </error-page>
+
+  <error-page>
+    <exception-type>java.lang.NumberFormatException</exception-type>
     <location>/WEB-INF/errors/error_page.jsp</location>
   </error-page>
 

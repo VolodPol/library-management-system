@@ -14,7 +14,7 @@
 
     <tag>
         <name>hi</name>
-        <tagclass>org.project.tags.GreetingTag</tagclass>
+        <tagclass>com.library.tags.GreetingTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>role</name>
@@ -36,7 +36,7 @@
     </tag>
     <tag>
         <name>lang</name>
-        <tagclass>org.project.tags.LangDropdownTag</tagclass>
+        <tagclass>com.library.tags.LangDropdownTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>locale</name>
@@ -47,7 +47,7 @@
 
     <tag>
         <name>stock_message</name>
-        <tagclass>org.project.tags.StockTag</tagclass>
+        <tagclass>com.library.tags.StockTag</tagclass>
         <bodycontent>empty</bodycontent>
         <attribute>
             <name>amount</name>

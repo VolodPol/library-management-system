@@ -1,3 +1,4 @@
+Library Management System <br/>
 The reader registers in the system and then can:
 - search (by author / title);
 - place an order for a Book from the Catalog.
