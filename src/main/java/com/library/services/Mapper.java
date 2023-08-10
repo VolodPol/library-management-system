@@ -85,7 +85,7 @@ public class Mapper {
         userDTO.setFineAmount(
                 String.valueOf(user.getFineAmount())
         );
-        userDTO.setStatus(user.isStatus() == 0 ? "active" : "blocked");
+        userDTO.setStatus(user.getStatus() == 0 ? "active" : "blocked");
         userDTO.setRole(user.getRole().getRoleValue());
         userDTO.setSubscription(user.getSubscription().getValue());
 

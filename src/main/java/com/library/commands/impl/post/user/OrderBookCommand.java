@@ -1,5 +1,6 @@
 package com.library.commands.impl.post.user;
 
+import com.library.entity.*;
 import com.library.services.OrderService;
 import jakarta.servlet.http.HttpServletResponse;
 import com.library.commands.ActionCommand;
@@ -8,10 +9,6 @@ import com.library.commands.RequestContent;
 import com.library.dao.BookDao;
 import com.library.dao.CheckoutDao;
 import com.library.dao.UserDao;
-import com.library.entity.Book;
-import com.library.entity.Checkout;
-import com.library.entity.Type;
-import com.library.entity.User;
 import com.library.exceptions.DaoException;
 import com.library.services.resources.CommandPath;
 import com.library.services.validation.impl.OrderValidator;
@@ -46,14 +43,12 @@ public class OrderBookCommand implements ActionCommand {
         }
 
         CheckoutDao orderWriter = new CheckoutDao();
-        orderWriter.insert(
-                new Checkout(
-                        UtilProvider.toTimestamp(startTime),
-                        UtilProvider.toTimestamp(endTime),
-                        Type.valueOf(orderType.toUpperCase()),
-                        user,
-                        book
-                )
+        orderWriter.insert(new Checkout.CheckoutBuilder()
+                .addStartTime(UtilProvider.toTimestamp(startTime))
+                .addEndTime(UtilProvider.toTimestamp(endTime))
+                .addType(Type.valueOf(orderType.toUpperCase()))
+                .addUser(user).addBook(book)
+                .build()
         );
         return new ActionResult(CommandPath.BOOKS, true);
     }

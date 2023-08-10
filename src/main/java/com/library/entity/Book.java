@@ -2,10 +2,15 @@ package com.library.entity;
 
 
 import com.library.utils.UtilProvider;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.sql.Date;
-import java.util.Objects;
 
+@Getter
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class Book extends Entity {
     private int id;
     private String title;
@@ -13,127 +18,91 @@ public class Book extends Entity {
     private String isbn;
     private int copiesNumber;
     private Date dateOfPublication;
-
     private Publisher publisher;
 
+    public Book() {}
 
-    public Book() {
-
-    }
-    public Book(int id, String title, String author,
-                String isbn, int copiesNumber,
-                Date dateOfPublication, Publisher publisher) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.isbn = isbn;
-        this.copiesNumber = copiesNumber;
-        this.dateOfPublication = dateOfPublication;
-        this.publisher = publisher;
+    private Book(BookBuilder builder) {
+        this.id = builder.id;
+        this.title = builder.title;
+        this.author = builder.author;
+        this.isbn = builder.isbn;
+        this.copiesNumber = builder.copiesNumber;
+        this.dateOfPublication = builder.dateOfPublication;
+        this.publisher = builder.publisher;
     }
 
-    public Book(String title, String author,
-                String isbn, int copiesNumber,
-                Date dateOfPublication, Publisher publisher) {
-        this.title = title;
-        this.author = author;
-        this.isbn = isbn;
-        this.copiesNumber = copiesNumber;
-        this.dateOfPublication = dateOfPublication;
-        this.publisher = publisher;
+    public static final class BookBuilder {
+        private int id;
+        private String title;
+        private String author;
+        private String isbn;
+        private int copiesNumber;
+        private Date dateOfPublication;
+        private Publisher publisher;
+
+        public BookBuilder addId(int id) {
+            this.id = id;
+            return this;
+        }
+        public BookBuilder addTitle(String title) {
+            this.title = title;
+            return this;
+        }
+        public BookBuilder addAuthor(String author) {
+            this.author = author;
+            return this;
+        }
+        public BookBuilder addIsbn(String isbn) {
+            this.isbn = isbn;
+            return this;
+        }
+        public BookBuilder addCopiesNumber(int copiesNumber) {
+            this.copiesNumber = copiesNumber;
+            return this;
+        }
+        public BookBuilder addDateOfPublication(Date dateOfPublication) {
+            this.dateOfPublication = dateOfPublication;
+            return this;
+        }
+        public BookBuilder addPublisher(Publisher publisher) {
+            this.publisher = publisher;
+            return this;
+        }
+
+        public Book build() {
+            return new Book(this);
+        }
     }
 
-    public int getId() {
-        return id;
-    }
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
-    }
     public void setTitle(String title) {
         if (!UtilProvider.isEmpty(title))
             this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
     public void setAuthor(String author) {
         if (!UtilProvider.isEmpty(author))
             this.author = author;
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
     public void setIsbn(String isbn) {
         if (!UtilProvider.isEmpty(isbn))
             this.isbn = isbn;
     }
 
-    public int getCopiesNumber() {
-        return copiesNumber;
-    }
     public void setCopiesNumber(int copiesNumber) {
         this.copiesNumber = copiesNumber;
     }
 
-    public Date getDateOfPublication() {
-        return dateOfPublication;
-    }
     public void setDateOfPublication(Date dateOfPublication) {
         this.dateOfPublication = dateOfPublication;
     }
 
-    public Publisher getPublisher() {
-        return publisher;
-    }
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Book book = (Book) o;
-
-        if (id != book.id) return false;
-        if (copiesNumber != book.copiesNumber) return false;
-        if (!Objects.equals(title, book.title)) return false;
-        if (!Objects.equals(author, book.author)) return false;
-        if (!Objects.equals(isbn, book.isbn)) return false;
-        if (!Objects.equals(dateOfPublication, book.dateOfPublication))
-            return false;
-        return Objects.equals(publisher, book.publisher);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (author != null ? author.hashCode() : 0);
-        result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
-        result = 31 * result + copiesNumber;
-        result = 31 * result + (dateOfPublication != null ? dateOfPublication.hashCode() : 0);
-        result = 31 * result + (publisher != null ? publisher.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", isbn='" + isbn + '\'' +
-                ", copiesNumber=" + copiesNumber +
-                ", dateOfPublication=" + dateOfPublication +
-                ", publisher=" + publisher +
-                '}';
     }
 }

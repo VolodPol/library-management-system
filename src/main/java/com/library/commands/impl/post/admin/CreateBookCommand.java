@@ -40,14 +40,15 @@ public class CreateBookCommand implements ActionCommand {
             return new ActionResult(PathProvider.getPath(NEW_BOOK), false);
         }
         Publisher currentPublisher = dao.findByName(data.getPublisher()).orElse(new Publisher());//
-        Book currentBook = new Book(
-                data.getTitle(),
-                data.getAuthor(),
-                data.getIsbn(),
-                Integer.parseInt(data.getCopies()),
-                Date.valueOf(data.getDateOfPublication()),
-                currentPublisher
-        );
+        Book currentBook = new Book.BookBuilder()
+                .addTitle(data.getTitle())
+                .addAuthor(data.getAuthor())
+                .addIsbn(data.getIsbn())
+                .addCopiesNumber(Integer.parseInt(data.getCopies()))
+                .addDateOfPublication(Date.valueOf(data.getDateOfPublication()))
+                .addPublisher(currentPublisher)
+                .build();
+
         BookDao bookCreator = new BookDao();
         bookCreator.insert(currentBook);
 

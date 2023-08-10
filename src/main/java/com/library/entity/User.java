@@ -1,7 +1,14 @@
 package com.library.entity;
 
-import java.util.Objects;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false)
+@ToString
 public class User extends Entity {
     private int id;
     private String login;
@@ -20,159 +27,96 @@ public class User extends Entity {
 
     }
 
-    public User(String login, String password, String email, String firstName,
-                String surname, String phoneNumber, int age, int fineAmount,
-                byte status, Role role, Subscription subscription) {
-        this.login = login;
-        this.password = password;
-        this.email = email;
-        this.firstName = firstName;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.age = age;
-        this.fineAmount = fineAmount;
-        this.status = status;
-        this.role = role;
-        this.subscription = subscription;
+    private User(UserBuilder builder) {
+        this.login = builder.login;
+        this.password = builder.password;
+        this.email = builder.email;
+        this.firstName = builder.firstName;
+        this.surname = builder.surname;
+        this.phoneNumber = builder.phoneNumber;
+        this.age = builder.age;
+        this.fineAmount = builder.fineAmount;
+        this.status = builder.status;
+        this.role = builder.role;
+        this.subscription = builder.subscription;
     }
 
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
+    public static final class UserBuilder{
+        private int id;
+        private String login;
+        private String password;
+        private String email;
+        private String firstName;
+        private String surname;
+        private String phoneNumber;
+        private int age;
+        private int fineAmount;
+        private byte status;
+        private Role role;
+        private Subscription subscription;
 
-    public String getLogin() {
-        return login;
-    }
-    public void setLogin(String login) {
-        this.login = login;
-    }
+        public UserBuilder addId(int id) {
+            this.id = id;
+            return this;
+        }
 
-    public String getPassword() {
-        return password;
-    }
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public UserBuilder addLogin(String login) {
+            this.login = login;
+            return this;
+        }
 
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
+        public UserBuilder addPassword(String password) {
+            this.password = password;
+            return this;
+        }
 
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+        public UserBuilder addEmail(String email) {
+            this.email = email;
+            return this;
+        }
 
-    public String getSurname() {
-        return surname;
-    }
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
+        public UserBuilder addFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
+        public UserBuilder addSurname(String surname) {
+            this.surname = surname;
+            return this;
+        }
 
-    public int getAge() {
-        return age;
-    }
-    public void setAge(int createTime) {
-        this.age = createTime;
-    }
+        public UserBuilder addPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
 
-    public int getFineAmount() {
-        return fineAmount;
-    }
-    public void setFineAmount(int fineAmount) {
-        this.fineAmount = fineAmount;
-    }
+        public UserBuilder addAge(int age) {
+            this.age = age;
+            return this;
+        }
 
-    public byte isStatus() {
-        return status;
-    }
-    public void setStatus(byte status) {
-        this.status = status;
-    }
+        public UserBuilder addFineAmount(int fineAmount) {
+            this.fineAmount = fineAmount;
+            return this;
+        }
 
-    public Role getRole() {
-        return role;
-    }
-    public void setRole(Role role) {
-        this.role = role;
-    }
+        public UserBuilder addStatus(byte status) {
+            this.status = status;
+            return this;
+        }
 
-    public Subscription getSubscription() {
-        return subscription;
-    }
-    public void setSubscription(Subscription subscription) {
-        this.subscription = subscription;
-    }
+        public UserBuilder addRole(Role role) {
+            this.role = role;
+            return this;
+        }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        public UserBuilder addSubscription(Subscription subscription) {
+            this.subscription = subscription;
+            return this;
+        }
 
-        User user = (User) o;
-
-        if (id != user.id) return false;
-        if (age != user.age) return false;
-        if (fineAmount != user.fineAmount) return false;
-        if (status != user.status) return false;
-        if (!Objects.equals(login, user.login)) return false;
-        if (!Objects.equals(password, user.password)) return false;
-        if (!Objects.equals(email, user.email)) return false;
-        if (!Objects.equals(firstName, user.firstName)) return false;
-        if (!Objects.equals(surname, user.surname)) return false;
-        if (!Objects.equals(phoneNumber, user.phoneNumber)) return false;
-        if (role != user.role) return false;
-        return subscription == user.subscription;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id;
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (password != null ? password.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (surname != null ? surname.hashCode() : 0);
-        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0);
-        result = 31 * result + age;
-        result = 31 * result + fineAmount;
-        result = 31 * result + (int) status;
-        result = 31 * result + (role != null ? role.hashCode() : 0);
-        result = 31 * result + (subscription != null ? subscription.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", surname='" + surname + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", age=" + age +
-                ", fineAmount=" + fineAmount +
-                ", status=" + status +
-                ", role=" + role +
-                ", subscription=" + subscription +
-                '}';
+        public User build() {
+            return new User(this);
+        }
     }
 }

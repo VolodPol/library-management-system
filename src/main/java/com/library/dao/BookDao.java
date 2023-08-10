@@ -6,6 +6,7 @@ import com.library.entity.Publisher;
 import com.library.entity.sorting.SortBy;
 import com.library.entity.sorting.SortOrder;
 import com.library.exceptions.DaoException;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 import static com.library.dao.constants.Queries.*;
 
+@Getter
 public class BookDao {
     private final static Logger log = LoggerFactory.getLogger(BookDao.class);
     private int numOfRecs;
@@ -43,9 +45,6 @@ public class BookDao {
             throw new DaoException("DaoException occurred in BookDao class", e);
         }
         return books;
-    }
-    public int getNumOfRecs() {
-        return this.numOfRecs;
     }
 
     public Optional<Book> findByIsbn(String isbn) throws DaoException {
@@ -224,18 +223,17 @@ public class BookDao {
     }
 
     private static Book retrieveBook(ResultSet resultSet) throws SQLException {
-        Book book = new Book();
-
-        book.setId(resultSet.getInt(1));
-        book.setTitle(resultSet.getString(2));
-        book.setAuthor(resultSet.getString(3));
-        book.setIsbn(resultSet.getString(4));
-        book.setCopiesNumber(resultSet.getInt(5));
-        book.setDateOfPublication(resultSet.getDate(6));
-        book.setPublisher(new Publisher(
-                resultSet.getInt(7),
-                resultSet.getString(8)));
-        return book;
+        return new Book.BookBuilder()
+                .addId(resultSet.getInt(1))
+                .addTitle(resultSet.getString(2))
+                .addAuthor(resultSet.getString(3))
+                .addIsbn(resultSet.getString(4))
+                .addCopiesNumber(resultSet.getInt(5))
+                .addDateOfPublication(resultSet.getDate(6))
+                .addPublisher(new Publisher(
+                        resultSet.getInt(7),
+                        resultSet.getString(8)))
+                .build();
     }
 
     private void fillPreparedStatement(PreparedStatement statement, Book newBook) throws SQLException {

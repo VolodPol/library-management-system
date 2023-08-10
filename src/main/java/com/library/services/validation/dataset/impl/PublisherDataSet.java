@@ -2,10 +2,14 @@ package com.library.services.validation.dataset.impl;
 
 import com.library.services.validation.dataset.DataSet;
 import com.library.utils.UtilProvider;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * The class contains publisher data to validate
  */
+@Getter
+@Setter
 public class PublisherDataSet implements DataSet {
     private String publisherName;
 
@@ -16,13 +20,5 @@ public class PublisherDataSet implements DataSet {
     @Override
     public boolean isBlank() {
         return UtilProvider.isEmpty(publisherName);
-    }
-
-    public String getPublisherName() {
-        return publisherName;
-    }
-    @SuppressWarnings("unused")
-    public void setPublisherName(String publisherName) {
-        this.publisherName = publisherName;
     }
 }

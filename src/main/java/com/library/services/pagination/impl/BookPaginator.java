@@ -8,6 +8,7 @@ import com.library.entity.sorting.SortOrder;
 import com.library.exceptions.DaoException;
 import com.library.services.pagination.DataForPagination;
 import com.library.services.pagination.Paginator;
+import lombok.Getter;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class BookPaginator extends Paginator<Book> {
         /**
          * The default value of records per page
          */
+        @Getter
         private int recsPerPage = 5;
         /**
          * Default sorting id from UI
@@ -76,9 +78,6 @@ public class BookPaginator extends Paginator<Book> {
         }
         private SortBy getSortBy() {
             return sortBy;
-        }
-        public int getRecsPerPage() {
-            return recsPerPage;
         }
     }
 

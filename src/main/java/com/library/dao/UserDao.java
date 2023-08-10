@@ -195,21 +195,19 @@ public class UserDao {
         preparedStatement.setInt(7, user.getAge());
     }
     private User extractUser(ResultSet rs) throws SQLException {
-        User user = new User();
-
-        user.setId(rs.getInt(1));
-        user.setLogin(rs.getString(2));
-        user.setPassword(rs.getString(3));
-        user.setEmail(rs.getString(4));
-        user.setFirstName(rs.getString(5));
-        user.setSurname(rs.getString(6));
-        user.setPhoneNumber(rs.getString(7));
-        user.setAge(rs.getInt(8));
-        user.setFineAmount(rs.getInt(9));
-        user.setStatus(rs.getByte(10));
-        user.setRole(Role.valueOf(rs.getString(11).toUpperCase()));
-        user.setSubscription(Subscription.valueOf(rs.getString(12).toUpperCase()));
-
-        return user;
+        return new User.UserBuilder()
+                .addId(rs.getInt(1))
+                .addLogin(rs.getString(2))
+                .addPassword(rs.getString(3))
+                .addEmail(rs.getString(4))
+                .addFirstName(rs.getString(5))
+                .addSurname(rs.getString(6))
+                .addPhoneNumber(rs.getString(7))
+                .addAge(rs.getInt(8))
+                .addFineAmount(rs.getInt(9))
+                .addStatus(rs.getByte(10))
+                .addRole(Role.valueOf(rs.getString(11).toUpperCase()))
+                .addSubscription(Subscription.valueOf(rs.getString(12).toUpperCase()))
+                .build();
     }
 }

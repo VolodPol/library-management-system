@@ -158,15 +158,16 @@ public class CheckoutDao {
     }
     private void getOrderBy(List<Checkout> checkouts, ResultSet rs) throws SQLException, DaoException {
         while (rs.next()) {
-            Checkout currentCheck = new Checkout();
+            Checkout currentCheck = new Checkout.CheckoutBuilder()
+                    .addId(rs.getInt("c.id"))
+                    .addStartTime(rs.getTimestamp("start_time"))
+                    .addEndTime(rs.getTimestamp("end_time"))
+                    .addIsReturned(rs.getByte("is_returned"))
+                    .addOrderStatus(rs.getByte("order_status") == 0 ? OrderStatus.UNCONFIRMED : OrderStatus.CONFIRMED)
+                    .addType(rs.getString("c.type").equals("subscription") ? Type.SUBSCRIPTION : Type.READING_ROOM)
+                    .addFinedStatus(rs.getByte("fined_status"))
+                    .build();
 
-            currentCheck.setId(rs.getInt("c.id"));
-            currentCheck.setStartTime(rs.getTimestamp("start_time"));
-            currentCheck.setEndTime(rs.getTimestamp("end_time"));
-            currentCheck.setIsReturned(rs.getByte("is_returned"));
-            currentCheck.setOrderStatus(rs.getByte("order_status") == 0 ? OrderStatus.UNCONFIRMED : OrderStatus.CONFIRMED);
-            currentCheck.setType(rs.getString("c.type").equals("subscription") ? Type.SUBSCRIPTION : Type.READING_ROOM);
-            currentCheck.setFinedStatus(rs.getByte("fined_status"));
             try {
                 currentCheck.setUser(
                         new UserDao().findByLogin(rs.getString("login")).orElse(new User())

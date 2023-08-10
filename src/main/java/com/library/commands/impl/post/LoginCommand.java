@@ -48,7 +48,7 @@ public class LoginCommand implements ActionCommand {
             User user = userDao.findByLogin(login).orElse(new User());
             setFines(user, userDao, content, response);
             //check if user is blocked
-            if (user.isStatus() == 1) {
+            if (user.getStatus() == 1) {
                 content.setRequestAttribute("error", MessageName.BLOCKED);
                 return new ActionResult(PathProvider.getPath(LOGIN), false);
             }

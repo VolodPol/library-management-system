@@ -33,8 +33,9 @@ public class UserProvider {
      * If data is invalid, error message is set as requestAttribute by
      * means of validator. LoginService checks if user already exists.
      * If not, execution proceeds to calling insertUser method.
+     *
      * @param content wrapper of HttpRequest's and HttpSession's content
-     * @param role the user's role
+     * @param role    the user's role
      * @return boolean to confirm the result of the method
      * @throws DaoException which may occur in dao
      */
@@ -60,14 +61,26 @@ public class UserProvider {
 
     /**
      * Insert the user, created from dataset in DB
+     *
      * @param dataSet the set of data to validate
-     * @param role the user's role
+     * @param role    the user's role
      * @throws DaoException which may occur in dao
      */
     private void insertUser(UserDataSet dataSet, Role role) throws DaoException {
-        User currentUser = new User(dataSet.getUsername(), PasswordEncryptor.encrypt(dataSet.getPassword()), dataSet.getEmail(), dataSet.getFirstName(), dataSet.getSurname(),
-                dataSet.getPhone(), Integer.parseInt(dataSet.getAge()), (byte) 0, (byte) 0, role, Subscription.BASIC
-        );
+        User currentUser = new User.UserBuilder()
+                .addLogin(dataSet.getUsername())
+                .addPassword(PasswordEncryptor.encrypt(dataSet.getPassword()))
+                .addEmail(dataSet.getEmail())
+                .addFirstName(dataSet.getFirstName())
+                .addSurname(dataSet.getSurname())
+                .addPhoneNumber(dataSet.getPhone())
+                .addAge(Integer.parseInt(dataSet.getAge()))
+                .addFineAmount((byte) 0)
+                .addStatus((byte) 0)
+                .addRole(role)
+                .addSubscription(Subscription.BASIC)
+                .build();
+
         userDao.insertUser(currentUser, role);
     }
 }
