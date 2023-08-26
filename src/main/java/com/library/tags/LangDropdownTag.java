@@ -1,6 +1,7 @@
 package com.library.tags;
 
 import jakarta.servlet.jsp.tagext.TagSupport;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,13 +10,10 @@ import java.io.IOException;
 /**
  * Custom tag that provides html dropdown for choosing the language
  */
+@Getter
 public class LangDropdownTag extends TagSupport {
     private static final Logger log = LoggerFactory.getLogger(LangDropdownTag.class);
     private String locale;
-
-    public String getLocale() {
-        return locale;
-    }
 
     public void setLocale(String locale) {
         this.locale = locale;

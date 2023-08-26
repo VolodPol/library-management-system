@@ -1,5 +1,8 @@
 package com.library.entity;
-@SuppressWarnings("unused")
+
+import lombok.Getter;
+
+@Getter
 public enum Status {
     PENDING(1),
     CONFIRMED(2);
@@ -8,9 +11,5 @@ public enum Status {
 
     Status(int value) {
         statusValue = value;
-    }
-
-    public int getStatusValue() {
-        return statusValue;
     }
 }

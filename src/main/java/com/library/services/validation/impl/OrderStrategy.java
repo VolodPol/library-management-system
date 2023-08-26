@@ -2,18 +2,18 @@ package com.library.services.validation.impl;
 
 import com.library.entity.Subscription;
 import com.library.entity.Type;
+import com.library.services.validation.ValidationStrategy;
 import com.library.utils.UtilProvider;
 import com.library.services.resources.MessageName;
-import com.library.services.validation.Validator;
 import com.library.services.validation.dataset.impl.OrderDataSet;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
 
 /**
- * The class for order data validation.
+ * The strategy class for order data validation.
  */
-public class OrderValidator implements Validator {
+public class OrderStrategy implements ValidationStrategy {
     /**
      * Order data
      */
@@ -26,15 +26,14 @@ public class OrderValidator implements Validator {
     private static final String HOURS_PATTERN = " \\d{2}:\\d{2}:\\d{2}.\\d+";
     private static final int MAX_DAYS = 92;
 
-    /*
-        В читацьку залу - максимум 1 день (10:00 - 18:00)
-        На підписку - максимум 3 місяці
-        старт раніше кінця
-     */
-    public OrderValidator(OrderDataSet dataSet) {
+    public OrderStrategy(OrderDataSet dataSet) {
         this.dataSet = dataSet;
     }
-
+    /**
+        Reading room - maximum 1 day (10:00 - 18:00)
+        On subscription - maximum 3 month
+        Start before end
+     **/
     @Override
     public boolean validate() {
         if (dataSet.isBlank()) {

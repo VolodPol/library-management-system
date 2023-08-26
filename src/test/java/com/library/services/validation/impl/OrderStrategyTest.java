@@ -11,8 +11,8 @@ import java.util.Calendar;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class OrderValidatorTest {
-    private OrderValidator validator;
+public class OrderStrategyTest {
+    private OrderStrategy validator;
     private OrderDataSet dataSet;
 
     @Test
@@ -20,7 +20,7 @@ public class OrderValidatorTest {
         dataSet = new OrderDataSet(
                 "", "", "", ""
         );
-        validator = new OrderValidator(dataSet);
+        validator = new OrderStrategy(dataSet);
         assertFalse(validator.validate());
         assertEquals(MessageName.EMPTY_FORM, validator.getErrorMessage());
     }
@@ -30,7 +30,7 @@ public class OrderValidatorTest {
         dataSet = new OrderDataSet(
                 "", "", Type.SUBSCRIPTION.toString(), Subscription.BASIC.toString()
         );
-        validator = new OrderValidator(dataSet);
+        validator = new OrderStrategy(dataSet);
         assertFalse(validator.validate());
         assertEquals(MessageName.NO_SUB, validator.getErrorMessage());
     }
@@ -43,7 +43,7 @@ public class OrderValidatorTest {
                 Type.READING_ROOM.toString(),
                 Subscription.BASIC.toString()
         );
-       validator = new OrderValidator(dataSet);
+       validator = new OrderStrategy(dataSet);
        assertFalse(validator.validate());
        assertEquals(MessageName.OUT_OF_SHIFT, validator.getErrorMessage());
     }
@@ -61,7 +61,7 @@ public class OrderValidatorTest {
                 Type.SUBSCRIPTION.toString(),
                 Subscription.READER.toString()
         );
-        validator = new OrderValidator(dataSet);
+        validator = new OrderStrategy(dataSet);
         assertFalse(validator.validate());
         assertEquals(MessageName.MAX_TIME, validator.getErrorMessage());
     }
@@ -80,7 +80,7 @@ public class OrderValidatorTest {
                 Type.SUBSCRIPTION.toString(),
                 Subscription.READER.toString()
         );
-        validator = new OrderValidator(dataSet);
+        validator = new OrderStrategy(dataSet);
         assertFalse(validator.validate());
         assertEquals(MessageName.EARLY_RETURN, validator.getErrorMessage());
     }
@@ -98,7 +98,7 @@ public class OrderValidatorTest {
                 Type.SUBSCRIPTION.toString(),
                 Subscription.READER.toString()
         );
-        validator = new OrderValidator(dataSet);
+        validator = new OrderStrategy(dataSet);
         assertTrue(validator.validate());
         assertNull(validator.getErrorMessage());
     }

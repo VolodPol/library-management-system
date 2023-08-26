@@ -1,18 +1,28 @@
 package com.library.services.validation;
 
 /**
- * Interface for concrete validators to implement
+ * A context class that represents Validation and encapsulates Validation Strategy
  * An example of Strategy pattern
  */
-public interface Validator {
-    /**
-     * Method for data validation
-     * @return boolean to check if valid
-     */
-    boolean validate ();
+public class Validator {
+    private final ValidationStrategy strategy;
+
+    public Validator(ValidationStrategy strategy) {
+        this.strategy = strategy;
+    }
+
     /**
      * Method to extract error message
      * @return string that represents error message
      */
-    String getErrorMessage();
+    public String getErrorMessage() {
+        return strategy.getErrorMessage();
+    }
+    /**
+     * Method for data validation
+     * @return boolean to check if valid
+     */
+    public boolean validate () {
+        return strategy.validate();
+    }
 }

@@ -11,7 +11,7 @@ import com.library.dao.CheckoutDao;
 import com.library.dao.UserDao;
 import com.library.exceptions.DaoException;
 import com.library.services.resources.CommandPath;
-import com.library.services.validation.impl.OrderValidator;
+import com.library.services.validation.impl.OrderStrategy;
 import com.library.services.validation.dataset.impl.OrderDataSet;
 import com.library.utils.PathProvider;
 import com.library.utils.UtilProvider;
@@ -35,7 +35,7 @@ public class OrderBookCommand implements ActionCommand {
         String orderType = content.getParameter("order_type");
         OrderDataSet dataSet = new OrderDataSet(startTime, endTime, orderType, user.getSubscription().toString());
 
-        OrderValidator validator = new OrderValidator(dataSet);
+        OrderStrategy validator = new OrderStrategy(dataSet);
         boolean validResult = validator.validate();
         if (!validResult) {
             content.setRequestAttribute("error", validator.getErrorMessage());

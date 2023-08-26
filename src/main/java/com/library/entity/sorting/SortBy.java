@@ -1,5 +1,8 @@
 package com.library.entity.sorting;
 
+import lombok.Getter;
+
+@Getter
 public enum SortBy {
     DEFAULT(""),
     TITLE("title"),
@@ -9,9 +12,5 @@ public enum SortBy {
     private final String value;
     SortBy(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 }

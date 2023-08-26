@@ -13,7 +13,7 @@ import com.library.services.resources.CommandPath;
 import com.library.services.resources.MessageName;
 import com.library.services.validation.Validator;
 import com.library.services.validation.dataset.DataSetProvider;
-import com.library.services.validation.impl.CreateBookValidator;
+import com.library.services.validation.impl.CreateBookStrategy;
 import com.library.services.validation.dataset.impl.BookDataSet;
 import com.library.utils.PathProvider;
 
@@ -25,8 +25,7 @@ public class CreateBookCommand implements ActionCommand {
     @Override
     public ActionResult execute(RequestContent content, HttpServletResponse response) throws DaoException {
         BookDataSet data = DataSetProvider.getBookDataSet(content);
-
-        Validator validator = new CreateBookValidator(data);
+        Validator validator = new Validator(new CreateBookStrategy(data));
         boolean validResult = validator.validate();
 
         if (!validResult) {

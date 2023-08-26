@@ -9,7 +9,7 @@ import com.library.entity.Publisher;
 import com.library.exceptions.DaoException;
 import com.library.services.validation.Validator;
 import com.library.services.validation.dataset.DataSetProvider;
-import com.library.services.validation.impl.PublisherValidator;
+import com.library.services.validation.impl.PublisherStrategy;
 import com.library.services.validation.dataset.impl.PublisherDataSet;
 import com.library.utils.PathProvider;
 
@@ -21,7 +21,7 @@ public class CreatePublisherCommand implements ActionCommand {
         PublisherDataSet dataSet = DataSetProvider.getPublisherDataSet(content);
 
         PublisherDao publisherDao = new PublisherDao();
-        Validator validator = new PublisherValidator(dataSet, publisherDao);
+        Validator validator = new Validator(new PublisherStrategy(dataSet, publisherDao));
         boolean validResult = validator.validate();
         if (!validResult) {
             content.setRequestAttribute("error", validator.getErrorMessage());

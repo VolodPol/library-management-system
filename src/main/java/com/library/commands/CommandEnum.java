@@ -13,11 +13,13 @@ import com.library.commands.impl.post.user.UpgradeSubscriptionCommand;
 import com.library.commands.impl.get.ShowLibrariansCommand;
 import com.library.commands.impl.get.ShowOrdersCommand;
 import com.library.commands.impl.get.ShowMyBooksCommand;
+import lombok.Getter;
 
 /**
  * The enumeration that contains all the Commands
  * Command pattern
  */
+@Getter
 public enum CommandEnum {
     LOGIN (new LoginCommand()),
     LOGOUT (new LogoutCommand()),
@@ -44,9 +46,5 @@ public enum CommandEnum {
     private final ActionCommand command;
     CommandEnum(ActionCommand command) {
         this.command = command;
-    }
-
-    public ActionCommand getCommand() {
-        return command;
     }
 }

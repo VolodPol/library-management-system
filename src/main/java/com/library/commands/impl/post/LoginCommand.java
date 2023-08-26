@@ -18,7 +18,7 @@ import com.library.services.resources.MessageName;
 import com.library.services.validation.Validator;
 import com.library.services.validation.dataset.DataSetProvider;
 import com.library.services.validation.dataset.impl.UserDataSet;
-import com.library.services.validation.impl.LoginUserValidator;
+import com.library.services.validation.impl.LoginUserStrategy;
 import com.library.utils.PathProvider;
 import com.library.utils.UtilProvider;
 
@@ -35,8 +35,9 @@ public class LoginCommand implements ActionCommand {
         String page;
         //extract data & validate
         UserDataSet dataSet = DataSetProvider.getUserDataSet(content);
-        Validator validator = new LoginUserValidator(dataSet);
+        Validator validator = new Validator(new LoginUserStrategy(dataSet));
         boolean validResult = validator.validate();
+
         if (!validResult) {
             content.setRequestAttribute("error", validator.getErrorMessage());
             return new ActionResult(PathProvider.getPath(LOGIN), false);

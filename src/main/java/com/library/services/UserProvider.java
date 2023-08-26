@@ -9,7 +9,7 @@ import com.library.exceptions.DaoException;
 import com.library.services.resources.MessageName;
 import com.library.services.validation.Validator;
 import com.library.services.validation.dataset.DataSetProvider;
-import com.library.services.validation.impl.UserValidator;
+import com.library.services.validation.impl.UserStrategy;
 import com.library.services.validation.dataset.impl.UserDataSet;
 
 /**
@@ -42,7 +42,7 @@ public class UserProvider {
     public boolean createUser(RequestContent content, Role role) throws DaoException {
         UserDataSet data = DataSetProvider.getUserDataSet(content);
 
-        Validator validator = new UserValidator(data);
+        Validator validator = new Validator(new UserStrategy(data));
         boolean validResult = validator.validate();
         if (!validResult) {
             content.setRequestAttribute("error", validator.getErrorMessage());

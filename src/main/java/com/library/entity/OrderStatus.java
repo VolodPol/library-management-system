@@ -1,5 +1,8 @@
 package com.library.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum OrderStatus {
     UNCONFIRMED(0),
     CONFIRMED(1);
@@ -7,9 +10,5 @@ public enum OrderStatus {
 
     OrderStatus(int value) {
         statusValue = value;
-    }
-    @SuppressWarnings("unused")
-    public int getStatusValue() {
-        return statusValue;
     }
 }

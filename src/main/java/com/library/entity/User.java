@@ -1,14 +1,10 @@
 package com.library.entity;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 @EqualsAndHashCode(callSuper = false)
-@ToString
+@NoArgsConstructor
 public class User extends Entity {
     private int id;
     private String login;
@@ -22,10 +18,6 @@ public class User extends Entity {
     private byte status;
     private Role role;
     private Subscription subscription;
-
-    public User() {
-
-    }
 
     private User(UserBuilder builder) {
         this.login = builder.login;
@@ -41,7 +33,8 @@ public class User extends Entity {
         this.subscription = builder.subscription;
     }
 
-    public static final class UserBuilder{
+    @SuppressWarnings("all")
+    public static final class UserBuilder {
         private int id;
         private String login;
         private String password;

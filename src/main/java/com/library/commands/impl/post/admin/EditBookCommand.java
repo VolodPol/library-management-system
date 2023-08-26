@@ -11,7 +11,7 @@ import com.library.entity.Book;
 import com.library.exceptions.DaoException;
 import com.library.services.resources.CommandPath;
 import com.library.services.validation.dataset.DataSetProvider;
-import com.library.services.validation.impl.EditBookValidator;
+import com.library.services.validation.impl.EditBookStrategy;
 import com.library.services.validation.Validator;
 import com.library.services.validation.dataset.impl.BookDataSet;
 import com.library.utils.PathProvider;
@@ -33,7 +33,7 @@ public class EditBookCommand implements ActionCommand {
         Book bookToEdit = bookDao.findByIsbn(formerIsbn).orElse(new Book());
 
         BookDataSet data = DataSetProvider.getBookDataSet(content);
-        Validator validator = new EditBookValidator(data);
+        Validator validator = new Validator(new EditBookStrategy(data));
         boolean validResult = validator.validate();
 
         if (!validResult) {

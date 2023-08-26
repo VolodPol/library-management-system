@@ -1,8 +1,11 @@
 package com.library.commands;
 
+import lombok.Getter;
+
 /**
  * Encapsulates the result of ActionCommand and supports PRG pattern.
  */
+@Getter
 public class ActionResult {
     private String destinationPage;
     private boolean isSendRedirect;
@@ -18,10 +21,6 @@ public class ActionResult {
     public ActionResult(String page, boolean isRedirect){
         destinationPage = page;
         isSendRedirect = isRedirect;
-    }
-
-    public String getDestinationPage() {
-        return destinationPage;
     }
 
     public boolean isSendRedirect() {

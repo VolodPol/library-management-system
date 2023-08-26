@@ -1,5 +1,8 @@
 package com.library.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
     UNREGISTERED("unregistered"),
     USER("user"),
@@ -9,9 +12,5 @@ public enum Role {
     private final String roleValue;
     Role(String value) {
         roleValue = value;
-    }
-
-    public String getRoleValue() {
-        return roleValue;
     }
 }

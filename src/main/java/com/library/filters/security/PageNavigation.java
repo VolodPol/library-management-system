@@ -1,8 +1,11 @@
 package com.library.filters.security;
 
+import lombok.Getter;
+
 /**
  * Enum that contains all possible action separated by access rights
  */
+@Getter
 public enum PageNavigation {
     UNREGISTERED(
             new String[]{
@@ -77,9 +80,5 @@ public enum PageNavigation {
     private final String[] routes;
     PageNavigation (String[] value) {
         this.routes = value;
-    }
-
-    public String[] getRoutes() {
-        return routes;
     }
 }

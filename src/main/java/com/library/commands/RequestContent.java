@@ -3,27 +3,27 @@ package com.library.commands;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-
-/*
-    1. extract values from Request
-    2. set attr/params if necessary
-    3. insert attributes in request
- */
 
 /**
  * The class that wraps the content of HttpRequest class for the sake of safe manipulation of request's attributes,
  * parameters and cookies. After class initialization, the class extracts values from request. Has the possibility
  * to set attributes/parameters manually by the corresponding setters. And finally inserts the data to request after
  * the process of request's data handling is finished.
+ * Short lifecycle description:
+ *     1. extract values from Request
+ *     2. set attr/params if necessary
+ *     3. insert attributes in request
  */
 public class RequestContent {
     private final HashMap<String, Object> requestAttributes;
     private final HashMap<String, String[]> requestParameters;
     private final HashMap<String, Object> sessionAttributes;
+    @Getter
     private Cookie[] cookies;
 
     {
@@ -95,9 +95,6 @@ public class RequestContent {
     @SuppressWarnings("unused")
     public String[] getParameterValues(String s){
         return requestParameters.get(s);
-    }
-    public Cookie[] getCookies() {
-        return cookies;
     }
 
     public void setRequestAttribute(String name, Object value) {

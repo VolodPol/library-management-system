@@ -1,5 +1,8 @@
 package com.library.entity;
 
+import lombok.Getter;
+
+@Getter
 public enum Type {
     SUBSCRIPTION("subscription"),
     READING_ROOM("reading_room");
@@ -7,8 +10,4 @@ public enum Type {
     Type(String value) {
         this.value = value;
     }
-    public String getValue() {
-        return this.value;
-    }
-
 }

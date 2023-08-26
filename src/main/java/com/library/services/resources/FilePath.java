@@ -9,7 +9,6 @@ public interface FilePath {
     String NEW_BOOK = "new_book";
     String NEW_LIBRARIAN = "new_librarian";
     String NEW_ORDER = "new_order";
-    String NEW_PUBLISHER = "new_publisher";
     String ORDER_LIST = "order_list";
     String PROFILE = "profile";
     String REGISTER = "register";

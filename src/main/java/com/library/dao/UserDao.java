@@ -6,6 +6,7 @@ import com.library.entity.Role;
 import com.library.entity.Subscription;
 import com.library.entity.User;
 import com.library.exceptions.DaoException;
+import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Getter
 public class UserDao {
     private static final Logger log = LoggerFactory.getLogger(UserDao.class);
     private int numOfRecs;
@@ -41,10 +43,6 @@ public class UserDao {
             throw new DaoException("DaoException occurred in UserDao class", e);
         }
         return users;
-    }
-
-    public int getNumOfRecs() {
-        return this.numOfRecs;
     }
 
     public Optional<User> findByLogin(String login) throws DaoException {
